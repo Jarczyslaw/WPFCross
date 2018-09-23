@@ -1,4 +1,7 @@
 ﻿using Core.ViewModels;
+using Dialogs;
+using Logging;
+using MvvmCross;
 using MvvmCross.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -12,7 +15,14 @@ namespace Cross.App
     {
         public override void Initialize()
         {
+            RegisterDependencies();
             RegisterAppStart<MainViewModel>();
+        }
+
+        private void RegisterDependencies()
+        {
+            Mvx.IoCProvider.RegisterSingleton<ILoggingService>(() => new LoggingService());
+            Mvx.IoCProvider.RegisterType<IDialogsService, DialogsService>();
         }
     }
 }

@@ -17,9 +17,10 @@ namespace Cross.App
 
         public override IEnumerable<Assembly> GetViewModelAssemblies()
         {
-            var assemblies = new List<Assembly>();
-            assemblies.AddRange(base.GetViewModelAssemblies());
-            assemblies.Add(typeof(ViewModelBase).Assembly);
+            var assemblies = new List<Assembly>
+            {
+                typeof(ViewModelBase).Assembly
+            };
             return assemblies;
         }
     }

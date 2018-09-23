@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{65BBD6D6-DCCD-4FA5-8760-3A0A1AE22C8B}</ProjectGuid>
+    <ProjectGuid>{7519097D-59FF-4717-A043-C083A7AA9A5D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Cross.App</RootNamespace>
-    <AssemblyName>Cross.App</AssemblyName>
+    <RootNamespace>Dialogs</RootNamespace>
+    <AssemblyName>Dialogs</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -31,49 +31,20 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="MvvmCross, Version=6.2.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\MvvmCross.6.2.0\lib\net461\MvvmCross.dll</HintPath>
-    </Reference>
-    <Reference Include="MvvmCross.Platforms.Wpf, Version=6.2.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\MvvmCross.Platforms.Wpf.6.2.0\lib\net461\MvvmCross.Platforms.Wpf.dll</HintPath>
-    </Reference>
-    <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
-    <Reference Include="System.Console, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Console.4.3.0\lib\net46\System.Console.dll</HintPath>
-    </Reference>
     <Reference Include="System.Core" />
-    <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
-    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Application.cs" />
+    <Compile Include="DialogsService.cs" />
+    <Compile Include="IDialogsService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Setup.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Core\Core.csproj">
-      <Project>{aab9db0f-6e0e-41b0-89bb-8783027c8db2}</Project>
-      <Name>Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Dialogs\Dialogs.csproj">
-      <Project>{7519097d-59ff-4717-a043-c083a7aa9a5d}</Project>
-      <Name>Dialogs</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Logging\Logging.csproj">
-      <Project>{9d4e01d2-918a-4496-a724-ad6dff79f7ca}</Project>
-      <Name>Logging</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
