@@ -51,7 +51,6 @@ namespace Dialogs
                 SetDetails("Show details", "Hide details", exception.StackTrace);
             using (var dialog = builder.Build())
             {
-                dialog.Opened += (s, e) => dialog.DetailsExpandedText = exception.StackTrace;
                 dialog.Show();
             }
         }

@@ -35,8 +35,7 @@ namespace Cross.WPF
         {
             var message = "Fatal exception source: " + source;
             loggingService.Fatal(exception, message);
-            // TODO - restore it when service is finished
-            //dialogService.ShowException(message, exception);
+            dialogService.ShowException(exception, message);
         }
     }
 }
