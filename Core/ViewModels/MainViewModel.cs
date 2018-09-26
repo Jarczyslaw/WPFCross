@@ -1,5 +1,7 @@
-﻿using Logging;
+﻿using Dialogs;
+using Logging;
 using MvvmCross.Commands;
+using System;
 
 namespace Core.ViewModels
 {
@@ -22,11 +24,34 @@ namespace Core.ViewModels
             }
         }
 
-        private ILoggingService loggingService;
+        private IMvxCommand dialogsCommand;
+        public IMvxCommand DialogsCommand
+        {
+            get
+            {
+                if (dialogsCommand == null)
+                    dialogsCommand = new MvxCommand(() =>
+                    {
+                        try
+                        {
+                            throw new Exception("exception message");
+                        }
+                        catch(Exception exc)
+                        {
+                            dialogsService.ShowException(exc);
+                        }
+                    });
+                return dialogsCommand;
+            }
+        }
 
-        public MainViewModel(ILoggingService loggingService)
+        private ILoggingService loggingService;
+        private IDialogsService dialogsService;
+
+        public MainViewModel(ILoggingService loggingService, IDialogsService dialogsService)
         {
             this.loggingService = loggingService;
+            this.dialogsService = dialogsService;
         }
     }
 }

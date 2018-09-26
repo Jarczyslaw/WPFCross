@@ -1,53 +1,95 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
+using Microsoft.Win32;
+using Microsoft.WindowsAPICodePack.Dialogs;
 
 namespace Dialogs
 {
     public class DialogsService : IDialogsService
-    {
-        private readonly string informationCaption = "Information";
-        private readonly string warningCaption = "Warning";
-        private readonly string errorCaption = "Error";
-        private readonly string questionCaption = "Question";
-        
+    { 
         public void ShowInfo(string message)
         {
-            MessageBox.Show(message, informationCaption, MessageBoxButton.OK, MessageBoxImage.Information);
+            var builder = new TaskDialogBuilder().
+                Initialize("Information", message, TaskDialogStandardIcon.Information);
+            using (var dialog = builder.Build())
+            {
+                dialog.Show();
+            }
         }
 
         public void ShowWarning(string message)
         {
-            MessageBox.Show(message, warningCaption, MessageBoxButton.OK, MessageBoxImage.Warning);
+            var builder = new TaskDialogBuilder().
+                Initialize("Warning", message, TaskDialogStandardIcon.Warning);
+            using (var dialog = builder.Build())
+            {
+                dialog.Show();
+            }
         }
 
         public void ShowError(string error)
         {
-            MessageBox.Show(error, errorCaption, MessageBoxButton.OK, MessageBoxImage.Error);
+            var builder = new TaskDialogBuilder().
+                Initialize("Error", error, TaskDialogStandardIcon.Error);
+            using (var dialog = builder.Build())
+            {
+                dialog.Show();
+            }
         }
 
-        public void ShowException(Exception exception)
-        {
-            ShowException(string.Empty, exception);
-        }
-
-        public void ShowException(string message, Exception exception)
+        public void ShowException(Exception exception, string message = null)
         {
             var text = string.Empty;
             if (!string.IsNullOrEmpty(message))
                 text += message + Environment.NewLine;
-            text += exception.ToString();
-            MessageBox.Show(text, errorCaption, MessageBoxButton.OK, MessageBoxImage.Error);
+            text += exception.Message;
+
+            var builder = new TaskDialogBuilder().
+                Initialize("Exception", text, TaskDialogStandardIcon.Error, "An unexpected application exception occurred").
+                SetDetails("Show details", "Hide details", exception.StackTrace);
+            using (var dialog = builder.Build())
+            {
+                dialog.Opened += (s, e) => dialog.DetailsExpandedText = exception.StackTrace;
+                dialog.Show();
+            }
         }
 
-        public bool? ShowYesNoQuestion(string question)
+        public string OpenFile(string title, string filter)
         {
-            var dr = MessageBox.Show(question, questionCaption, MessageBoxButton.YesNoCancel, MessageBoxImage.Question);
-            if (dr == MessageBoxResult.Yes)
-                return true;
-            else if (dr == MessageBoxResult.No)
-                return false;
-            else
-                return null;
+            var dialog = new CommonOpenFileDialog();
+            dialog.AddToMostRecentlyUsedList = true;
+            dialog.AllowNonFileSystemItems = false;
+            dialog.EnsureFileExists = true;
+            dialog.Multiselect = false;
+
+            if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
+                return dialog.FileName;
+            return null;
+        }
+
+        public IEnumerable<string> OpenFiles()
+        {
+            var dialog = new CommonOpenFileDialog();
+            dialog.Multiselect = true;
+            if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
+                return dialog.FileNames;
+            return null;
+        }
+
+        public void SaveFile()
+        {
+
+        }
+
+        public string OpenFolder()
+        {
+            var dialog = new CommonOpenFileDialog();
+            dialog.IsFolderPicker = true;
+            if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
+                return dialog.FileName;
+            return null;
         }
     }
 }
