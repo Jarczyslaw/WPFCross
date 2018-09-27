@@ -5,15 +5,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Dialogs
+namespace Dialogs.Builders
 {
     public class TaskDialogBuilder
     {
-        private TaskDialog taskDialog;
+        private TaskDialog dialog;
 
         public TaskDialogBuilder Initialize(string caption, string text, TaskDialogStandardIcon icon, string instructionText = null)
         {
-            taskDialog = new TaskDialog
+            dialog = new TaskDialog
             {
                 Caption = caption,
                 Text = text,
@@ -26,23 +26,23 @@ namespace Dialogs
 
         public TaskDialogBuilder SetOwner(IntPtr handle)
         {
-            taskDialog.OwnerWindowHandle = handle;
+            dialog.OwnerWindowHandle = handle;
             return this;
         }
 
         public TaskDialogBuilder SetDetails(string collapsedLabel, string expandedLabel, string text, bool expanded = false)
         {
-            taskDialog.DetailsExpanded = expanded;
-            taskDialog.DetailsCollapsedLabel = collapsedLabel;
-            taskDialog.DetailsExpandedLabel = expandedLabel;
-            taskDialog.DetailsExpandedText = text;
+            dialog.DetailsExpanded = expanded;
+            dialog.DetailsCollapsedLabel = collapsedLabel;
+            dialog.DetailsExpandedLabel = expandedLabel;
+            dialog.DetailsExpandedText = text;
             return this;
         }
 
         public TaskDialogBuilder SetFooter(string text, TaskDialogStandardIcon icon)
         {
-            taskDialog.FooterIcon = icon;
-            taskDialog.FooterText = text;
+            dialog.FooterIcon = icon;
+            dialog.FooterText = text;
             return this;
         }
 
@@ -51,13 +51,13 @@ namespace Dialogs
             var buttonsSum = TaskDialogStandardButtons.None;
             foreach (var button in buttons)
                 buttonsSum |= button;
-            taskDialog.StandardButtons = buttonsSum;
+            dialog.StandardButtons = buttonsSum;
             return this;
         }
 
         public TaskDialogBuilder SetDefaultButton(TaskDialogDefaultButton defaultButton)
         {
-            taskDialog.DefaultButton = defaultButton;
+            dialog.DefaultButton = defaultButton;
             return this;
         }
 
@@ -66,7 +66,7 @@ namespace Dialogs
             var customButton = new TaskDialogButton(name, text);
             customButton.Click += handler;
             customButton.Default = setAsDefault;
-            taskDialog.Controls.Add(customButton);
+            dialog.Controls.Add(customButton);
             return this;
         }
 
@@ -77,7 +77,7 @@ namespace Dialogs
                 Default = setAsDefault
             };
             commandLink.Click += handler;
-            taskDialog.Controls.Add(commandLink);
+            dialog.Controls.Add(commandLink);
             return this;
         }
 
@@ -87,13 +87,13 @@ namespace Dialogs
             {
                 State = state
             };
-            taskDialog.ProgressBar = progressBar;
+            dialog.ProgressBar = progressBar;
             return this;
         }
 
         public TaskDialog Build()
         {
-            return taskDialog;
+            return dialog;
         }
     }
 }

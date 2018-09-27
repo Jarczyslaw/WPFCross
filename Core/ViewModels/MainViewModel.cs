@@ -2,6 +2,7 @@
 using Logging;
 using MvvmCross.Commands;
 using System;
+using System.Collections.Generic;
 
 namespace Core.ViewModels
 {
@@ -18,7 +19,7 @@ namespace Core.ViewModels
                     testCommand = new MvxCommand(() =>
                     {
                         //loggingService.Debug("Test command Test command Test command Test command Test command Test command");
-                        throw new System.Exception("Exception message");
+                        throw new Exception("Exception message");
                     });
                 return testCommand;
             }
@@ -32,14 +33,7 @@ namespace Core.ViewModels
                 if (dialogsCommand == null)
                     dialogsCommand = new MvxCommand(() =>
                     {
-                        try
-                        {
-                            throw new Exception("exception message");
-                        }
-                        catch(Exception exc)
-                        {
-                            dialogsService.ShowException(exc);
-                        }
+                        dialogsService.ShowInfo("asd");
                     });
                 return dialogsCommand;
             }

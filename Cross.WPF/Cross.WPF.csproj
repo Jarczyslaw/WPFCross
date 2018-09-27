@@ -146,5 +146,6 @@
   <ItemGroup>
     <Resource Include="jt_icon.ico" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
