@@ -4,7 +4,7 @@ using MvvmCross.Commands;
 using System;
 using System.Collections.Generic;
 
-namespace Core.ViewModels
+namespace WPFCross.Core.ViewModels
 {
     public class MainViewModel : ViewModelBase
     {
@@ -33,7 +33,8 @@ namespace Core.ViewModels
                 if (dialogsCommand == null)
                     dialogsCommand = new MvxCommand(() =>
                     {
-                        dialogsService.ShowInfo("asd");
+                        //dialogsService.ShowInfo("asd");
+                       // var x = dialogsService.SaveFile("title", @"C:\\", "test", "bmp");
                     });
                 return dialogsCommand;
             }

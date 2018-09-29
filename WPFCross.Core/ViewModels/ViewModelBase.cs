@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Core.ViewModels
+namespace WPFCross.Core.ViewModels
 {
     public class ViewModelBase : MvxViewModel
     {

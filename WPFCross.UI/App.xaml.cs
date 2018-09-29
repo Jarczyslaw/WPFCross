@@ -1,5 +1,4 @@
-﻿using Cross.App;
-using Dialogs;
+﻿using Dialogs;
 using Logging;
 using MvvmCross;
 using MvvmCross.Core;
@@ -14,7 +13,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
 
-namespace Cross.WPF
+namespace WPFCross.UI
 {
     /// <summary>
     /// Interaction logic for App.xaml
@@ -25,7 +24,7 @@ namespace Cross.WPF
 
         protected override void RegisterSetup()
         {
-            this.RegisterSetupType<Setup>();
+            this.RegisterSetupType<CrossSetup>();
         }
 
         protected override void OnStartup(StartupEventArgs e)
@@ -38,9 +37,8 @@ namespace Cross.WPF
         {
             base.ApplicationInitialized();
 
-            var logging = Mvx.IoCProvider.Resolve<ILoggingService>();
-            var dialogs = Mvx.IoCProvider.Resolve<IDialogsService>();
-            globalExceptionHandler = new GlobalExceptionHandler(logging, dialogs);
+            Mvx.IoCProvider.RegisterType<GlobalExceptionHandler>();
+            globalExceptionHandler = Mvx.IoCProvider.Resolve<GlobalExceptionHandler>();
         }
     }
 }

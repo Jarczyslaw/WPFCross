@@ -49,9 +49,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Builders\CommonOpenDialogBuilder.cs" />
+    <Compile Include="Builders\CommonSaveDialogBuilder.cs" />
+    <Compile Include="Builders\CommonDialogBuilderBase.cs" />
     <Compile Include="DialogsService.cs" />
-    <Compile Include="FilterPair.cs" />
+    <Compile Include="DialogFilterPair.cs" />
     <Compile Include="IDialogsService.cs" />
+    <Compile Include="NativeMethods.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Builders\TaskDialogBuilder.cs" />
   </ItemGroup>

@@ -1,63 +1,34 @@
 ﻿using Microsoft.WindowsAPICodePack.Dialogs;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Dialogs.Builders
 {
-    public class CommonOpenDialogBuilder
+    public class CommonOpenDialogBuilder : CommonDialogBuilderBase<CommonOpenFileDialog>
     {
-        private CommonOpenFileDialog dialog;
-
-        public CommonOpenDialogBuilder Initialize(string title)
+        public CommonOpenDialogBuilder Initialize(string title, string initialDirectory)
         {
             dialog = new CommonOpenFileDialog
             {
-                Title = title
+                Title = title,
+                InitialDirectory = initialDirectory
             };
             return this;
         }
 
-        public CommonOpenDialogBuilder SetAsFileDialog(bool multiselect, string initialDirectory)
+        public CommonOpenDialogBuilder SetAsFileDialog(bool multiselect)
         {
             dialog.IsFolderPicker = false;
             dialog.EnsureFileExists = false;
             dialog.Multiselect = multiselect;
-            dialog.InitialDirectory = initialDirectory;
             return this;
         }
 
-        public CommonOpenDialogBuilder SetAsFolderDialog(string initialDirectory)
+        public CommonOpenDialogBuilder SetAsFolderDialog()
         {
             dialog.IsFolderPicker = true;
             dialog.EnsurePathExists = true;
             dialog.Multiselect = false;
-            dialog.InitialDirectory = initialDirectory;
             return this;
-        }
-
-        public CommonOpenDialogBuilder AddFilters(List<FilterPair> filters)
-        {
-            if (filters != null)
-            {
-                foreach (var pair in filters)
-                    AddFilter(pair.DisplayName, pair.ExtensionsList);
-            }
-            return this;
-        }
-
-        public CommonOpenDialogBuilder AddFilter(string displayName, string extensionList)
-        {
-            var filter = new CommonFileDialogFilter(displayName, extensionList);
-            dialog.Filters.Add(filter);
-            return this;
-        }
-
-        public CommonOpenFileDialog Build()
-        {
-            return dialog;
         }
     }
 }

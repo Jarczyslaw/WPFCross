@@ -1,4 +1,4 @@
-﻿using Core.ViewModels;
+﻿using WPFCross.Core.ViewModels;
 using Dialogs;
 using Logging;
 using MvvmCross;
@@ -9,9 +9,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Cross.App
+namespace WPFCross.UI
 {
-    public class Application : MvxApplication
+    public class CrossApplication : MvxApplication
     {
         public override void Initialize()
         {

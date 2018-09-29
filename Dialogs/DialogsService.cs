@@ -10,11 +10,11 @@ namespace Dialogs
 {
     public class DialogsService : IDialogsService
     { 
-        public void ShowInfo(string message, IntPtr owner = default(IntPtr))
+        public void ShowInfo(string message, bool showAsModal = true)
         {
             var builder = new TaskDialogBuilder()
                 .Initialize("Information", message, TaskDialogStandardIcon.Information)
-                .SetOwner(owner);
+                .SetOwner(GetOwnerHandle(showAsModal));
 
             using (var dialog = builder.Build())
             {
@@ -22,11 +22,11 @@ namespace Dialogs
             }
         }
 
-        public void ShowWarning(string message, IntPtr owner = default(IntPtr))
+        public void ShowWarning(string message, bool showAsModal = true)
         {
             var builder = new TaskDialogBuilder()
                 .Initialize("Warning", message, TaskDialogStandardIcon.Warning)
-                .SetOwner(owner);
+                .SetOwner(GetOwnerHandle(showAsModal));
 
             using (var dialog = builder.Build())
             {
@@ -34,11 +34,11 @@ namespace Dialogs
             }
         }
 
-        public void ShowError(string error, IntPtr owner = default(IntPtr))
+        public void ShowError(string error, bool showAsModal = true)
         {
             var builder = new TaskDialogBuilder()
                 .Initialize("Error", error, TaskDialogStandardIcon.Error)
-                .SetOwner(owner);
+                .SetOwner(GetOwnerHandle(showAsModal));
 
             using (var dialog = builder.Build())
             {
@@ -46,7 +46,7 @@ namespace Dialogs
             }
         }
 
-        public void ShowException(Exception exception, string message = null, IntPtr owner = default(IntPtr))
+        public void ShowException(Exception exception, string message = null, bool showAsModal = true)
         {
             var text = string.Empty;
             if (!string.IsNullOrEmpty(message))
@@ -56,7 +56,7 @@ namespace Dialogs
             var builder = new TaskDialogBuilder()
                 .Initialize("Exception", text, TaskDialogStandardIcon.Error, "An unexpected application exception occurred")
                 .SetDetails("Show details", "Hide details", exception.StackTrace)
-                .SetOwner(owner);
+                .SetOwner(GetOwnerHandle(showAsModal));
 
             using (var dialog = builder.Build())
             {
@@ -64,12 +64,12 @@ namespace Dialogs
             }
         }
 
-        public bool ShowYesNoQuestion(string question, IntPtr owner = default(IntPtr))
+        public bool ShowYesNoQuestion(string question, bool showAsModal = true)
         {
             var builder = new TaskDialogBuilder()
                 .Initialize("Question", question, TaskDialogStandardIcon.Information, "Question")
                 .SetButtons(TaskDialogStandardButtons.Yes, TaskDialogStandardButtons.No)
-                .SetOwner(owner);
+                .SetOwner(GetOwnerHandle(showAsModal));
 
             var result = false;
             using (var dialog = builder.Build())
@@ -79,12 +79,23 @@ namespace Dialogs
             return result;
         }
 
-        public string OpenFile(string title, string initialDirectory, List<FilterPair> filters)
+        public void ShowProgressDialog(string caption, string text, string instruction)
         {
-            var builder = new CommonOpenDialogBuilder().
-                Initialize(title).
-                SetAsFileDialog(false, initialDirectory).
-                AddFilters(filters);
+            var builder = new TaskDialogBuilder()
+                .Initialize(caption, text, TaskDialogStandardIcon.Information, instruction)
+                .SetButtons(TaskDialogStandardButtons.Cancel)
+                .SetProgressBar(0, 100, TaskDialogProgressBarState.Marquee);
+
+            using (var dialog = builder.Build())
+                dialog.Show();
+        }
+
+        public string OpenFile(string title, string initialDirectory, List<DialogFilterPair> filters)
+        {
+            var builder = new CommonOpenDialogBuilder()
+                .Initialize(title, initialDirectory)
+                .SetAsFileDialog(false)
+                .AddFilters(filters);
 
             string result = null;
             using (var dialog = builder.Build())
@@ -95,12 +106,12 @@ namespace Dialogs
             return result;
         }
 
-        public List<string> OpenFiles(string title, string initialDirectory, List<FilterPair> filters)
+        public List<string> OpenFiles(string title, string initialDirectory, List<DialogFilterPair> filters)
         {
-            var builder = new CommonOpenDialogBuilder().
-                Initialize(title).
-                SetAsFileDialog(true, initialDirectory).
-                AddFilters(filters);
+            var builder = new CommonOpenDialogBuilder()
+                .Initialize(title, initialDirectory)
+                .SetAsFileDialog(true)
+                .AddFilters(filters);
 
             List<string> result = null;
             using (var dialog = builder.Build())
@@ -111,33 +122,11 @@ namespace Dialogs
             return result;
         }
 
-        public string SaveFile(string title, string initialDirectory, string defaultFileName, List<FilterPair> filters)
-        {
-            var dialog = new CommonSaveFileDialog()
-            {
-                Title = title,
-                InitialDirectory = initialDirectory,
-                DefaultFileName = defaultFileName
-            };
-
-            if (filters != null)
-            {
-                foreach (var pair in filters)
-                    dialog.Filters.Add(new CommonFileDialogFilter(pair.DisplayName, pair.ExtensionsList));
-            }
-            
-            string result = null;
-            if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
-                result = dialog.FileName;
-            dialog.Dispose();
-            return result;
-        }
-
         public string OpenFolder(string title, string initialDirectory)
         {
-            var builder = new CommonOpenDialogBuilder().
-                Initialize(title).
-                SetAsFolderDialog(initialDirectory);
+            var builder = new CommonOpenDialogBuilder()
+                .Initialize(title, initialDirectory)
+                .SetAsFolderDialog();
 
             string result = null;
             using (var dialog = builder.Build())
@@ -148,15 +137,25 @@ namespace Dialogs
             return result;
         }
 
-        public void ShowProgressDialog(string caption, string text, string instruction)
+        public string SaveFile(string title, string initialDirectory, string defaultFileName, DialogFilterPair filter)
         {
-            var builder = new TaskDialogBuilder().
-                Initialize(caption, text, TaskDialogStandardIcon.Information, instruction).
-                SetButtons(TaskDialogStandardButtons.Cancel).
-                SetProgressBar(0, 100, TaskDialogProgressBarState.Marquee);
+            var builder = new CommonSaveDialogBuilder()
+                .Initialize(title, initialDirectory)
+                .SetDefaults(defaultFileName, filter.ExtensionsList)
+                .AddFilter(filter);
 
+            string result = null;
             using (var dialog = builder.Build())
-                dialog.Show();
+            {
+                if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
+                    result = dialog.FileName;
+            }
+            return result;
+        }
+
+        private IntPtr GetOwnerHandle(bool getActiveWindow)
+        {
+            return getActiveWindow ? NativeMethods.GetActiveWindow() : IntPtr.Zero;
         }
     }
 }
