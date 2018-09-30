@@ -18,7 +18,7 @@ namespace Dialogs.Builders
         public CommonOpenDialogBuilder SetAsFileDialog(bool multiselect)
         {
             dialog.IsFolderPicker = false;
-            dialog.EnsureFileExists = false;
+            dialog.EnsureFileExists = true;
             dialog.Multiselect = multiselect;
             return this;
         }
@@ -28,6 +28,18 @@ namespace Dialogs.Builders
             dialog.IsFolderPicker = true;
             dialog.EnsurePathExists = true;
             dialog.Multiselect = false;
+            return this;
+        }
+
+        public new CommonOpenDialogBuilder AddFilter(DialogFilterPair filter)
+        {
+            base.AddFilter(filter);
+            return this;
+        }
+
+        public new CommonOpenDialogBuilder AddFilters(List<DialogFilterPair> filters)
+        {
+            base.AddFilters(filters);
             return this;
         }
     }

@@ -28,5 +28,17 @@ namespace Dialogs.Builders
             dialog.DefaultExtension = defaultExtension;
             return this;
         }
+
+        public new CommonSaveDialogBuilder AddFilter(DialogFilterPair filter)
+        {
+            base.AddFilter(filter);
+            return this;
+        }
+
+        public new CommonSaveDialogBuilder AddFilters(List<DialogFilterPair> filters)
+        {
+            base.AddFilters(filters);
+            return this;
+        }
     }
 }

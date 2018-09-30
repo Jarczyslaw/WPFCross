@@ -12,19 +12,21 @@ namespace Dialogs.Builders
     {
         protected T dialog;
 
-        protected void AddFilter(DialogFilterPair filter)
+        public CommonDialogBuilderBase<T> AddFilter(DialogFilterPair filter)
         {
             var dialogFilter = new CommonFileDialogFilter(filter.DisplayName, filter.ExtensionsList);
             dialog.Filters.Add(dialogFilter);
+            return this;
         }
 
-        protected void AddFilters(List<DialogFilterPair> filters)
+        public CommonDialogBuilderBase<T> AddFilters(List<DialogFilterPair> filters)
         {
             if (filters != null)
             {
                 foreach (var filter in filters)
                     AddFilter(filter);
             }
+            return this;
         }
 
         public T Build()

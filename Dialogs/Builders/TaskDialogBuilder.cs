@@ -30,7 +30,7 @@ namespace Dialogs.Builders
             return this;
         }
 
-        public TaskDialogBuilder SetDetails(string collapsedLabel, string expandedLabel, string text, bool expanded = false)
+        public TaskDialogBuilder AddDetails(string collapsedLabel, string expandedLabel, string text, bool expanded = false)
         {
             dialog.DetailsExpanded = expanded;
             dialog.DetailsCollapsedLabel = collapsedLabel;
@@ -39,10 +39,17 @@ namespace Dialogs.Builders
             return this;
         }
 
-        public TaskDialogBuilder SetFooter(string text, TaskDialogStandardIcon icon)
+        public TaskDialogBuilder AddFooter(string text, TaskDialogStandardIcon icon)
         {
             dialog.FooterIcon = icon;
             dialog.FooterText = text;
+            return this;
+        }
+
+        public TaskDialogBuilder AddFooterTextbox(string text, bool checkedState)
+        {
+            dialog.FooterCheckBoxText = text;
+            dialog.FooterCheckBoxChecked = checkedState;
             return this;
         }
 
@@ -81,7 +88,7 @@ namespace Dialogs.Builders
             return this;
         }
 
-        public TaskDialogBuilder SetProgressBar(int minValue, int maxValue, TaskDialogProgressBarState state)
+        public TaskDialogBuilder AddProgressbar(int minValue, int maxValue, TaskDialogProgressBarState state)
         {
             var progressBar = new TaskDialogProgressBar(minValue, maxValue, minValue)
             {

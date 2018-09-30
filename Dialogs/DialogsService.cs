@@ -55,7 +55,7 @@ namespace Dialogs
 
             var builder = new TaskDialogBuilder()
                 .Initialize("Exception", text, TaskDialogStandardIcon.Error, "An unexpected application exception occurred")
-                .SetDetails("Show details", "Hide details", exception.StackTrace)
+                .AddDetails("Show details", "Hide details", exception.StackTrace)
                 .SetOwner(GetOwnerHandle(showAsModal));
 
             using (var dialog = builder.Build())
@@ -84,7 +84,7 @@ namespace Dialogs
             var builder = new TaskDialogBuilder()
                 .Initialize(caption, text, TaskDialogStandardIcon.Information, instruction)
                 .SetButtons(TaskDialogStandardButtons.Cancel)
-                .SetProgressBar(0, 100, TaskDialogProgressBarState.Marquee);
+                .AddProgressbar(0, 100, TaskDialogProgressBarState.Marquee);
 
             using (var dialog = builder.Build())
                 dialog.Show();
