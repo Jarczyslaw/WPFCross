@@ -34,7 +34,7 @@ namespace WPFCross.Core.ViewModels
                     dialogsCommand = new MvxCommand(() =>
                     {
                         //dialogsService.ShowInfo("asd");
-                       // var x = dialogsService.SaveFile("title", @"C:\\", "test", "bmp");
+                        dialogsService.ShowInfo("test msg");
                     });
                 return dialogsCommand;
             }
