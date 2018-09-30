@@ -6,11 +6,11 @@ namespace Dialogs
 {
     public interface IDialogsService
     {
-        void ShowInfo(string message, bool showAsModal = true);
-        void ShowWarning(string message, bool showAsModal = true);
-        void ShowError(string error, bool showAsModal = true);
-        void ShowException(Exception exception, string message = null, bool showAsModal = true);
-        bool ShowYesNoQuestion(string question, bool showAsModal = true);
+        void ShowInfo(string message, IntPtr? owner = null);
+        void ShowWarning(string message, IntPtr? owner = null);
+        void ShowError(string error, IntPtr? owner = null);
+        void ShowException(Exception exception, string message = null, IntPtr? owner = null);
+        bool ShowYesNoQuestion(string question, IntPtr? owner = null);
         void ShowProgressDialog(string caption, string text, string instruction);
         string OpenFile(string title, string initialDirectory, List<DialogFilterPair> filters);
         List<string> OpenFiles(string title, string initialDirectory, List<DialogFilterPair> filters);

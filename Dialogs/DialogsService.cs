@@ -10,11 +10,11 @@ namespace Dialogs
 {
     public class DialogsService : IDialogsService
     { 
-        public void ShowInfo(string message, bool showAsModal = true)
+        public void ShowInfo(string message, IntPtr? owner = null)
         {
             var builder = new TaskDialogBuilder()
                 .Initialize("Information", message, TaskDialogStandardIcon.Information)
-                .SetOwner(GetOwnerHandle(showAsModal));
+                .SetOwner(GetOwnerHandle(owner));
 
             using (var dialog = builder.Build())
             {
@@ -22,11 +22,11 @@ namespace Dialogs
             }
         }
 
-        public void ShowWarning(string message, bool showAsModal = true)
+        public void ShowWarning(string message, IntPtr? owner = null)
         {
             var builder = new TaskDialogBuilder()
                 .Initialize("Warning", message, TaskDialogStandardIcon.Warning)
-                .SetOwner(GetOwnerHandle(showAsModal));
+                .SetOwner(GetOwnerHandle(owner));
 
             using (var dialog = builder.Build())
             {
@@ -34,11 +34,11 @@ namespace Dialogs
             }
         }
 
-        public void ShowError(string error, bool showAsModal = true)
+        public void ShowError(string error, IntPtr? owner = null)
         {
             var builder = new TaskDialogBuilder()
                 .Initialize("Error", error, TaskDialogStandardIcon.Error)
-                .SetOwner(GetOwnerHandle(showAsModal));
+                .SetOwner(GetOwnerHandle(owner));
 
             using (var dialog = builder.Build())
             {
@@ -46,7 +46,7 @@ namespace Dialogs
             }
         }
 
-        public void ShowException(Exception exception, string message = null, bool showAsModal = true)
+        public void ShowException(Exception exception, string message = null, IntPtr? owner = null)
         {
             var text = string.Empty;
             if (!string.IsNullOrEmpty(message))
@@ -56,7 +56,7 @@ namespace Dialogs
             var builder = new TaskDialogBuilder()
                 .Initialize("Exception", text, TaskDialogStandardIcon.Error, "An unexpected application exception occurred")
                 .AddDetails("Show details", "Hide details", exception.StackTrace)
-                .SetOwner(GetOwnerHandle(showAsModal));
+                .SetOwner(GetOwnerHandle(owner));
 
             using (var dialog = builder.Build())
             {
@@ -64,12 +64,12 @@ namespace Dialogs
             }
         }
 
-        public bool ShowYesNoQuestion(string question, bool showAsModal = true)
+        public bool ShowYesNoQuestion(string question, IntPtr? owner = null)
         {
             var builder = new TaskDialogBuilder()
                 .Initialize("Question", question, TaskDialogStandardIcon.Information, "Question")
                 .SetButtons(TaskDialogStandardButtons.Yes, TaskDialogStandardButtons.No)
-                .SetOwner(GetOwnerHandle(showAsModal));
+                .SetOwner(GetOwnerHandle(owner));
 
             var result = false;
             using (var dialog = builder.Build())
@@ -153,9 +153,14 @@ namespace Dialogs
             return result;
         }
 
-        private IntPtr GetOwnerHandle(bool getActiveWindow)
+        private IntPtr GetOwnerHandle(IntPtr? owner)
         {
-            return getActiveWindow ? NativeMethods.GetActiveWindow() : IntPtr.Zero;
+            if (owner == null)
+                return NativeMethods.GetActiveWindow();
+            else if (owner.Value == IntPtr.Zero)
+                return IntPtr.Zero;
+            else
+                return owner.Value;
         }
     }
 }
