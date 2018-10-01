@@ -77,9 +77,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Services\AppSettings.cs" />
     <Compile Include="CrossApplication.cs" />
     <Compile Include="GlobalExceptionHandler.cs" />
     <Compile Include="CrossSetup.cs" />
+    <Compile Include="Services\IAppSettings.cs" />
     <Compile Include="Views\MainView.xaml.cs">
       <DependentUpon>MainView.xaml</DependentUpon>
     </Compile>

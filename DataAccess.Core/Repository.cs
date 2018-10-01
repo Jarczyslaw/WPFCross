@@ -10,7 +10,7 @@ namespace DataAccess.Core
         where T : class
     {
         public string CollectionName { get; protected set; }
-        private IDatabaseSource databaseSource;
+        protected IDatabaseSource databaseSource;
         
         public Repository(IDatabaseSource databaseSource)
         {
