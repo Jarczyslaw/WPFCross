@@ -13,37 +13,31 @@ namespace Dialogs
         public void ShowInfo(string message, IntPtr? owner = null)
         {
             var builder = new TaskDialogBuilder()
-                .Initialize(Resources.Resources.Information, message, TaskDialogStandardIcon.Information)
+                .Initialize(Resources.Resources.Information, message, TaskDialogStandardIcon.Information, Resources.Resources.Information)
                 .SetOwner(GetOwnerHandle(owner));
 
             using (var dialog = builder.Build())
-            {
                 dialog.Show();
-            }
         }
 
         public void ShowWarning(string message, IntPtr? owner = null)
         {
             var builder = new TaskDialogBuilder()
-                .Initialize(Resources.Resources.Warning, message, TaskDialogStandardIcon.Warning)
+                .Initialize(Resources.Resources.Warning, message, TaskDialogStandardIcon.Warning, Resources.Resources.Warning)
                 .SetOwner(GetOwnerHandle(owner));
 
             using (var dialog = builder.Build())
-            {
                 dialog.Show();
-            }
         }
 
         public void ShowError(string error, IntPtr? owner = null)
         {
             var builder = new TaskDialogBuilder()
-                .Initialize(Resources.Resources.Error, error, TaskDialogStandardIcon.Error)
+                .Initialize(Resources.Resources.Error, error, TaskDialogStandardIcon.Error, Resources.Resources.Error)
                 .SetOwner(GetOwnerHandle(owner));
 
             using (var dialog = builder.Build())
-            {
                 dialog.Show();
-            }
         }
 
         public void ShowException(string message, Exception exception, IntPtr? owner = null)
@@ -55,9 +49,7 @@ namespace Dialogs
                 .SetOwner(GetOwnerHandle(owner));
 
             using (var dialog = builder.Build())
-            {
                 dialog.Show();
-            }
         }
 
         public bool ShowYesNoQuestion(string question, IntPtr? owner = null)
@@ -69,9 +61,7 @@ namespace Dialogs
 
             var result = false;
             using (var dialog = builder.Build())
-            {
                 result = dialog.Show() == TaskDialogResult.Yes;
-            }
             return result;
         }
 
