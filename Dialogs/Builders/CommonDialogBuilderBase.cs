@@ -27,8 +27,15 @@ namespace Dialogs.Builders
             }
         }
 
+        protected void CheckDialogInstance()
+        {
+            if (dialog == null)
+                throw new Exception(Resources.Resources.InitializeException);
+        }
+
         public T Build()
         {
+            CheckDialogInstance();
             return dialog;
         }
     }

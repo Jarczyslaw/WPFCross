@@ -26,12 +26,16 @@ namespace Dialogs.Builders
 
         public TaskDialogBuilder SetOwner(IntPtr handle)
         {
+            CheckDialogInstance();
+
             dialog.OwnerWindowHandle = handle;
             return this;
         }
 
         public TaskDialogBuilder AddDetails(string collapsedLabel, string expandedLabel, string text, bool expanded = false)
         {
+            CheckDialogInstance();
+
             dialog.DetailsExpanded = expanded;
             dialog.DetailsCollapsedLabel = collapsedLabel;
             dialog.DetailsExpandedLabel = expandedLabel;
@@ -41,6 +45,8 @@ namespace Dialogs.Builders
 
         public TaskDialogBuilder AddFooter(string text, TaskDialogStandardIcon icon)
         {
+            CheckDialogInstance();
+
             dialog.FooterIcon = icon;
             dialog.FooterText = text;
             return this;
@@ -48,6 +54,8 @@ namespace Dialogs.Builders
 
         public TaskDialogBuilder AddFooterTextbox(string text, bool checkedState)
         {
+            CheckDialogInstance();
+
             dialog.FooterCheckBoxText = text;
             dialog.FooterCheckBoxChecked = checkedState;
             return this;
@@ -55,6 +63,8 @@ namespace Dialogs.Builders
 
         public TaskDialogBuilder SetButtons(params TaskDialogStandardButtons[] buttons)
         {
+            CheckDialogInstance();
+
             var buttonsSum = TaskDialogStandardButtons.None;
             foreach (var button in buttons)
                 buttonsSum |= button;
@@ -64,12 +74,16 @@ namespace Dialogs.Builders
 
         public TaskDialogBuilder SetDefaultButton(TaskDialogDefaultButton defaultButton)
         {
+            CheckDialogInstance();
+
             dialog.DefaultButton = defaultButton;
             return this;
         }
 
         public TaskDialogBuilder AddCustomButton(string name, string text, EventHandler handler, bool setAsDefault = false)
         {
+            CheckDialogInstance();
+
             var customButton = new TaskDialogButton(name, text);
             customButton.Click += handler;
             customButton.Default = setAsDefault;
@@ -79,6 +93,8 @@ namespace Dialogs.Builders
 
         public TaskDialogBuilder AddCommandLink(string name, string text, string instruction, EventHandler handler, bool setAsDefault = false)
         {
+            CheckDialogInstance();
+
             var commandLink = new TaskDialogCommandLink(name, text, instruction)
             {
                 Default = setAsDefault
@@ -90,6 +106,8 @@ namespace Dialogs.Builders
 
         public TaskDialogBuilder AddProgressbar(int minValue, int maxValue, TaskDialogProgressBarState state)
         {
+            CheckDialogInstance();
+
             var progressBar = new TaskDialogProgressBar(minValue, maxValue, minValue)
             {
                 State = state
@@ -98,8 +116,15 @@ namespace Dialogs.Builders
             return this;
         }
 
+        private void CheckDialogInstance()
+        {
+            if (dialog == null)
+                throw new Exception(Resources.Resources.InitializeException);
+        }
+
         public TaskDialog Build()
         {
+            CheckDialogInstance();
             return dialog;
         }
     }

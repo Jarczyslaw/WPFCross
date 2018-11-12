@@ -10,6 +10,7 @@ namespace Dialogs.Builders
             dialog = new CommonOpenFileDialog
             {
                 Title = title,
+                RestoreDirectory = true,
                 InitialDirectory = initialDirectory
             };
             return this;
@@ -17,6 +18,8 @@ namespace Dialogs.Builders
 
         public CommonOpenDialogBuilder SetAsFileDialog(bool multiselect)
         {
+            CheckDialogInstance();
+
             dialog.IsFolderPicker = false;
             dialog.EnsureFileExists = true;
             dialog.Multiselect = multiselect;
@@ -25,6 +28,8 @@ namespace Dialogs.Builders
 
         public CommonOpenDialogBuilder SetAsFolderDialog()
         {
+            CheckDialogInstance();
+
             dialog.IsFolderPicker = true;
             dialog.EnsurePathExists = true;
             dialog.Multiselect = false;
@@ -33,12 +38,16 @@ namespace Dialogs.Builders
 
         public new CommonOpenDialogBuilder AddFilter(DialogFilterPair filter)
         {
+            CheckDialogInstance();
+
             base.AddFilter(filter);
             return this;
         }
 
         public new CommonOpenDialogBuilder AddFilters(List<DialogFilterPair> filters)
         {
+            CheckDialogInstance();
+
             base.AddFilters(filters);
             return this;
         }

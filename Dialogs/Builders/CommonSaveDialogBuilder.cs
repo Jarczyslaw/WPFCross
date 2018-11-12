@@ -11,19 +11,22 @@ namespace Dialogs.Builders
     {
         public CommonSaveDialogBuilder Initialize(string title, string initialDirectory)
         {
-            var dialog = new CommonSaveFileDialog()
+            dialog = new CommonSaveFileDialog()
             {
                 Title = title,
-                InitialDirectory = initialDirectory,
                 IsExpandedMode = false,
                 EnsureValidNames = true,
                 AlwaysAppendDefaultExtension = true,
+                RestoreDirectory = true,
+                InitialDirectory = initialDirectory
             };
             return this;
         }
 
         public CommonSaveDialogBuilder SetDefaults(string defaultFileName, string defaultExtension)
         {
+            CheckDialogInstance();
+
             dialog.DefaultFileName = defaultFileName;
             dialog.DefaultExtension = defaultExtension;
             return this;
@@ -31,12 +34,16 @@ namespace Dialogs.Builders
 
         public new CommonSaveDialogBuilder AddFilter(DialogFilterPair filter)
         {
+            CheckDialogInstance();
+
             base.AddFilter(filter);
             return this;
         }
 
         public new CommonSaveDialogBuilder AddFilters(List<DialogFilterPair> filters)
         {
+            CheckDialogInstance();
+
             base.AddFilters(filters);
             return this;
         }

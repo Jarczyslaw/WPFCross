@@ -13,7 +13,7 @@ namespace Dialogs
         public void ShowInfo(string message, IntPtr? owner = null)
         {
             var builder = new TaskDialogBuilder()
-                .Initialize("Information", message, TaskDialogStandardIcon.Information)
+                .Initialize(Resources.Resources.Information, message, TaskDialogStandardIcon.Information)
                 .SetOwner(GetOwnerHandle(owner));
 
             using (var dialog = builder.Build())
@@ -25,7 +25,7 @@ namespace Dialogs
         public void ShowWarning(string message, IntPtr? owner = null)
         {
             var builder = new TaskDialogBuilder()
-                .Initialize("Warning", message, TaskDialogStandardIcon.Warning)
+                .Initialize(Resources.Resources.Warning, message, TaskDialogStandardIcon.Warning)
                 .SetOwner(GetOwnerHandle(owner));
 
             using (var dialog = builder.Build())
@@ -37,7 +37,7 @@ namespace Dialogs
         public void ShowError(string error, IntPtr? owner = null)
         {
             var builder = new TaskDialogBuilder()
-                .Initialize("Error", error, TaskDialogStandardIcon.Error)
+                .Initialize(Resources.Resources.Error, error, TaskDialogStandardIcon.Error)
                 .SetOwner(GetOwnerHandle(owner));
 
             using (var dialog = builder.Build())
@@ -46,16 +46,12 @@ namespace Dialogs
             }
         }
 
-        public void ShowException(Exception exception, string message = null, IntPtr? owner = null)
+        public void ShowException(string message, Exception exception, IntPtr? owner = null)
         {
-            var text = string.Empty;
-            if (!string.IsNullOrEmpty(message))
-                text += message + Environment.NewLine;
-            text += exception.Message;
-
+            var text = message + exception.Message;
             var builder = new TaskDialogBuilder()
-                .Initialize("Exception", text, TaskDialogStandardIcon.Error, "An unexpected application exception occurred")
-                .AddDetails("Show details", "Hide details", exception.StackTrace)
+                .Initialize(Resources.Resources.Exception, text, TaskDialogStandardIcon.Error, Resources.Resources.ExceptionOccured)
+                .AddDetails(Resources.Resources.ShowDetails, Resources.Resources.HideDetails, exception.StackTrace)
                 .SetOwner(GetOwnerHandle(owner));
 
             using (var dialog = builder.Build())
@@ -67,7 +63,7 @@ namespace Dialogs
         public bool ShowYesNoQuestion(string question, IntPtr? owner = null)
         {
             var builder = new TaskDialogBuilder()
-                .Initialize("Question", question, TaskDialogStandardIcon.Information, "Question")
+                .Initialize(Resources.Resources.Question, question, TaskDialogStandardIcon.Information, Resources.Resources.Question)
                 .SetButtons(TaskDialogStandardButtons.Yes, TaskDialogStandardButtons.No)
                 .SetOwner(GetOwnerHandle(owner));
 
@@ -79,15 +75,21 @@ namespace Dialogs
             return result;
         }
 
-        public void ShowProgressDialog(string caption, string text, string instruction)
+        public void ShowProgressDialog(string caption, string text, string instruction, IntPtr? owner = null)
         {
             var builder = new TaskDialogBuilder()
                 .Initialize(caption, text, TaskDialogStandardIcon.Information, instruction)
                 .SetButtons(TaskDialogStandardButtons.Cancel)
-                .AddProgressbar(0, 100, TaskDialogProgressBarState.Marquee);
+                .AddProgressbar(0, 100, TaskDialogProgressBarState.Marquee)
+                .SetOwner(GetOwnerHandle(owner));
 
             using (var dialog = builder.Build())
                 dialog.Show();
+        }
+
+        public string OpenFile(string title, string initialDirectory, DialogFilterPair filter)
+        {
+            return OpenFile(title, initialDirectory, new List<DialogFilterPair> { filter });
         }
 
         public string OpenFile(string title, string initialDirectory, List<DialogFilterPair> filters)
@@ -104,6 +106,11 @@ namespace Dialogs
                     result = dialog.FileName;
             }  
             return result;
+        }
+
+        public List<string> OpenFiles(string title, string initialDirectory, DialogFilterPair filter)
+        {
+            return OpenFiles(title, initialDirectory, new List<DialogFilterPair> { filter });
         }
 
         public List<string> OpenFiles(string title, string initialDirectory, List<DialogFilterPair> filters)

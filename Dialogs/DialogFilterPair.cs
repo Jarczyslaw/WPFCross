@@ -10,11 +10,5 @@ namespace Dialogs
     {
         public string DisplayName { get; set; }
         public string ExtensionsList { get; set; }
-
-        public DialogFilterPair(string displayName, string extensionsList)
-        {
-            DisplayName = displayName;
-            ExtensionsList = extensionsList;
-        }
     }
 }
