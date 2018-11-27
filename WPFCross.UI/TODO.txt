@@ -1,0 +1,5 @@
+﻿//dodać ikony do osobnego xamla
+dodać style kontrolek do osobnego xamla
+przerobić przyciski na przyciski z ikonami
+dorobić okno do edycji grup kontaktów
+pomyśleć o automapperze przy tworzeniu viewmodeli

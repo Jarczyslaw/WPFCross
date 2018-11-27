@@ -1,5 +1,5 @@
-﻿using Dialogs;
-using Logging;
+﻿using Service.Dialogs;
+using Service.Logger;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,10 +11,10 @@ namespace WPFCross.UI
 {
     public class GlobalExceptionHandler
     {
-        private ILoggingService loggingService;
+        private ILoggerService loggingService;
         private IDialogsService dialogService;
 
-        public GlobalExceptionHandler(ILoggingService loggingService, IDialogsService dialogService)
+        public GlobalExceptionHandler(ILoggerService loggingService, IDialogsService dialogService)
         {
             this.loggingService = loggingService;
             this.dialogService = dialogService;
@@ -33,9 +33,9 @@ namespace WPFCross.UI
 
         private void HandleException(string source, Exception exception)
         {
-            var message = "Fatal exception source: " + source;
+            var message = "Fatal exception source: " + source + ". Exception message";
             loggingService.Fatal(exception, message);
-            dialogService.ShowException(exception, message);
+            dialogService.ShowCriticalException(message, exception);
         }
     }
 }

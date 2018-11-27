@@ -5,15 +5,15 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Logging
+namespace Service.Logger
 {
-    public class LoggingService : ILoggingService
+    public class LoggerService : ILoggerService
     {
-        private Logger logger;
+        private ILogger logger;
 
-        private readonly string emptyMessage = "empty";
+        private readonly string noMessage = "No message provided";
 
-        public LoggingService()
+        public LoggerService()
         {
             logger = LogManager.GetCurrentClassLogger();
         }
@@ -25,12 +25,12 @@ namespace Logging
 
         public void Error(Exception exception)
         {
-            logger.Error(exception, emptyMessage);
+            logger.Error(exception, noMessage);
         }
 
-        public void Error(Exception exception, string message)
+        public void Error(Exception exception, string message, params object[] args)
         {
-            logger.Error(exception, message);
+            logger.Error(exception, message, args);
         }
 
         public void Error(string message, params object[] args)
@@ -40,12 +40,12 @@ namespace Logging
 
         public void Fatal(Exception exception)
         {
-            logger.Fatal(exception, emptyMessage);
+            logger.Fatal(exception, noMessage);
         }
 
-        public void Fatal(Exception exception, string message)
+        public void Fatal(Exception exception, string message, params object[] args)
         {
-            logger.Fatal(exception, message);
+            logger.Fatal(exception, message, args);
         }
 
         public void Fatal(string message, params object[] args)

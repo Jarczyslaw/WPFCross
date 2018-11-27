@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Dialogs
+namespace Service.Dialogs
 {
     public interface IDialogsService
     {
@@ -10,6 +10,7 @@ namespace Dialogs
         void ShowWarning(string message, IntPtr? owner = null);
         void ShowError(string error, IntPtr? owner = null);
         void ShowException(string message, Exception exception, IntPtr? owner = null);
+        void ShowCriticalException(string message, Exception exception, IntPtr? owner = null);
         bool ShowYesNoQuestion(string question, IntPtr? owner = null);
         void ShowProgressDialog(string caption, string text, string instruction, IntPtr? owner = null);
         string OpenFile(string title, string initialDirectory, DialogFilterPair filter);

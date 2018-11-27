@@ -12,15 +12,14 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace WPFCross.UI
+namespace WPFCross.UI.Views
 {
-    [MvxContentPresentation(WindowIdentifier = nameof(MainWindow), StackNavigation = false)]
-    public partial class MainView : MvxWpfView
+    [MvxWindowPresentation(Identifier = nameof(ContactView), Modal = true)]
+    public partial class ContactView : MvxWindow
     {
-        public MainView()
+        public ContactView()
         {
             InitializeComponent();
         }

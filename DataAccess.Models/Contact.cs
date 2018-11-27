@@ -9,6 +9,7 @@ namespace DataAccess.Models
     {
         public int ContactId { get; set; }
         public Group Group { get; set; }
+        public bool Favourite { get; set; }
         public string Name { get; set; }
         public string Title { get; set; }
         public List<ContactItem> Items { get; set; }

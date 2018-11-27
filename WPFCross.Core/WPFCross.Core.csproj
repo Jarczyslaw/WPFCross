@@ -6,14 +6,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MvvmCross" Version="6.2.0" />
+    <PackageReference Include="MvvmCross" Version="6.2.2" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\DataAccess.Core\DataAccess.Core.csproj" />
     <ProjectReference Include="..\DataAccess.Models\DataAccess.Models.csproj" />
-    <ProjectReference Include="..\Dialogs\Dialogs.csproj" />
-    <ProjectReference Include="..\Logging\Logging.csproj" />
+    <ProjectReference Include="..\Service.Dialogs\Service.Dialogs.csproj" />
+    <ProjectReference Include="..\Service.Logger\Service.Logger.csproj" />
+    <ProjectReference Include="..\WPFCross.Extensions\WPFCross.Extensions.csproj" />
   </ItemGroup>
 
 </Project>

@@ -4,9 +4,9 @@ using System.Linq;
 using System.Windows;
 using Microsoft.Win32;
 using Microsoft.WindowsAPICodePack.Dialogs;
-using Dialogs.Builders;
+using Service.Dialogs.Builders;
 
-namespace Dialogs
+namespace Service.Dialogs
 {
     public class DialogsService : IDialogsService
     { 
@@ -42,14 +42,12 @@ namespace Dialogs
 
         public void ShowException(string message, Exception exception, IntPtr? owner = null)
         {
-            var text = message + exception.Message;
-            var builder = new TaskDialogBuilder()
-                .Initialize(Resources.Resources.Exception, text, TaskDialogStandardIcon.Error, Resources.Resources.ExceptionOccured)
-                .AddDetails(Resources.Resources.ShowDetails, Resources.Resources.HideDetails, exception.StackTrace)
-                .SetOwner(GetOwnerHandle(owner));
+            ShowExceptionDialog(Resources.Resources.Exception, message, exception, owner);
+        }
 
-            using (var dialog = builder.Build())
-                dialog.Show();
+        public void ShowCriticalException(string message, Exception exception, IntPtr? owner = null)
+        {
+            ShowExceptionDialog(Resources.Resources.CriticalException, message, exception, owner);
         }
 
         public bool ShowYesNoQuestion(string question, IntPtr? owner = null)
@@ -148,6 +146,18 @@ namespace Dialogs
                     result = dialog.FileName;
             }
             return result;
+        }
+
+        private void ShowExceptionDialog(string caption, string message, Exception exception, IntPtr? owner)
+        {
+            var text = message + exception.Message;
+            var builder = new TaskDialogBuilder()
+                .Initialize(caption, text, TaskDialogStandardIcon.Error, Resources.Resources.ExceptionOccured)
+                .AddDetails(Resources.Resources.ShowDetails, Resources.Resources.HideDetails, exception.StackTrace)
+                .SetOwner(GetOwnerHandle(owner));
+
+            using (var dialog = builder.Build())
+                dialog.Show();
         }
 
         private IntPtr GetOwnerHandle(IntPtr? owner)

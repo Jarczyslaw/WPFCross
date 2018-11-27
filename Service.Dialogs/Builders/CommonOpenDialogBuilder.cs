@@ -1,7 +1,7 @@
 ﻿using Microsoft.WindowsAPICodePack.Dialogs;
 using System.Collections.Generic;
 
-namespace Dialogs.Builders
+namespace Service.Dialogs.Builders
 {
     public class CommonOpenDialogBuilder : CommonDialogBuilderBase<CommonOpenFileDialog>
     {

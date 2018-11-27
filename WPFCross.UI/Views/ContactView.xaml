@@ -1,0 +1,34 @@
+﻿<mvx:MvxWindow x:Class="WPFCross.UI.Views.ContactView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:mvx="clr-namespace:MvvmCross.Platforms.Wpf.Views;assembly=MvvmCross.Platforms.Wpf"
+        xmlns:controls="clr-namespace:WPFCross.UI.Controls"
+        mc:Ignorable="d"
+        Title="ContactView"
+        Width="350"
+        SizeToContent="Height"
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterScreen">
+    <Border Padding="{StaticResource DefaultPadding}">
+        <StackPanel>
+            <CheckBox Content="Favourite" />
+            <Label Content="Title" />
+            <TextBox />
+            <Label Content="Name" />
+            <TextBox />
+            <controls:GroupSelection DataContext="{Binding GroupSelection}" 
+                                     Width="200"
+                                     HorizontalAlignment="Left"
+                                     Margin="{StaticResource DefaultMargin}" />
+            <ListView Height="80">
+                
+            </ListView>
+            <StackPanel Orientation="Horizontal">
+                <Button Content="Save" />
+                <Button Content="Close" />
+            </StackPanel>
+        </StackPanel>
+    </Border>
+</mvx:MvxWindow>

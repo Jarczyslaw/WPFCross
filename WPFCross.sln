@@ -7,13 +7,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WPFCross.Core", "WPFCross.C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPFCross.UI", "WPFCross.UI\WPFCross.UI.csproj", "{E6247934-3818-4DE2-B1AD-4F575ABD8DFA}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Logging", "Logging\Logging.csproj", "{9D4E01D2-918A-4496-A724-AD6DFF79F7CA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Service.Logger", "Service.Logger\Service.Logger.csproj", "{9D4E01D2-918A-4496-A724-AD6DFF79F7CA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dialogs", "Dialogs\Dialogs.csproj", "{7519097D-59FF-4717-A043-C083A7AA9A5D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Service.Dialogs", "Service.Dialogs\Service.Dialogs.csproj", "{7519097D-59FF-4717-A043-C083A7AA9A5D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccess.Models", "DataAccess.Models\DataAccess.Models.csproj", "{B4D1FB8D-91DF-4FFD-90FF-FE6CE89E705A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAccess.Models", "DataAccess.Models\DataAccess.Models.csproj", "{B4D1FB8D-91DF-4FFD-90FF-FE6CE89E705A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccess.Core", "DataAccess.Core\DataAccess.Core.csproj", "{B17A9095-29F5-4141-8EBA-00887E3029EA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAccess.Core", "DataAccess.Core\DataAccess.Core.csproj", "{B17A9095-29F5-4141-8EBA-00887E3029EA}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WPFCross.Extensions", "WPFCross.Extensions\WPFCross.Extensions.csproj", "{90C7018F-3A51-4B32-9428-C88695BC96B0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{B17A9095-29F5-4141-8EBA-00887E3029EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B17A9095-29F5-4141-8EBA-00887E3029EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B17A9095-29F5-4141-8EBA-00887E3029EA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{90C7018F-3A51-4B32-9428-C88695BC96B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{90C7018F-3A51-4B32-9428-C88695BC96B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{90C7018F-3A51-4B32-9428-C88695BC96B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{90C7018F-3A51-4B32-9428-C88695BC96B0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

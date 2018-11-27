@@ -1,52 +1,95 @@
-﻿using Dialogs;
-using Logging;
+﻿using Service.Dialogs;
+using Service.Logger;
+using MvvmCross;
 using MvvmCross.Commands;
+using MvvmCross.Navigation;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using WPFCross.Extensions;
 
 namespace WPFCross.Core.ViewModels
 {
     public class MainViewModel : ViewModelBase
     {
-        public string Test { get; set; } = "Test Test Test";
-
-        private IMvxCommand testCommand;
-        public IMvxCommand TestCommand
+        private bool showFavourites;
+        public bool ShowFavourites
         {
-            get
-            {
-                if (testCommand == null)
-                    testCommand = new MvxCommand(() =>
-                    {
-                        //loggingService.Debug("Test command Test command Test command Test command Test command Test command");
-                        throw new Exception("Exception message");
-                    });
-                return testCommand;
-            }
+            get => showFavourites;
+            set => SetProperty(ref showFavourites, value);
         }
 
-        private IMvxCommand dialogsCommand;
-        public IMvxCommand DialogsCommand
+        private ContactViewModel selectedContact;
+        public ContactViewModel SelectedContact
         {
-            get
-            {
-                if (dialogsCommand == null)
-                    dialogsCommand = new MvxCommand(() =>
-                    {
-                        //dialogsService.ShowInfo("asd");
-                        dialogsService.ShowInfo("test msg");
-                    });
-                return dialogsCommand;
-            }
+            get => selectedContact;
+            set => SetProperty(ref selectedContact, value);
         }
 
-        private ILoggingService loggingService;
-        private IDialogsService dialogsService;
+        public ObservableCollection<ContactViewModel> Contacts { get; private set; }
 
-        public MainViewModel(ILoggingService loggingService, IDialogsService dialogsService)
+        public GroupSelectionViewModel GroupSelection { get; private set; }
+
+        public IMvxCommand AddNewContactCommand { get; private set; }
+        public IMvxCommand EditContactCommand { get; private set; }
+        public IMvxCommand DeleteContactCommand { get; private set; }
+
+        private readonly IMvxNavigationService navigationService;
+        private readonly ILoggerService loggingService;
+        private readonly IDialogsService dialogsService;
+        
+        public MainViewModel(IMvxNavigationService navigationService, ILoggerService loggingService, IDialogsService dialogsService)
         {
+            this.navigationService = navigationService;
             this.loggingService = loggingService;
             this.dialogsService = dialogsService;
+
+            AddNewContactCommand = new MvxCommand(AddNewContact);
+            EditContactCommand = new MvxCommand(EditContact);
+            DeleteContactCommand = new MvxCommand(DeleteContact);
+
+            GroupSelection = Mvx.IoCProvider.RegisterTypeAndResolve<GroupSelectionViewModel>();
+            GroupSelection.OnGroupSelected += GroupSelection_OnGroupSelected;
+
+            Contacts = new ObservableCollection<ContactViewModel>
+            {
+                new ContactViewModel() { Title = "Jarek" },
+                new ContactViewModel() { Title = "Tomek" },
+                new ContactViewModel() { Title = "Romek" },
+                new ContactViewModel() { Title = "Tymek" },
+                new ContactViewModel() { Title = "Zenek" },
+                new ContactViewModel() { Title = "Jarek" },
+                new ContactViewModel() { Title = "Tomek" },
+                new ContactViewModel() { Title = "Romek" },
+                new ContactViewModel() { Title = "Tymek" },
+                new ContactViewModel() { Title = "Zenek" },
+                new ContactViewModel() { Title = "Jarek" },
+                new ContactViewModel() { Title = "Tomek" },
+                new ContactViewModel() { Title = "Romek" },
+                new ContactViewModel() { Title = "Tymek" },
+                new ContactViewModel() { Title = "Zenek" },
+                new ContactViewModel() { Title = "Witek" }
+            };
+        }
+
+        private void GroupSelection_OnGroupSelected(GroupItemViewModel groupItem)
+        {
+            dialogsService.ShowInfo(groupItem.Name);
+        }
+
+        private void AddNewContact()
+        {
+            navigationService.Navigate<ContactViewModel>();
+        }
+
+        private void EditContact()
+        {
+            loggingService.Debug("TEST");
+        }
+
+        private void DeleteContact()
+        {
+            throw new Exception("asd");
         }
     }
 }

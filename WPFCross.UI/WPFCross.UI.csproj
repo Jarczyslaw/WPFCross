@@ -38,19 +38,19 @@
     <ApplicationIcon>jt_icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="MvvmCross, Version=6.2.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\MvvmCross.6.2.0\lib\net461\MvvmCross.dll</HintPath>
+    <Reference Include="MvvmCross, Version=6.2.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MvvmCross.6.2.2\lib\net461\MvvmCross.dll</HintPath>
     </Reference>
-    <Reference Include="MvvmCross.Platforms.Wpf, Version=6.2.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\MvvmCross.Platforms.Wpf.6.2.0\lib\net461\MvvmCross.Platforms.Wpf.dll</HintPath>
+    <Reference Include="MvvmCross.Platforms.Wpf, Version=6.2.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MvvmCross.Platforms.Wpf.6.2.2\lib\net461\MvvmCross.Platforms.Wpf.dll</HintPath>
     </Reference>
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <HintPath>..\packages\NLog.4.5.10\lib\net45\NLog.dll</HintPath>
+      <HintPath>..\packages\NLog.4.5.11\lib\net45\NLog.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
-    <Reference Include="System.Console, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Console.4.3.0\lib\net46\System.Console.dll</HintPath>
+    <Reference Include="System.Console, Version=4.0.1.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Console.4.3.1\lib\net46\System.Console.dll</HintPath>
       <Private>True</Private>
       <Private>True</Private>
     </Reference>
@@ -77,14 +77,27 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Controls\GroupSelection.xaml.cs">
+      <DependentUpon>GroupSelection.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Services\AppSettings.cs" />
     <Compile Include="CrossApplication.cs" />
     <Compile Include="GlobalExceptionHandler.cs" />
     <Compile Include="CrossSetup.cs" />
     <Compile Include="Services\IAppSettings.cs" />
+    <Compile Include="Views\ContactView.xaml.cs">
+      <DependentUpon>ContactView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\GroupsView.xaml.cs">
+      <DependentUpon>GroupsView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\MainView.xaml.cs">
       <DependentUpon>MainView.xaml</DependentUpon>
     </Compile>
+    <Page Include="Controls\GroupSelection.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -97,6 +110,26 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Resources\Fonts.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\Icons.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\Styles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ContactView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\GroupsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\MainView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -120,6 +153,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <Resource Include="Resources\Lato-Regular.ttf" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -130,22 +164,36 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DataAccess.Core\DataAccess.Core.csproj">
+      <Project>{b17a9095-29f5-4141-8eba-00887e3029ea}</Project>
+      <Name>DataAccess.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DataAccess.Models\DataAccess.Models.csproj">
+      <Project>{b4d1fb8d-91df-4ffd-90ff-fe6ce89e705a}</Project>
+      <Name>DataAccess.Models</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Service.Dialogs\Service.Dialogs.csproj">
+      <Project>{7519097d-59ff-4717-a043-c083a7aa9a5d}</Project>
+      <Name>Service.Dialogs</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Service.Logger\Service.Logger.csproj">
+      <Project>{9d4e01d2-918a-4496-a724-ad6dff79f7ca}</Project>
+      <Name>Service.Logger</Name>
+    </ProjectReference>
     <ProjectReference Include="..\WPFCross.Core\WPFCross.Core.csproj">
       <Project>{aab9db0f-6e0e-41b0-89bb-8783027c8db2}</Project>
       <Name>WPFCross.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Dialogs\Dialogs.csproj">
-      <Project>{7519097d-59ff-4717-a043-c083a7aa9a5d}</Project>
-      <Name>Dialogs</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Logging\Logging.csproj">
-      <Project>{9d4e01d2-918a-4496-a724-ad6dff79f7ca}</Project>
-      <Name>Logging</Name>
+    <ProjectReference Include="..\WPFCross.Extensions\WPFCross.Extensions.csproj">
+      <Project>{90c7018f-3a51-4b32-9428-c88695bc96b0}</Project>
+      <Name>WPFCross.Extensions</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Resource Include="jt_icon.ico" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="TODO.txt" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

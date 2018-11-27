@@ -1,0 +1,28 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:WPFCross.UI.Resources">
+
+    <Style TargetType="Rectangle" x:Key="BaseRectangleIconStyle">
+        <Setter Property="Width" Value="25" />
+        <Setter Property="Height" Value="25" />
+        <Setter Property="Fill" Value="Black" />
+        <Setter Property="Stretch" Value="UniformToFill" />
+    </Style>
+
+    <Style TargetType="Rectangle" BasedOn="{StaticResource BaseRectangleIconStyle}" x:Key="RectangleGroupIconStyle">
+        <Setter Property="OpacityMask" Value="{StaticResource GroupVisualBrush}" />
+    </Style>
+
+    <Style TargetType="Rectangle" BasedOn="{StaticResource BaseRectangleIconStyle}" x:Key="RectangleSettingsIconStyle">
+        <Setter Property="OpacityMask" Value="{StaticResource SettingsVisualBrush}" />
+    </Style>
+
+    <Style TargetType="Rectangle" BasedOn="{StaticResource BaseRectangleIconStyle}" x:Key="RectangleStarIconStyle">
+        <Setter Property="OpacityMask" Value="{StaticResource StarVisualBrush}" />
+    </Style>
+
+    <Style TargetType="Rectangle" BasedOn="{StaticResource BaseRectangleIconStyle}" x:Key="RectangleEditIconStyle">
+        <Setter Property="OpacityMask" Value="{StaticResource EditVisualBrush}" />
+    </Style>
+
+</ResourceDictionary>

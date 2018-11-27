@@ -1,6 +1,6 @@
 ﻿using WPFCross.Core.ViewModels;
-using Dialogs;
-using Logging;
+using Service.Dialogs;
+using Service.Logger;
 using MvvmCross;
 using MvvmCross.ViewModels;
 using System;
@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using WPFCross.UI.Services;
 using DataAccess.Core;
 using DataAccess.Core.Collections;
+using WPFCross.Extensions;
 
 namespace WPFCross.UI
 {
@@ -25,8 +26,8 @@ namespace WPFCross.UI
         private void RegisterDependencies()
         {
             Mvx.IoCProvider.RegisterSingleton<IAppSettings>(() => new AppSettings());
-            Mvx.IoCProvider.RegisterSingleton<ILoggingService>(() => new LoggingService());
-            Mvx.IoCProvider.RegisterType<IDialogsService, DialogsService>();
+            Mvx.IoCProvider.RegisterSingleton<ILoggerService>(() => new LoggerService());
+            Mvx.IoCProvider.RegisterSingleton<IDialogsService>(() => new DialogsService());
             RegisterDbDependencies();
         }
 

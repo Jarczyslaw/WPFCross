@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Dialogs.Builders
+namespace Service.Dialogs.Builders
 {
     public class CommonDialogBuilderBase<T>
         where T : CommonFileDialog
