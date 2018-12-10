@@ -10,8 +10,8 @@ using System.Text;
 using System.Threading.Tasks;
 using WPFCross.UI.Services;
 using DataAccess.Core;
-using DataAccess.Core.Collections;
 using WPFCross.Extensions;
+using WPFCross.UI.GlobalExceptions;
 
 namespace WPFCross.UI
 {
@@ -28,14 +28,15 @@ namespace WPFCross.UI
             Mvx.IoCProvider.RegisterSingleton<IAppSettings>(() => new AppSettings());
             Mvx.IoCProvider.RegisterSingleton<ILoggerService>(() => new LoggerService());
             Mvx.IoCProvider.RegisterSingleton<IDialogsService>(() => new DialogsService());
-            RegisterDbDependencies();
+            Mvx.IoCProvider.RegisterSingleton<IDbDataAccess>(() => new DbDataAccessMock());
+            RegisterGlobalHandler();
         }
 
-        private void RegisterDbDependencies()
+        private void RegisterGlobalHandler()
         {
-            var appSettings = Mvx.IoCProvider.Resolve<IAppSettings>();
-            Mvx.IoCProvider.RegisterType<IDatabaseSource>(() => new DatabaseSource(appSettings.LiteDbConnectionString.ConnectionString));
-            Mvx.IoCProvider.RegisterType<IContacts, Contacts>();
+            var dialogs = Mvx.IoCProvider.Resolve<IDialogsService>();
+            var logger = Mvx.IoCProvider.Resolve<ILoggerService>();
+            Mvx.IoCProvider.RegisterSingleton<IGlobalExceptionHandler>(() => new GlobalExceptionHandler(logger, dialogs));
         }
     }
 }

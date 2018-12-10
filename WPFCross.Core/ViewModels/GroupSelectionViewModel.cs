@@ -1,9 +1,11 @@
-﻿using MvvmCross.Commands;
+﻿using DataAccess.Core;
+using MvvmCross.Commands;
 using MvvmCross.Navigation;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
+using System.Linq;
 
 namespace WPFCross.Core.ViewModels
 {
@@ -31,20 +33,21 @@ namespace WPFCross.Core.ViewModels
 
         public IMvxCommand EditGroupsCommand { get; private set; }
 
-        private IMvxNavigationService navigationService;
+        private readonly IMvxNavigationService navigationService;
+        private readonly IDbDataAccess dbDataAccess;
 
-        public GroupSelectionViewModel(IMvxNavigationService navigationService)
+        public GroupSelectionViewModel(IMvxNavigationService navigationService, IDbDataAccess dbDataAccess)
         {
             this.navigationService = navigationService;
+            this.dbDataAccess = dbDataAccess;
 
             EditGroupsCommand = new MvxCommand(EditGroups);
 
-            Groups = new ObservableCollection<GroupItemViewModel>
-            {
-                new GroupItemViewModel { Name = "Group 1" },
-                new GroupItemViewModel { Name = "Group 2" },
-                new GroupItemViewModel { Name = "Group 3" }
-            };
+            Groups = new ObservableCollection<GroupItemViewModel>(
+                dbDataAccess.GetGroups().Select(g => new GroupItemViewModel
+                {
+                    Name = g.Name
+                }));
         }
 
         private void EditGroups()

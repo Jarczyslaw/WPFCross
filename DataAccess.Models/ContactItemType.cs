@@ -4,9 +4,10 @@ using System.Text;
 
 namespace DataAccess.Models
 {
-    public class ContactItemType
+    public enum ContactItemType
     {
-        public int ContactItemTypeId { get; set; }
-        public string Title { get; set; }
+        Phone,
+        Email,
+        Website
     }
 }

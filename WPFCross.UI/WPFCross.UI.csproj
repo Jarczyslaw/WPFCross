@@ -80,9 +80,11 @@
     <Compile Include="Controls\GroupSelection.xaml.cs">
       <DependentUpon>GroupSelection.xaml</DependentUpon>
     </Compile>
+    <Compile Include="GlobalExceptions\GlobalExceptionHandler.cs" />
+    <Compile Include="GlobalExceptions\IGlobalExceptionHandler.cs" />
     <Compile Include="Services\AppSettings.cs" />
     <Compile Include="CrossApplication.cs" />
-    <Compile Include="GlobalExceptionHandler.cs" />
+    <Compile Include="GlobalExceptions\GlobalExceptionObserver.cs" />
     <Compile Include="CrossSetup.cs" />
     <Compile Include="Services\IAppSettings.cs" />
     <Compile Include="Views\ContactView.xaml.cs">

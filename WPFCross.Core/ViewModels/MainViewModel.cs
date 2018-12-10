@@ -7,6 +7,8 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using WPFCross.Extensions;
+using DataAccess.Core;
+using System.Linq;
 
 namespace WPFCross.Core.ViewModels
 {
@@ -37,12 +39,15 @@ namespace WPFCross.Core.ViewModels
         private readonly IMvxNavigationService navigationService;
         private readonly ILoggerService loggingService;
         private readonly IDialogsService dialogsService;
-        
-        public MainViewModel(IMvxNavigationService navigationService, ILoggerService loggingService, IDialogsService dialogsService)
+        private readonly IDbDataAccess dbDataAccess;
+
+        public MainViewModel(IMvxNavigationService navigationService, ILoggerService loggingService, 
+            IDialogsService dialogsService, IDbDataAccess dbDataAccess)
         {
             this.navigationService = navigationService;
             this.loggingService = loggingService;
             this.dialogsService = dialogsService;
+            this.dbDataAccess = dbDataAccess;
 
             AddNewContactCommand = new MvxCommand(AddNewContact);
             EditContactCommand = new MvxCommand(EditContact);
@@ -51,25 +56,11 @@ namespace WPFCross.Core.ViewModels
             GroupSelection = Mvx.IoCProvider.RegisterTypeAndResolve<GroupSelectionViewModel>();
             GroupSelection.OnGroupSelected += GroupSelection_OnGroupSelected;
 
-            Contacts = new ObservableCollection<ContactViewModel>
-            {
-                new ContactViewModel() { Title = "Jarek" },
-                new ContactViewModel() { Title = "Tomek" },
-                new ContactViewModel() { Title = "Romek" },
-                new ContactViewModel() { Title = "Tymek" },
-                new ContactViewModel() { Title = "Zenek" },
-                new ContactViewModel() { Title = "Jarek" },
-                new ContactViewModel() { Title = "Tomek" },
-                new ContactViewModel() { Title = "Romek" },
-                new ContactViewModel() { Title = "Tymek" },
-                new ContactViewModel() { Title = "Zenek" },
-                new ContactViewModel() { Title = "Jarek" },
-                new ContactViewModel() { Title = "Tomek" },
-                new ContactViewModel() { Title = "Romek" },
-                new ContactViewModel() { Title = "Tymek" },
-                new ContactViewModel() { Title = "Zenek" },
-                new ContactViewModel() { Title = "Witek" }
-            };
+            Contacts = new ObservableCollection<ContactViewModel>(
+                dbDataAccess.GetContacts(null, false).Select(c => new ContactViewModel
+                {
+                    Title = c.Title
+                }));
         }
 
         private void GroupSelection_OnGroupSelected(GroupItemViewModel groupItem)

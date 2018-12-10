@@ -13,12 +13,13 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
 using WPFCross.Extensions;
+using WPFCross.UI.GlobalExceptions;
 
 namespace WPFCross.UI
 {
     public partial class App : MvxApplication
     {
-        private GlobalExceptionHandler globalExceptionHandler;
+        private GlobalExceptionObserver globalExceptionObserver;
 
         protected override void RegisterSetup()
         {
@@ -34,7 +35,7 @@ namespace WPFCross.UI
         public override void ApplicationInitialized()
         {
             base.ApplicationInitialized();
-            globalExceptionHandler = Mvx.IoCProvider.RegisterTypeAndResolve<GlobalExceptionHandler>();
+            globalExceptionObserver = Mvx.IoCProvider.RegisterTypeAndResolve<GlobalExceptionObserver>();
         }
     }
 }
