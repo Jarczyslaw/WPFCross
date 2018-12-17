@@ -4,15 +4,14 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:mvx="clr-namespace:MvvmCross.Platforms.Wpf.Views;assembly=MvvmCross.Platforms.Wpf"
-             xmlns:controls="clr-namespace:WPFCross.UI.Controls"
-             mc:Ignorable="d" 
              xmlns:core="clr-namespace:System;assembly=mscorlib"
+             mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
 
     <mvx:MvxWpfView.Resources>
         <DataTemplate x:Key="ContactItemTemplate">
             <DataTemplate.Resources>
-                <core:Double x:Key="TokenSize">40</core:Double>
+                <core:Double x:Key="TokenSize">30</core:Double>
                 <CornerRadius x:Key="TokerRadius"
                               TopLeft="{StaticResource TokenSize}"
                               TopRight="{StaticResource TokenSize}"
@@ -26,24 +25,25 @@
                 </Grid.ColumnDefinitions>
 
                 <Border Grid.Column="0"
-                        Margin="{StaticResource DefaultMargin}"
+                        Margin="3"
                         CornerRadius="{StaticResource TokerRadius}"
                         Width="{StaticResource TokenSize}"
                         Height="{StaticResource TokenSize}"
                         Background="LightGray"
                         BorderBrush="DarkGray"
                         BorderThickness="1">
-                    <TextBlock HorizontalAlignment="Center" 
-                               VerticalAlignment="Center">R</TextBlock>
+                    <TextBlock Text="{Binding Initials}" 
+                            HorizontalAlignment="Center" 
+                               VerticalAlignment="Center" />
                 </Border>
                 <TextBlock Text="{Binding Title}"
                            Grid.Column="1" 
                            VerticalAlignment="Center"
-                           Padding="{StaticResource DefaultMargin}" />
+                           Padding="3" />
             </Grid>
         </DataTemplate>
     </mvx:MvxWpfView.Resources>
-
+    
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -51,26 +51,14 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <Grid Grid.Row="0">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-
-            <Button Grid.Column="0" 
-                    Command="{Binding AddNewContactCommand}"
-                    Margin="{StaticResource DefaultMargin}" 
+        <UniformGrid Columns="3">
+            <Button Command="{Binding AddNewCommand}"
                     Content="Add new" />
-            <Button Grid.Column="1" 
-                    Command="{Binding EditContactCommand}"
-                    Margin="{StaticResource DefaultMargin}" 
+            <Button Command="{Binding EditCommand}"
                     Content="Edit" />
-            <Button Grid.Column="2" 
-                    Command="{Binding DeleteContactCommand}"
-                    Margin="{StaticResource DefaultMargin}" 
+            <Button Command="{Binding DeleteCommand}"
                     Content="Delete" />
-        </Grid>
+        </UniformGrid>
 
         <ListView Grid.Row="1" 
                 ItemsSource="{Binding Contacts}" 
@@ -78,23 +66,28 @@
                 ItemTemplate="{StaticResource ContactItemTemplate}" 
                 Background="Transparent"
                 BorderThickness="0" />
-        
-        <Border Grid.Row="2" 
-                Padding="{StaticResource DefaultMargin}">
-            <Grid>
-                <StackPanel Orientation="Horizontal">
-                    <CheckBox VerticalAlignment="Center"
-                          HorizontalAlignment="Left" 
-                          Content="Favourites"
-                          IsChecked="{Binding ShowFavourites}" />
-                    <Rectangle Style="{StaticResource RectangleStarIconStyle}"
-                               Margin="5 0 0 0" />
-                </StackPanel>
-                <controls:GroupSelection DataContext="{Binding GroupSelection}"
-                                         Width="200" 
-                                         HorizontalAlignment="Right" />
-            </Grid>
-            
-        </Border>
+
+        <Grid Grid.Row="2" 
+              Margin="3">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <CheckBox Content="Favourites"
+                      IsChecked="{Binding Favourites}"
+                      VerticalAlignment="Center" />
+            <ComboBox Grid.Column="2"
+                      Width="120"
+                      ItemsSource="{Binding Groups}"
+                      SelectedItem="{Binding SelectedGroup}"
+                      DisplayMemberPath="Name" />
+            <Button Grid.Column="3" 
+                    Content="..."
+                    Width="30"
+                    Command="{Binding EditGroupsCommand}" />
+        </Grid>
     </Grid>
 </mvx:MvxWpfView>

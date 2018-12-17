@@ -29,14 +29,6 @@ namespace WPFCross.UI
             Mvx.IoCProvider.RegisterSingleton<ILoggerService>(() => new LoggerService());
             Mvx.IoCProvider.RegisterSingleton<IDialogsService>(() => new DialogsService());
             Mvx.IoCProvider.RegisterSingleton<IDbDataAccess>(() => new DbDataAccessMock());
-            RegisterGlobalHandler();
-        }
-
-        private void RegisterGlobalHandler()
-        {
-            var dialogs = Mvx.IoCProvider.Resolve<IDialogsService>();
-            var logger = Mvx.IoCProvider.Resolve<ILoggerService>();
-            Mvx.IoCProvider.RegisterSingleton<IGlobalExceptionHandler>(() => new GlobalExceptionHandler(logger, dialogs));
         }
     }
 }

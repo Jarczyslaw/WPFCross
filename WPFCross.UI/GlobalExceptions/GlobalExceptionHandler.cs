@@ -5,25 +5,25 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace WPFCross.UI.GlobalExceptions
 {
-    public class GlobalExceptionHandler : IGlobalExceptionHandler
+    public abstract class GlobalExceptionHandler
     {
-        private ILoggerService loggingService;
-        private IDialogsService dialogService;
+        public abstract bool HandleException(string source, Exception exception);
 
-        public GlobalExceptionHandler(ILoggerService loggingService, IDialogsService dialogService)
+        public GlobalExceptionHandler()
         {
-            this.loggingService = loggingService;
-            this.dialogService = dialogService;
-        }
-
-        public void HandleException(string source, Exception exception)
-        {
-            var message = "Fatal exception source: " + source + ". Exception message: ";
-            loggingService.Fatal(exception, message);
-            dialogService.ShowCriticalException(message, exception);
+            AppDomain.CurrentDomain.UnhandledException += 
+                (s, e) => HandleException("AppDomain.CurrentDomain.UnhandledException", (Exception)e.ExceptionObject);
+            Application.Current.DispatcherUnhandledException += 
+                (s, e) =>
+                {
+                    e.Handled = HandleException("Application.Current.DispatcherUnhandledException", e.Exception);
+                };
+            TaskScheduler.UnobservedTaskException += 
+                (s, e) => HandleException("TaskScheduler.UnobservedTaskException", e.Exception);
         }
     }
 }

@@ -6,15 +6,16 @@
     
     <mvx:MvxApplication.Resources>
         <ResourceDictionary>
+
+            <core:Double x:Key="MainWindowHeight">700</core:Double>
+            <core:Double x:Key="MainWindowWidth">400</core:Double>
+
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/Resources/Icons.xaml" />
                 <ResourceDictionary Source="/Resources/Styles.xaml" />
                 <ResourceDictionary Source="/Resources/Fonts.xaml" />
             </ResourceDictionary.MergedDictionaries>
-            <core:Double x:Key="MainWindowHeight">500</core:Double>
-            <core:Double x:Key="MainWindowWidth">400</core:Double>
-            <Thickness x:Key="DefaultMargin">5</Thickness>
-            <Thickness x:Key="DefaultPadding">5</Thickness>
+            
         </ResourceDictionary>
     </mvx:MvxApplication.Resources>
     

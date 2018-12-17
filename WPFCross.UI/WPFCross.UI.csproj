@@ -77,14 +77,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Controls\GroupSelection.xaml.cs">
-      <DependentUpon>GroupSelection.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="GlobalExceptions\GlobalExceptionHandler.cs" />
-    <Compile Include="GlobalExceptions\IGlobalExceptionHandler.cs" />
+    <Compile Include="GlobalExceptions\AppGlobalExceptionHandler.cs" />
     <Compile Include="Services\AppSettings.cs" />
     <Compile Include="CrossApplication.cs" />
-    <Compile Include="GlobalExceptions\GlobalExceptionObserver.cs" />
+    <Compile Include="GlobalExceptions\GlobalExceptionHandler.cs" />
     <Compile Include="CrossSetup.cs" />
     <Compile Include="Services\IAppSettings.cs" />
     <Compile Include="Views\ContactView.xaml.cs">
@@ -96,10 +92,6 @@
     <Compile Include="Views\MainView.xaml.cs">
       <DependentUpon>MainView.xaml</DependentUpon>
     </Compile>
-    <Page Include="Controls\GroupSelection.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -193,9 +185,6 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="jt_icon.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="TODO.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

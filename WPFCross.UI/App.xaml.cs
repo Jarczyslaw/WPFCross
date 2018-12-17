@@ -19,7 +19,7 @@ namespace WPFCross.UI
 {
     public partial class App : MvxApplication
     {
-        private GlobalExceptionObserver globalExceptionObserver;
+        private AppGlobalExceptionHandler globalExceptionHandler;
 
         protected override void RegisterSetup()
         {
@@ -35,7 +35,7 @@ namespace WPFCross.UI
         public override void ApplicationInitialized()
         {
             base.ApplicationInitialized();
-            globalExceptionObserver = Mvx.IoCProvider.RegisterTypeAndResolve<GlobalExceptionObserver>();
+            globalExceptionHandler = Mvx.IoCProvider.RegisterTypeAndResolve<AppGlobalExceptionHandler>();
         }
     }
 }

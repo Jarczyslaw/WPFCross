@@ -10,30 +10,21 @@
         SizeToContent="Height"
         ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen">
-    <Border Padding="{StaticResource DefaultPadding}">
-        <StackPanel>
-            <Label Content="Group:" />
-            <ComboBox />
-            <Label Content="Group name:" />
-            <TextBox />
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
 
-                <Button Grid.Column="0"
-                        Content="Add new"
-                        Margin="{StaticResource DefaultMargin}" />
-                <Button Grid.Column="1"
-                        Content="Edit"
-                        Margin="{StaticResource DefaultMargin}" />
-                <Button Grid.Column="2"
-                        Content="Delete"
-                        Margin="{StaticResource DefaultMargin}" />
-            </Grid>
-
-        </StackPanel>
-    </Border>
+    <StackPanel Margin="3">
+        <Label Content="Group:" />
+        <ComboBox ItemsSource="{Binding Groups}"
+                  SelectedItem="{Binding SelectedGroup}"
+                  DisplayMemberPath="Title" />
+        <Label Content="Group name:" />
+        <TextBox />
+        <UniformGrid Columns="3">
+            <Button Content="Add new"
+                    Command="{Binding AddNewCommand}" />
+            <Button Content="Edit"
+                    Command="{Binding EditCommand}" />
+            <Button Content="Delete"
+                    Command="{Binding DeleteCommand}" />
+        </UniformGrid>
+    </StackPanel>
 </mvx:MvxWindow>

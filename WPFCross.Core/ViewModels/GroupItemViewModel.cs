@@ -4,7 +4,7 @@ using System.Text;
 
 namespace WPFCross.Core.ViewModels
 {
-    public class GroupItemViewModel : ViewModelBase
+    public class GroupItemViewModel
     {
         public string Name { get; set; }
     }

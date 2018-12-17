@@ -4,31 +4,42 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:mvx="clr-namespace:MvvmCross.Platforms.Wpf.Views;assembly=MvvmCross.Platforms.Wpf"
-        xmlns:controls="clr-namespace:WPFCross.UI.Controls"
         mc:Ignorable="d"
         Title="ContactView"
         Width="350"
         SizeToContent="Height"
         ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen">
-    <Border Padding="{StaticResource DefaultPadding}">
-        <StackPanel>
-            <CheckBox Content="Favourite" />
-            <Label Content="Title" />
-            <TextBox />
-            <Label Content="Name" />
-            <TextBox />
-            <controls:GroupSelection DataContext="{Binding GroupSelection}" 
+    
+    <StackPanel Margin="3">
+        <CheckBox Content="Favourite" />
+        <Label Content="Title:" />
+        <TextBox />
+        <Label Content="Name:" />
+        <TextBox />
+        <!--<controls:GroupSelection DataContext="{Binding GroupSelection}" 
                                      Width="200"
                                      HorizontalAlignment="Left"
-                                     Margin="{StaticResource DefaultMargin}" />
-            <ListView Height="80">
-                
-            </ListView>
-            <StackPanel Orientation="Horizontal">
-                <Button Content="Save" />
-                <Button Content="Close" />
-            </StackPanel>
+                                     Margin="3" />-->
+       
+        <StackPanel Orientation="Horizontal">
+            <ComboBox Width="150"
+                      ItemsSource="{Binding Groups}"
+                      SelectedItem="{Binding SelectedGroup}" />
+            <Button Content="..."
+                    Width="30"
+                    Command="{Binding EditGroupsCommand}" />
         </StackPanel>
-    </Border>
+
+        <ListView Height="80">
+
+        </ListView>
+
+        <UniformGrid Columns="2">
+            <Button Content="Save"
+                    Command="{Binding SaveCommand}" />
+            <Button Content="Close"
+                    Command="{Binding CloseCommand}" />
+        </UniformGrid>
+    </StackPanel>
 </mvx:MvxWindow>
