@@ -15,9 +15,9 @@
         <Label Content="Group:" />
         <ComboBox ItemsSource="{Binding Groups}"
                   SelectedItem="{Binding SelectedGroup}"
-                  DisplayMemberPath="Title" />
+                  DisplayMemberPath="Name" />
         <Label Content="Group name:" />
-        <TextBox />
+        <TextBox Text="{Binding GroupName}" />
         <UniformGrid Columns="3">
             <Button Content="Add new"
                     Command="{Binding AddNewCommand}" />
