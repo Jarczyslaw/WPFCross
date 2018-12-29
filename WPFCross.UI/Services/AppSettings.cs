@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Configuration;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace WPFCross.UI.Services
 {
@@ -19,7 +15,10 @@ namespace WPFCross.UI.Services
         {
             var connectionString = ConfigurationManager.ConnectionStrings[key];
             if (connectionString == null)
+            {
                 throw new Exception("No connection string for: " + key);
+            }
+
             return connectionString;
         }
 
@@ -27,7 +26,10 @@ namespace WPFCross.UI.Services
         {
             var setting = ConfigurationManager.AppSettings[key];
             if (setting == null)
+            {
                 throw new Exception("No setting for: " + key);
+            }
+
             return setting;
         }
     }

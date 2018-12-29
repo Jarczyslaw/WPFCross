@@ -11,9 +11,9 @@ namespace DataAccess.Core
         private List<Contact> contacts = new List<Contact>();
         private List<Group> groups = new List<Group>();
 
-        private int contactsId = 0;
-        private int contactItemsId = 0;
-        private int groupsId = 0;
+        private int contactsId;
+        private int contactItemsId;
+        private int groupsId;
 
         public DbDataAccessMock()
         {
@@ -62,8 +62,7 @@ namespace DataAccess.Core
 
         public IEnumerable<Contact> GetContacts(Group group, bool favourites)
         {
-            return contacts.Where(c => group == null || c.Group.Id == group.Id)
-                .Where(c => !favourites || c.Favourite)
+            return contacts.Where(c => (group == null || c.Group.Id == group.Id) && (!favourites || c.Favourite))
                 .OrderBy(c => c.Title)
                 .ToList();
         }

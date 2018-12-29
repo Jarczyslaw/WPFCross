@@ -1,17 +1,11 @@
-﻿using WPFCross.Core.ViewModels;
-using Service.Dialogs;
-using Service.Logger;
+﻿using DataAccess.Core;
 using MvvmCross;
 using MvvmCross.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Service.Core;
+using Service.Dialogs;
+using Service.Logger;
+using WPFCross.Core.ViewModels;
 using WPFCross.UI.Services;
-using DataAccess.Core;
-using WPFCross.Extensions;
-using WPFCross.UI.GlobalExceptions;
 
 namespace WPFCross.UI
 {
@@ -29,6 +23,8 @@ namespace WPFCross.UI
             Mvx.IoCProvider.RegisterSingleton<ILoggerService>(() => new LoggerService());
             Mvx.IoCProvider.RegisterSingleton<IDialogsService>(() => new DialogsService());
             Mvx.IoCProvider.RegisterSingleton<IDbDataAccess>(() => new DbDataAccessMock());
+            Mvx.IoCProvider.RegisterSingleton<IContactsService>(() => new ContactsService(Mvx.IoCProvider.Resolve<IDbDataAccess>()));
+            Mvx.IoCProvider.RegisterSingleton<IGroupsService>(() => new GroupsService(Mvx.IoCProvider.Resolve<IDbDataAccess>()));
         }
     }
 }

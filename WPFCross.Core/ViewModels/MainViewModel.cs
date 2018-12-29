@@ -1,5 +1,4 @@
 ﻿using DataAccess.Core;
-using DataAccess.Models;
 using MvvmCross.Commands;
 using MvvmCross.Navigation;
 using Service.Dialogs;
@@ -16,6 +15,8 @@ namespace WPFCross.Core.ViewModels
         private GroupItemViewModel allGroups;
         private ContactItemViewModel selectedContact;
         private GroupItemViewModel selectedGroup;
+        private ObservableCollection<ContactItemViewModel> contacts;
+        private ObservableCollection<GroupItemViewModel> groups;
 
         private readonly IMvxNavigationService navigationService;
         private readonly ILoggerService loggingService;
@@ -35,29 +36,35 @@ namespace WPFCross.Core.ViewModels
             DeleteCommand = new MvxCommand(DeleteContact);
             EditGroupsCommand = new MvxCommand(EditGroups);
 
-            Contacts = new ObservableCollection<ContactItemViewModel>(
-                dbDataAccess.GetContacts(null, false).Select(c => new ContactItemViewModel
-                {
-                    Title = c.Title
-                }));
-
-            InitializeGroups();
+            LoadContacts();
+            LoadGroups();
         }
 
+        public IMvxCommand AddNewCommand { get; }
+        public IMvxCommand EditCommand { get; }
+        public IMvxCommand DeleteCommand { get; }
+        public IMvxCommand EditGroupsCommand { get; }
 
+        public ObservableCollection<ContactItemViewModel> Contacts
+        {
+            get => contacts;
+            set => SetProperty(ref contacts, value);
+        }
 
-        public IMvxCommand AddNewCommand { get; private set; }
-        public IMvxCommand EditCommand { get; private set; }
-        public IMvxCommand DeleteCommand { get; private set; }
-        public IMvxCommand EditGroupsCommand { get; private set; }
-
-        public ObservableCollection<ContactItemViewModel> Contacts { get; private set; }
-        public ObservableCollection<GroupItemViewModel> Groups { get; private set; }
+        public ObservableCollection<GroupItemViewModel> Groups
+        {
+            get => groups;
+            set => SetProperty(ref groups, value);
+        }
 
         public bool Favourites
         {
             get => favourites;
-            set => SetProperty(ref favourites, value);
+            set
+            {
+                SetProperty(ref favourites, value);
+                LoadContacts();
+            }
         }
 
         public ContactItemViewModel SelectedContact
@@ -72,6 +79,7 @@ namespace WPFCross.Core.ViewModels
             set
             {
                 SetProperty(ref selectedGroup, value);
+                LoadContacts();
             }
         }
 
@@ -95,16 +103,23 @@ namespace WPFCross.Core.ViewModels
             navigationService.Navigate<GroupsViewModel>();
         }
 
-        private void InitializeGroups()
+        private void LoadGroups()
         {
-            allGroups = new GroupItemViewModel { Name = "All" };
-            Groups = new ObservableCollection<GroupItemViewModel> { allGroups };
+            allGroups = new GroupItemViewModel
+            {
+                Name = "All"
+            };
+            Groups = new ObservableCollection<GroupItemViewModel>
+            {
+                allGroups
+            };
 
             foreach (var group in dbDataAccess.GetGroups())
             {
                 Groups.Add(new GroupItemViewModel
                 {
-                    Name = group.Name
+                    Name = group.Name,
+                    Group = group
                 });
             }
             SelectedGroup = allGroups;
@@ -113,7 +128,7 @@ namespace WPFCross.Core.ViewModels
         private void LoadContacts()
         {
             Contacts = new ObservableCollection<ContactItemViewModel>(
-                dbDataAccess.GetContacts(null, false).Select(c => new ContactItemViewModel
+                dbDataAccess.GetContacts(SelectedGroup?.Group, Favourites).Select(c => new ContactItemViewModel
                 {
                     Title = c.Title
                 }));

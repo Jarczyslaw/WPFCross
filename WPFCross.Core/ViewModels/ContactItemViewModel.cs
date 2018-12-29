@@ -1,10 +1,4 @@
-﻿using MvvmCross;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using WPFCross.Extensions;
-
-namespace WPFCross.Core.ViewModels
+﻿namespace WPFCross.Core.ViewModels
 {
     public class ContactItemViewModel
     {

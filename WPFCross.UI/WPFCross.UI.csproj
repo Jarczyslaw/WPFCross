@@ -166,6 +166,10 @@
       <Project>{b4d1fb8d-91df-4ffd-90ff-fe6ce89e705a}</Project>
       <Name>DataAccess.Models</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Service.Core\Service.Core.csproj">
+      <Project>{197EAFEF-553D-4AE6-A2A7-5C3EDA63F124}</Project>
+      <Name>Service.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Service.Dialogs\Service.Dialogs.csproj">
       <Project>{7519097d-59ff-4717-a043-c083a7aa9a5d}</Project>
       <Name>Service.Dialogs</Name>

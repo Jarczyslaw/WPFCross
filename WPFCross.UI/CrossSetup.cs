@@ -1,10 +1,8 @@
-﻿using WPFCross.Core.ViewModels;
-using MvvmCross.Platforms.Wpf.Core;
+﻿using MvvmCross.Platforms.Wpf.Core;
 using MvvmCross.ViewModels;
-using System;
 using System.Collections.Generic;
 using System.Reflection;
-using System.Text;
+using WPFCross.Core.ViewModels;
 
 namespace WPFCross.UI
 {
@@ -17,11 +15,10 @@ namespace WPFCross.UI
 
         public override IEnumerable<Assembly> GetViewModelAssemblies()
         {
-            var assemblies = new List<Assembly>
+            return new List<Assembly>
             {
                 typeof(ViewModelBase).Assembly
             };
-            return assemblies;
         }
     }
 }

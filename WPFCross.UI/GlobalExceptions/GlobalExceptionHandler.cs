@@ -1,9 +1,4 @@
-﻿using Service.Dialogs;
-using Service.Logger;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System;
 using System.Threading.Tasks;
 using System.Windows;
 
@@ -13,16 +8,13 @@ namespace WPFCross.UI.GlobalExceptions
     {
         public abstract bool HandleException(string source, Exception exception);
 
-        public GlobalExceptionHandler()
+        protected GlobalExceptionHandler()
         {
-            AppDomain.CurrentDomain.UnhandledException += 
+            AppDomain.CurrentDomain.UnhandledException +=
                 (s, e) => HandleException("AppDomain.CurrentDomain.UnhandledException", (Exception)e.ExceptionObject);
-            Application.Current.DispatcherUnhandledException += 
-                (s, e) =>
-                {
-                    e.Handled = HandleException("Application.Current.DispatcherUnhandledException", e.Exception);
-                };
-            TaskScheduler.UnobservedTaskException += 
+            Application.Current.DispatcherUnhandledException +=
+                (s, e) => e.Handled = HandleException("Application.Current.DispatcherUnhandledException", e.Exception);
+            TaskScheduler.UnobservedTaskException +=
                 (s, e) => HandleException("TaskScheduler.UnobservedTaskException", e.Exception);
         }
     }

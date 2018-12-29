@@ -1,15 +1,13 @@
-﻿using System;
+﻿using Microsoft.WindowsAPICodePack.Dialogs;
+using Service.Dialogs.Builders;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Windows;
-using Microsoft.Win32;
-using Microsoft.WindowsAPICodePack.Dialogs;
-using Service.Dialogs.Builders;
 
 namespace Service.Dialogs
 {
     public class DialogsService : IDialogsService
-    { 
+    {
         public void ShowInfo(string message, IntPtr? owner = null)
         {
             var builder = new TaskDialogBuilder()
@@ -17,7 +15,9 @@ namespace Service.Dialogs
                 .SetOwner(GetOwnerHandle(owner));
 
             using (var dialog = builder.Build())
+            {
                 dialog.Show();
+            }
         }
 
         public void ShowWarning(string message, IntPtr? owner = null)
@@ -27,7 +27,9 @@ namespace Service.Dialogs
                 .SetOwner(GetOwnerHandle(owner));
 
             using (var dialog = builder.Build())
+            {
                 dialog.Show();
+            }
         }
 
         public void ShowError(string error, IntPtr? owner = null)
@@ -37,7 +39,9 @@ namespace Service.Dialogs
                 .SetOwner(GetOwnerHandle(owner));
 
             using (var dialog = builder.Build())
+            {
                 dialog.Show();
+            }
         }
 
         public void ShowException(string message, Exception exception, IntPtr? owner = null)
@@ -59,7 +63,10 @@ namespace Service.Dialogs
 
             var result = false;
             using (var dialog = builder.Build())
+            {
                 result = dialog.Show() == TaskDialogResult.Yes;
+            }
+
             return result;
         }
 
@@ -72,7 +79,9 @@ namespace Service.Dialogs
                 .SetOwner(GetOwnerHandle(owner));
 
             using (var dialog = builder.Build())
+            {
                 dialog.Show();
+            }
         }
 
         public string OpenFile(string title, string initialDirectory, DialogFilterPair filter)
@@ -91,8 +100,10 @@ namespace Service.Dialogs
             using (var dialog = builder.Build())
             {
                 if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
+                {
                     result = dialog.FileName;
-            }  
+                }
+            }
             return result;
         }
 
@@ -112,7 +123,9 @@ namespace Service.Dialogs
             using (var dialog = builder.Build())
             {
                 if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
+                {
                     result = dialog.FileNames.ToList();
+                }
             }
             return result;
         }
@@ -127,7 +140,9 @@ namespace Service.Dialogs
             using (var dialog = builder.Build())
             {
                 if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
+                {
                     result = dialog.FileName;
+                }
             }
             return result;
         }
@@ -143,7 +158,9 @@ namespace Service.Dialogs
             using (var dialog = builder.Build())
             {
                 if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
+                {
                     result = dialog.FileName;
+                }
             }
             return result;
         }
@@ -157,17 +174,25 @@ namespace Service.Dialogs
                 .SetOwner(GetOwnerHandle(owner));
 
             using (var dialog = builder.Build())
+            {
                 dialog.Show();
+            }
         }
 
         private IntPtr GetOwnerHandle(IntPtr? owner)
         {
             if (owner == null)
+            {
                 return NativeMethods.GetActiveWindow();
+            }
             else if (owner.Value == IntPtr.Zero)
+            {
                 return IntPtr.Zero;
+            }
             else
+            {
                 return owner.Value;
+            }
         }
     }
 }
