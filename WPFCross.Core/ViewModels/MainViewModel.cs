@@ -6,6 +6,7 @@ using Service.Logger;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using WPFCross.Extensions;
 
 namespace WPFCross.Core.ViewModels
 {
@@ -36,8 +37,7 @@ namespace WPFCross.Core.ViewModels
             DeleteCommand = new MvxCommand(DeleteContact);
             EditGroupsCommand = new MvxCommand(EditGroups);
 
-            LoadContacts();
-            LoadGroups();
+            LoadAll();
         }
 
         public IMvxCommand AddNewCommand { get; }
@@ -98,9 +98,13 @@ namespace WPFCross.Core.ViewModels
             throw new Exception("asd");
         }
 
-        private void EditGroups()
+        private async void EditGroups()
         {
-            navigationService.Navigate<GroupsViewModel>();
+            await navigationService.NavigateWithCallback<GroupsViewModel, bool>((changed) =>
+            {
+                if (changed)
+                    LoadAll();
+            }).ConfigureAwait(false);
         }
 
         private void LoadGroups()
@@ -123,6 +127,12 @@ namespace WPFCross.Core.ViewModels
                 });
             }
             SelectedGroup = allGroups;
+        }
+
+        private void LoadAll()
+        {
+            LoadContacts();
+            LoadGroups();
         }
 
         private void LoadContacts()

@@ -9,7 +9,7 @@ using System.Linq;
 
 namespace WPFCross.Core.ViewModels
 {
-    public class GroupsViewModel : ViewModelBase
+    public class GroupsViewModel : CallBackViewModel<bool>
     {
         private string groupName;
         private GroupItemViewModel selectedGroup;
@@ -95,6 +95,7 @@ namespace WPFCross.Core.ViewModels
                     return;
                 }
 
+                CallbackValue = true;
                 LoadGroups(newGroup);
             }
             catch (Exception exc)
@@ -118,6 +119,8 @@ namespace WPFCross.Core.ViewModels
                     dialogsService.ShowError(result.Errors.First.Content);
                     return;
                 }
+
+                CallbackValue = true;
                 LoadGroups(edited);
             }
             catch (Exception exc)
@@ -140,6 +143,8 @@ namespace WPFCross.Core.ViewModels
                     dialogsService.ShowError(result.Errors.First.Content);
                     return;
                 }
+
+                CallbackValue = true;
                 LoadGroups();
             }
             catch (Exception exc)
