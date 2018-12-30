@@ -68,7 +68,7 @@ namespace Service.Core
                     contact.Group = defaultGroup;
                     dataAccess.EditContact(contact);
                 }
-                result.Infos.Add($"{contactsInGroup.Count()} moved to {defaultGroup.Name} group");
+                result.Infos.Add($"{contactsInGroup.Count()} contacts moved to {defaultGroup.Name} group");
             }
 
             dataAccess.DeleteGroup(group.Id);
