@@ -144,6 +144,9 @@ namespace WPFCross.Core.ViewModels
                     return;
                 }
 
+                if (result.Infos.Any)
+                    dialogsService.ShowInfo(result.Infos.First.Content);
+
                 CallbackValue = true;
                 LoadGroups();
             }

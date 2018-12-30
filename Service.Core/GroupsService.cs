@@ -59,6 +59,18 @@ namespace Service.Core
                 return result;
             }
 
+            var contactsInGroup = dataAccess.GetContacts(group, false);
+            if (contactsInGroup.Any())
+            {
+                var defaultGroup = dataAccess.GetDefaultGroup();
+                foreach (var contact in contactsInGroup)
+                {
+                    contact.Group = defaultGroup;
+                    dataAccess.EditContact(contact);
+                }
+                result.Infos.Add($"{contactsInGroup.Count()} moved to {defaultGroup.Name} group");
+            }
+
             dataAccess.DeleteGroup(group.Id);
 
             return result;

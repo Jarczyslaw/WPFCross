@@ -206,5 +206,10 @@ namespace DataAccess.Core
                 }
             });
         }
+
+        public Group GetDefaultGroup()
+        {
+            return groups.Single(g => g.Default);
+        }
     }
 }

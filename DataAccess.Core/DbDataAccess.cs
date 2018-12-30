@@ -42,6 +42,11 @@ namespace DataAccess.Core
             throw new NotImplementedException();
         }
 
+        public Group GetDefaultGroup()
+        {
+            throw new NotImplementedException();
+        }
+
         public IEnumerable<Group> GetGroups()
         {
             throw new NotImplementedException();

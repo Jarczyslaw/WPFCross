@@ -15,5 +15,6 @@ namespace DataAccess.Core
         void EditGroup(Group group);
         IEnumerable<Contact> GetContacts(Group group, bool favourites);
         IEnumerable<Group> GetGroups();
+        Group GetDefaultGroup();
     }
 }
