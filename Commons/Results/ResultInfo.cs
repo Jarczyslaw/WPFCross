@@ -1,10 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Commons
+﻿namespace Commons
 {
     public class ResultInfo : ResultItem
     {
+        public ResultInfo()
+        {
+        }
+
+        public ResultInfo(ResultInfo info)
+            : base(info)
+        {
+        }
     }
 }

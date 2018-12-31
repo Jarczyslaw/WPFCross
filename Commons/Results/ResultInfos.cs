@@ -1,11 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Linq;
 
 namespace Commons
 {
     public class ResultInfos : ResultItems<ResultInfo>
     {
+        public ResultInfos()
+        {
+        }
+
+        public ResultInfos(ResultInfos infos)
+        {
+            Items = infos.Items
+                .Select(i => new ResultInfo(i))
+                .ToList();
+        }
+
         public void Add(ResultInfo info)
         {
             Items.Add(info);

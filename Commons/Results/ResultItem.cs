@@ -8,5 +8,16 @@ namespace Commons
     {
         public int Code { get; set; }
         public string Content { get; set; }
+
+        protected ResultItem()
+        {
+
+        }
+
+        protected ResultItem(ResultItem item)
+        {
+            Code = item.Code;
+            Content = item.Content;
+        }
     }
 }
