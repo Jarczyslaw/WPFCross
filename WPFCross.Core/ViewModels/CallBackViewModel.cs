@@ -5,7 +5,7 @@ using System.Text;
 
 namespace WPFCross.Core.ViewModels
 {
-    public class CallBackViewModel<T> : MvxViewModel<Action<T>>
+    public abstract class CallBackViewModel<T> : MvxViewModel<Action<T>>
     {
         protected T CallbackValue { get; set; }
         protected bool CallOnDestroy { get; set; } = true;

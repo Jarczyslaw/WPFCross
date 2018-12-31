@@ -1,10 +1,11 @@
-﻿using System;
+﻿using MvvmCross.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace WPFCross.Core.ViewModels
 {
-    public class ContactViewModel : ViewModelBase
+    public class ContactViewModel : MvxViewModel
     {
     }
 }

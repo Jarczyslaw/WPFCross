@@ -17,7 +17,7 @@ namespace WPFCross.UI
         {
             return new List<Assembly>
             {
-                typeof(ViewModelBase).Assembly
+                typeof(MainViewModel).Assembly
             };
         }
     }

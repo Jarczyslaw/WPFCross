@@ -1,6 +1,7 @@
 ﻿using DataAccess.Core;
 using MvvmCross.Commands;
 using MvvmCross.Navigation;
+using MvvmCross.ViewModels;
 using Service.Dialogs;
 using Service.Logger;
 using System;
@@ -10,7 +11,7 @@ using WPFCross.Extensions;
 
 namespace WPFCross.Core.ViewModels
 {
-    public class MainViewModel : ViewModelBase
+    public class MainViewModel : MvxViewModel
     {
         private bool favourites;
         private GroupItemViewModel allGroups;
