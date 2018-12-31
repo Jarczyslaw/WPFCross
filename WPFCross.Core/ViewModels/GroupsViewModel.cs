@@ -25,6 +25,8 @@ namespace WPFCross.Core.ViewModels
             this.dialogsService = dialogsService;
             this.dataAccess = dataAccess;
 
+            InvokeCallbackOnDestroy = true;
+
             AddNewCommand = new MvxCommand(AddNew);
             EditCommand = new MvxCommand(Edit);
             DeleteCommand = new MvxCommand(Delete);

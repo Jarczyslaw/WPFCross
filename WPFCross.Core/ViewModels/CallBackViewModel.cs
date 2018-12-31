@@ -7,19 +7,19 @@ namespace WPFCross.Core.ViewModels
 {
     public abstract class CallBackViewModel<T> : MvxViewModel<Action<T>>
     {
+        protected Action<T> Callback { get; private set; }
         protected T CallbackValue { get; set; }
-        protected bool CallOnDestroy { get; set; } = true;
-        private Action<T> callback;
+        protected bool InvokeCallbackOnDestroy { get; set; }
 
         public override void Prepare(Action<T> parameter)
         {
-            callback = parameter;
+            Callback = parameter;
         }
 
         public override void ViewDestroy(bool viewFinishing = true)
         {
-            if (CallOnDestroy)
-                callback?.Invoke(CallbackValue);
+            if (InvokeCallbackOnDestroy)
+                Callback?.Invoke(CallbackValue);
             base.ViewDestroy(viewFinishing);
         }
     }
