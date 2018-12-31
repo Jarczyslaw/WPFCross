@@ -11,6 +11,7 @@ namespace WPFCross.Core.ViewModels
 {
     public class GroupsViewModel : CallBackViewModel<bool>
     {
+        private bool dataChanged;
         private string groupName;
         private GroupItemViewModel selectedGroup;
         private ObservableCollection<GroupItemViewModel> groups;
@@ -24,8 +25,6 @@ namespace WPFCross.Core.ViewModels
             this.groupsService = groupsService;
             this.dialogsService = dialogsService;
             this.dataAccess = dataAccess;
-
-            InvokeCallbackOnDestroy = true;
 
             AddNewCommand = new MvxCommand(AddNew);
             EditCommand = new MvxCommand(Edit);
@@ -97,7 +96,7 @@ namespace WPFCross.Core.ViewModels
                     return;
                 }
 
-                CallbackValue = true;
+                dataChanged = true;
                 LoadGroups(newGroup);
             }
             catch (Exception exc)
@@ -122,7 +121,7 @@ namespace WPFCross.Core.ViewModels
                     return;
                 }
 
-                CallbackValue = true;
+                dataChanged = true;
                 LoadGroups(edited);
             }
             catch (Exception exc)
@@ -133,6 +132,13 @@ namespace WPFCross.Core.ViewModels
 
         private void Delete()
         {
+            var canDelete = groupsService.CanDelete(SelectedGroup.Group);
+            if (!canDelete.IsSuccess)
+            {
+                dialogsService.ShowError(canDelete.Errors.First.Content);
+                return;
+            }
+
             var dialogResult = dialogsService.ShowYesNoQuestion($"Do you really want to remove {SelectedGroup.Name}?");
             if (!dialogResult)
                 return;
@@ -149,13 +155,19 @@ namespace WPFCross.Core.ViewModels
                 if (result.Infos.Any)
                     dialogsService.ShowInfo(result.Infos.First.Content);
 
-                CallbackValue = true;
+                dataChanged = true;
                 LoadGroups();
             }
             catch (Exception exc)
             {
                 dialogsService.ShowException("Exception during deleting group", exc);
             }
+        }
+
+        public override void ViewDestroy(bool viewFinishing = true)
+        {
+            Callback?.Invoke(dataChanged);
+            base.ViewDestroy(viewFinishing);
         }
     }
 }

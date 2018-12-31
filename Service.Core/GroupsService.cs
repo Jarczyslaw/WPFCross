@@ -49,7 +49,7 @@ namespace Service.Core
             return result;
         }
 
-        public Result DeleteGroup(Group group)
+        public Result CanDelete(Group group)
         {
             var result = new Result();
 
@@ -59,6 +59,18 @@ namespace Service.Core
                 return result;
             }
 
+            return result;
+        }
+
+        public Result DeleteGroup(Group group)
+        {
+            var canDeleteResult = CanDelete(group);
+            if (!canDeleteResult.IsSuccess)
+            {
+                return canDeleteResult;
+            }
+
+            var result = new Result();
             var contactsInGroup = dataAccess.GetContacts(group, false);
             if (contactsInGroup.Any())
             {

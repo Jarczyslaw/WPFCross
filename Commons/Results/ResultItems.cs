@@ -5,10 +5,10 @@ using System.Text;
 
 namespace Commons
 {
-    public class ResultItems<T>
+    public abstract class ResultItems<T>
         where T : ResultItem
     {
-        public List<T> Items { get; } = new List<T>();
+        public List<T> Items { get; protected set; } = new List<T>();
 
         public bool Any => Items.Count > 0;
 

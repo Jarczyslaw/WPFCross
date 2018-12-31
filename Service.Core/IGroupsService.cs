@@ -11,5 +11,6 @@ namespace Service.Core
         Result AddGroup(Group group);
         Result EditGroup(Group group);
         Result DeleteGroup(Group group);
+        Result CanDelete(Group group);
     }
 }
