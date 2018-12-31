@@ -11,7 +11,6 @@ namespace Commons
 
         protected ResultItem()
         {
-
         }
 
         protected ResultItem(ResultItem item)

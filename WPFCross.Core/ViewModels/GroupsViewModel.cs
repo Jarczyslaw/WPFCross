@@ -92,7 +92,7 @@ namespace WPFCross.Core.ViewModels
                 var result = groupsService.AddGroup(newGroup);
                 if (!result.IsSuccess)
                 {
-                    dialogsService.ShowError(result.Errors.First.Content);
+                    dialogsService.ShowError(result.Errors.First().Content);
                     return;
                 }
 
@@ -117,7 +117,7 @@ namespace WPFCross.Core.ViewModels
                 var result = groupsService.EditGroup(edited);
                 if (!result.IsSuccess)
                 {
-                    dialogsService.ShowError(result.Errors.First.Content);
+                    dialogsService.ShowError(result.Errors.First().Content);
                     return;
                 }
 
@@ -135,7 +135,7 @@ namespace WPFCross.Core.ViewModels
             var canDelete = groupsService.CanDelete(SelectedGroup.Group);
             if (!canDelete.IsSuccess)
             {
-                dialogsService.ShowError(canDelete.Errors.First.Content);
+                dialogsService.ShowError(canDelete.Errors.First().Content);
                 return;
             }
 
@@ -148,12 +148,12 @@ namespace WPFCross.Core.ViewModels
                 var result = groupsService.DeleteGroup(SelectedGroup.Group);
                 if (!result.IsSuccess)
                 {
-                    dialogsService.ShowError(result.Errors.First.Content);
+                    dialogsService.ShowError(result.Errors.First().Content);
                     return;
                 }
 
-                if (result.Infos.Any)
-                    dialogsService.ShowInfo(result.Infos.First.Content);
+                if (result.Infos.Any())
+                    dialogsService.ShowInfo(result.Infos.First().Content);
 
                 dataChanged = true;
                 LoadGroups();

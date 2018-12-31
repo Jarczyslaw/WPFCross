@@ -1,9 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Commons
 {
-    public class ResultErrors : ResultItems<ResultError>
+    public class ResultErrors : List<ResultError>
     {
         public ResultErrors()
         {
@@ -11,9 +12,7 @@ namespace Commons
 
         public ResultErrors(ResultErrors errors)
         {
-            Items = errors.Items
-                .Select(i => new ResultError(i))
-                .ToList();
+            AddRange(errors.Select(i => new ResultError(i)));
         }
 
         public void Add(Exception exception)
@@ -23,11 +22,6 @@ namespace Commons
                 Content = exception.Message,
                 Exception = exception
             });
-        }
-
-        public void Add(ResultError error)
-        {
-            Items.Add(error);
         }
 
         public void Add(string content)

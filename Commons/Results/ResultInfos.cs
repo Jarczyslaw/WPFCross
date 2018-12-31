@@ -1,8 +1,9 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace Commons
 {
-    public class ResultInfos : ResultItems<ResultInfo>
+    public class ResultInfos : List<ResultInfo>
     {
         public ResultInfos()
         {
@@ -10,14 +11,7 @@ namespace Commons
 
         public ResultInfos(ResultInfos infos)
         {
-            Items = infos.Items
-                .Select(i => new ResultInfo(i))
-                .ToList();
-        }
-
-        public void Add(ResultInfo info)
-        {
-            Items.Add(info);
+            AddRange(infos.Select(i => new ResultInfo(i)));
         }
 
         public void Add(string content)
