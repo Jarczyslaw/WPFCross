@@ -33,6 +33,8 @@ namespace WPFCross.Core.ViewModels
             SaveCommand = new MvxCommand(Save);
             CloseCommand = new MvxCommand(Close);
             EditGroupsCommand = new MvxCommand(EditGroups);
+            AddEntryCommand = new MvxCommand(AddEntry);
+            RemoveEntryCommand = new MvxCommand(RemoveEntry);
 
             LoadGroups();
         }
@@ -40,6 +42,8 @@ namespace WPFCross.Core.ViewModels
         public IMvxCommand SaveCommand { get; }
         public IMvxCommand CloseCommand { get; }
         public IMvxCommand EditGroupsCommand { get; }
+        public IMvxCommand AddEntryCommand { get; }
+        public IMvxCommand RemoveEntryCommand { get; }
 
         public bool Favourite
         {
@@ -150,6 +154,16 @@ namespace WPFCross.Core.ViewModels
             Name = contact.Title;
             Favourite = contact.Favourite;
             SelectedGroup = Groups.FirstOrDefault(g => g.Group.Id == contact.Group.Id);
+        }
+
+        private void RemoveEntry()
+        {
+            throw new NotImplementedException();
+        }
+
+        private void AddEntry()
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -29,6 +29,13 @@
                     Command="{Binding EditGroupsCommand}" />
         </StackPanel>
 
+        <UniformGrid Columns="2">
+            <Button Content="Add entry"
+                    Command="{Binding AddEntryCommand}" />
+            <Button Content="Remove entry"
+                    Command="{Binding RemoveEntryCommand}" />
+        </UniformGrid>
+
         <ListView Height="120">
 
         </ListView>
