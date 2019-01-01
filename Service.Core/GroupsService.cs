@@ -1,6 +1,7 @@
 ﻿using Commons;
 using DataAccess.Core;
 using DataAccess.Models;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Service.Core
@@ -12,6 +13,11 @@ namespace Service.Core
         public GroupsService(IDbDataAccess dataAccess)
         {
             this.dataAccess = dataAccess;
+        }
+
+        public ValueResult<IEnumerable<Group>> GetGroups()
+        {
+            return new ValueResult<IEnumerable<Group>>(dataAccess.GetGroups());
         }
 
         public Result AddGroup(Group group)

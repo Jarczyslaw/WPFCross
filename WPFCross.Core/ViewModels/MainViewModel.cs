@@ -2,6 +2,7 @@
 using MvvmCross.Commands;
 using MvvmCross.Navigation;
 using MvvmCross.ViewModels;
+using Service.Core;
 using Service.Dialogs;
 using Service.Logger;
 using System;
@@ -23,15 +24,17 @@ namespace WPFCross.Core.ViewModels
         private readonly IMvxNavigationService navigationService;
         private readonly ILoggerService loggingService;
         private readonly IDialogsService dialogsService;
-        private readonly IDbDataAccess dbDataAccess;
+        private readonly IGroupsService groupsService;
+        private readonly IContactsService contactsService;
 
-        public MainViewModel(IMvxNavigationService navigationService, ILoggerService loggingService,
-            IDialogsService dialogsService, IDbDataAccess dbDataAccess)
+        public MainViewModel(IMvxNavigationService navigationService, ILoggerService loggingService, IDialogsService dialogsService,
+            IContactsService contactsService, IGroupsService groupsService)
         {
             this.navigationService = navigationService;
             this.loggingService = loggingService;
             this.dialogsService = dialogsService;
-            this.dbDataAccess = dbDataAccess;
+            this.contactsService = contactsService;
+            this.groupsService = groupsService;
 
             AddNewCommand = new MvxCommand(AddNewContact);
             EditCommand = new MvxCommand(EditContact);
@@ -133,7 +136,8 @@ namespace WPFCross.Core.ViewModels
                 allGroups
             };
 
-            foreach (var group in dbDataAccess.GetGroups())
+            var result = groupsService.GetGroups();
+            foreach (var group in result.Value)
             {
                 Groups.Add(new GroupItemViewModel
                 {
@@ -159,8 +163,8 @@ namespace WPFCross.Core.ViewModels
 
         private void LoadContacts()
         {
-            Contacts = new ObservableCollection<ContactItemViewModel>(
-                dbDataAccess.GetContacts(SelectedGroup?.Group, Favourites)
+            var result = contactsService.GetContacts(SelectedGroup?.Group, Favourites);
+            Contacts = new ObservableCollection<ContactItemViewModel>(result.Value
                 .Select(c => new ContactItemViewModel(c)));
         }
     }

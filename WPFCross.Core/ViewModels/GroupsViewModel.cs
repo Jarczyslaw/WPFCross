@@ -18,13 +18,11 @@ namespace WPFCross.Core.ViewModels
 
         private readonly IGroupsService groupsService;
         private readonly IDialogsService dialogsService;
-        private readonly IDbDataAccess dataAccess;
 
-        public GroupsViewModel(IDialogsService dialogsService, IGroupsService groupsService, IDbDataAccess dataAccess)
+        public GroupsViewModel(IDialogsService dialogsService, IGroupsService groupsService)
         {
             this.groupsService = groupsService;
             this.dialogsService = dialogsService;
-            this.dataAccess = dataAccess;
 
             AddNewCommand = new MvxCommand(AddNew);
             EditCommand = new MvxCommand(Edit);
@@ -63,7 +61,8 @@ namespace WPFCross.Core.ViewModels
         {
             try
             {
-                Groups = new ObservableCollection<GroupItemViewModel>(dataAccess.GetGroups().Select(g => new GroupItemViewModel
+                var result = groupsService.GetGroups();
+                Groups = new ObservableCollection<GroupItemViewModel>(result.Value.Select(g => new GroupItemViewModel
                 {
                     Name = g.Name,
                     Group = g
