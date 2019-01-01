@@ -4,7 +4,7 @@ using System.Text;
 
 namespace DataAccess.Models
 {
-    public enum ContactItemType
+    public enum ContactEntryType
     {
         Phone,
         Email,

@@ -11,6 +11,6 @@ namespace DataAccess.Models
         public string Name { get; set; }
         public bool Favourite { get; set; }
         public Group Group { get; set; }
-        public List<ContactItem> Items { get; set; }
+        public List<ContactEntry> Items { get; set; }
     }
 }

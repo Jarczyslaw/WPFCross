@@ -29,7 +29,7 @@
                     Command="{Binding EditGroupsCommand}" />
         </StackPanel>
 
-        <ListView Height="80">
+        <ListView Height="120">
 
         </ListView>
 

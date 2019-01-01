@@ -107,12 +107,12 @@ namespace DataAccess.Core
                 Name = "Mother",
                 Favourite = true,
                 Group = groups.Single(g => g.Name == "Family"),
-                Items = new List<ContactItem>
+                Items = new List<ContactEntry>
                 {
-                    new ContactItem
+                    new ContactEntry
                     {
                         Id = ++contactItemsId,
-                        Type = ContactItemType.Phone,
+                        Type = ContactEntryType.Phone,
                         Value = "111 111 111"
                     }
                 }
@@ -124,12 +124,12 @@ namespace DataAccess.Core
                 Name = "Father",
                 Favourite = true,
                 Group = groups.Single(g => g.Name == "Family"),
-                Items = new List<ContactItem>
+                Items = new List<ContactEntry>
                 {
-                    new ContactItem
+                    new ContactEntry
                     {
                         Id = ++contactItemsId,
-                        Type = ContactItemType.Phone,
+                        Type = ContactEntryType.Phone,
                         Value = "222 222 222"
                     }
                 }
@@ -141,18 +141,18 @@ namespace DataAccess.Core
                 Name = "Mark Zandberg",
                 Favourite = true,
                 Group = groups.Single(g => g.Name == "Friends"),
-                Items = new List<ContactItem>
+                Items = new List<ContactEntry>
                 {
-                    new ContactItem
+                    new ContactEntry
                     {
                         Id = ++contactItemsId,
-                        Type = ContactItemType.Phone,
+                        Type = ContactEntryType.Phone,
                         Value = "333 333 333"
                     },
-                    new ContactItem
+                    new ContactEntry
                     {
                         Id = ++contactItemsId,
-                        Type = ContactItemType.Email,
+                        Type = ContactEntryType.Email,
                         Value = "mark.zandberg@mail.com"
                     }
                 }
@@ -164,24 +164,24 @@ namespace DataAccess.Core
                 Name = "Jan Kowalski",
                 Favourite = false,
                 Group = groups.Single(g => g.Name == "General"),
-                Items = new List<ContactItem>
+                Items = new List<ContactEntry>
                 {
-                    new ContactItem
+                    new ContactEntry
                     {
                         Id = ++contactItemsId,
-                        Type = ContactItemType.Phone,
+                        Type = ContactEntryType.Phone,
                         Value = "444 444 444"
                     },
-                    new ContactItem
+                    new ContactEntry
                     {
                         Id = ++contactItemsId,
-                        Type = ContactItemType.Email,
+                        Type = ContactEntryType.Email,
                         Value = "jan.kowalski@mail.com"
                     },
-                    new ContactItem
+                    new ContactEntry
                     {
                         Id = ++contactItemsId,
-                        Type = ContactItemType.Website,
+                        Type = ContactEntryType.Website,
                         Value = "www.kowalski.com"
                     }
                 }
@@ -193,12 +193,12 @@ namespace DataAccess.Core
                 Name = "Jerzy Nowak",
                 Favourite = false,
                 Group = groups.Single(g => g.Name == "General"),
-                Items = new List<ContactItem>
+                Items = new List<ContactEntry>
                 {
-                    new ContactItem
+                    new ContactEntry
                     {
                         Id = ++contactItemsId,
-                        Type = ContactItemType.Email,
+                        Type = ContactEntryType.Email,
                         Value = "jerzy.nowak@mail.com"
                     },
                 }
