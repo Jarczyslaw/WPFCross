@@ -8,7 +8,7 @@ using System.Text;
 
 namespace WPFCross.Core.ViewModels.Base
 {
-    public abstract class CallBackViewModel<T> : MvxViewModel<Action<T>>
+    public abstract class CallBackViewModelBase<T> : MvxViewModel<Action<T>>
     {
         protected Action<T> Callback { get; private set; }
 
@@ -16,7 +16,7 @@ namespace WPFCross.Core.ViewModels.Base
         protected readonly ILoggerService loggingService;
         protected readonly IDialogsService dialogsService;
 
-        public CallBackViewModel(IMvxNavigationService navigationService, ILoggerService loggingService, IDialogsService dialogsService)
+        public CallBackViewModelBase(IMvxNavigationService navigationService, ILoggerService loggingService, IDialogsService dialogsService)
         {
             this.navigationService = navigationService;
             this.loggingService = loggingService;

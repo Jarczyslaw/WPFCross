@@ -12,7 +12,7 @@ using WPFCross.Core.ViewModels.Base;
 
 namespace WPFCross.Core.ViewModels
 {
-    public class GroupsViewModel : CallBackViewModel<bool>
+    public class GroupsViewModel : CallBackViewModelBase<bool>
     {
         private bool dataChanged;
         private string groupName;
