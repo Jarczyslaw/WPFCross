@@ -5,12 +5,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="LiteDB" Version="4.1.4" />
+    <PackageReference Include="AutoMapper" Version="8.0.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\DataAccess.Models\DataAccess.Models.csproj" />
-    <ProjectReference Include="..\Service.DataMapper\Service.DataMapper.csproj" />
   </ItemGroup>
 
 </Project>

@@ -17,9 +17,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAccess.Core", "DataAcce
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WPFCross.Extensions", "WPFCross.Extensions\WPFCross.Extensions.csproj", "{90C7018F-3A51-4B32-9428-C88695BC96B0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Commons", "Commons\Commons.csproj", "{3138D2CC-0FF1-4F36-902F-AABB1C237CB0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Commons", "Commons\Commons.csproj", "{3138D2CC-0FF1-4F36-902F-AABB1C237CB0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Service.Core", "Service.Core\Service.Core.csproj", "{197EAFEF-553D-4AE6-A2A7-5C3EDA63F124}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Service.Core", "Service.Core\Service.Core.csproj", "{197EAFEF-553D-4AE6-A2A7-5C3EDA63F124}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Service.DataMapper", "Service.DataMapper\Service.DataMapper.csproj", "{62DA867A-4BDD-4B6B-8D9A-186034486036}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -63,6 +65,10 @@ Global
 		{197EAFEF-553D-4AE6-A2A7-5C3EDA63F124}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{197EAFEF-553D-4AE6-A2A7-5C3EDA63F124}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{197EAFEF-553D-4AE6-A2A7-5C3EDA63F124}.Release|Any CPU.Build.0 = Release|Any CPU
+		{62DA867A-4BDD-4B6B-8D9A-186034486036}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{62DA867A-4BDD-4B6B-8D9A-186034486036}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{62DA867A-4BDD-4B6B-8D9A-186034486036}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{62DA867A-4BDD-4B6B-8D9A-186034486036}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,4 +1,5 @@
 ﻿using DataAccess.Models;
+using Service.DataMapper;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -7,6 +8,13 @@ namespace DataAccess.Core
 {
     public class DbDataAccess : IDbDataAccess
     {
+        private readonly IDataMapperService dataMapperService;
+
+        public DbDataAccess(IDataMapperService dataMapperService)
+        {
+            this.dataMapperService = dataMapperService;
+        }
+
         public void AddContact(Contact contact)
         {
             throw new NotImplementedException();

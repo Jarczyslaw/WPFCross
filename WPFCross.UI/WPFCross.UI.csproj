@@ -38,6 +38,9 @@
     <ApplicationIcon>jt_icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AutoMapper, Version=8.0.0.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.8.0.0\lib\net461\AutoMapper.dll</HintPath>
+    </Reference>
     <Reference Include="MvvmCross, Version=6.2.2.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MvvmCross.6.2.2\lib\net461\MvvmCross.dll</HintPath>
     </Reference>
@@ -59,6 +62,9 @@
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Transactions" />
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net461\System.ValueTuple.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -169,6 +175,10 @@
     <ProjectReference Include="..\Service.Core\Service.Core.csproj">
       <Project>{197EAFEF-553D-4AE6-A2A7-5C3EDA63F124}</Project>
       <Name>Service.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Service.DataMapper\Service.DataMapper.csproj">
+      <Project>{62DA867A-4BDD-4B6B-8D9A-186034486036}</Project>
+      <Name>Service.DataMapper</Name>
     </ProjectReference>
     <ProjectReference Include="..\Service.Dialogs\Service.Dialogs.csproj">
       <Project>{7519097d-59ff-4717-a043-c083a7aa9a5d}</Project>

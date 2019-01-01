@@ -2,6 +2,7 @@
 using MvvmCross;
 using MvvmCross.ViewModels;
 using Service.Core;
+using Service.DataMapper;
 using Service.Dialogs;
 using Service.Logger;
 using WPFCross.Core.ViewModels;
@@ -19,12 +20,13 @@ namespace WPFCross.UI
 
         private void RegisterDependencies()
         {
-            Mvx.IoCProvider.RegisterSingleton<IAppSettings>(() => new AppSettings());
-            Mvx.IoCProvider.RegisterSingleton<ILoggerService>(() => new LoggerService());
-            Mvx.IoCProvider.RegisterSingleton<IDialogsService>(() => new DialogsService());
-            Mvx.IoCProvider.RegisterSingleton<IDbDataAccess>(() => new DbDataAccessMock());
-            Mvx.IoCProvider.RegisterSingleton<IContactsService>(() => new ContactsService(Mvx.IoCProvider.Resolve<IDbDataAccess>()));
-            Mvx.IoCProvider.RegisterSingleton<IGroupsService>(() => new GroupsService(Mvx.IoCProvider.Resolve<IDbDataAccess>()));
+            Mvx.IoCProvider.RegisterSingleton<IAppSettings>(() => Mvx.IoCProvider.IoCConstruct<AppSettings>());
+            Mvx.IoCProvider.RegisterSingleton<ILoggerService>(() => Mvx.IoCProvider.IoCConstruct<LoggerService>());
+            Mvx.IoCProvider.RegisterSingleton<IDialogsService>(() => Mvx.IoCProvider.IoCConstruct<DialogsService>());
+            Mvx.IoCProvider.RegisterSingleton<IDataMapperService>(() => Mvx.IoCProvider.IoCConstruct<DataMapperService>());
+            Mvx.IoCProvider.RegisterSingleton<IDbDataAccess>(() => Mvx.IoCProvider.IoCConstruct<DbDataAccessMock>());
+            Mvx.IoCProvider.RegisterSingleton<IContactsService>(() => Mvx.IoCProvider.IoCConstruct<ContactsService>());
+            Mvx.IoCProvider.RegisterSingleton<IGroupsService>(() => Mvx.IoCProvider.IoCConstruct<GroupsService>());
         }
     }
 }

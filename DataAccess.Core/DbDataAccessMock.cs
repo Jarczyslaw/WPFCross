@@ -1,22 +1,25 @@
-﻿using System;
+﻿using DataAccess.Models;
+using Service.DataMapper;
 using System.Collections.Generic;
-using System.Text;
 using System.Linq;
-using DataAccess.Models;
 
 namespace DataAccess.Core
 {
     public class DbDataAccessMock : IDbDataAccess
     {
-        private List<Contact> contacts = new List<Contact>();
-        private List<Group> groups = new List<Group>();
+        private readonly IDataMapperService dataMapperService;
+
+        private readonly List<Contact> contacts = new List<Contact>();
+        private readonly List<Group> groups = new List<Group>();
 
         private int contactsId;
         private int contactItemsId;
         private int groupsId;
 
-        public DbDataAccessMock()
+        public DbDataAccessMock(IDataMapperService dataMapperService)
         {
+            this.dataMapperService = dataMapperService;
+
             InitializeGroups();
             InitializeContacts();
         }
@@ -46,18 +49,13 @@ namespace DataAccess.Core
         public void EditContact(Contact contact)
         {
             var edited = contacts.Single(c => c.Id == contact.Id);
-            edited.Favourite = contact.Favourite;
-            edited.Group = contact.Group;
-            edited.Items = contact.Items;
-            edited.Name = contact.Name;
-            edited.Title = contact.Title;
+            dataMapperService.Map(contact, edited);
         }
 
         public void EditGroup(Group group)
         {
             var edited = groups.Single(g => g.Id == group.Id);
-            edited.Default = group.Default;
-            edited.Name = group.Name;
+            dataMapperService.Map(group, edited);
         }
 
         public IEnumerable<Contact> GetContacts(Group group, bool favourites)
