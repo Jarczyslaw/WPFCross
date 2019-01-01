@@ -1,23 +1,27 @@
 ﻿using MvvmCross.Commands;
-using MvvmCross.ViewModels;
+using MvvmCross.Navigation;
+using Service.Dialogs;
+using Service.Logger;
 using System;
-using System.Collections.Generic;
-using System.Text;
+using WPFCross.Core.ViewModels.Base;
 
 namespace WPFCross.Core.ViewModels
 {
-    public class ContactViewModel : MvxViewModel
+    public class ContactViewModel : ViewModelBase
     {
         private string title, name;
 
-        public ContactViewModel()
+        protected ContactViewModel(IMvxNavigationService navigationService, ILoggerService loggingService, IDialogsService dialogsService)
+            : base(navigationService, loggingService, dialogsService)
         {
             SaveCommand = new MvxCommand(Save);
-            CancelCommand = new MvxCommand(Cancel);
+            CloseCommand = new MvxCommand(Close);
+            EditGroupsCommand = new MvxCommand(EditGroups);
         }
 
         public IMvxCommand SaveCommand { get; }
-        public IMvxCommand CancelCommand { get; }
+        public IMvxCommand CloseCommand { get; }
+        public IMvxCommand EditGroupsCommand { get; }
 
         public string Title
         {
@@ -31,7 +35,7 @@ namespace WPFCross.Core.ViewModels
             set => SetProperty(ref name, value);
         }
 
-        private void Cancel()
+        private void Close()
         {
             throw new NotImplementedException();
         }
@@ -39,6 +43,17 @@ namespace WPFCross.Core.ViewModels
         private void Save()
         {
             throw new NotImplementedException();
+        }
+
+        private void EditGroups()
+        {
+            /*await navigationService.NavigateWithCallback<GroupsViewModel, bool>((changed) =>
+            {
+                if (changed)
+                {
+                    LoadAll();
+                }
+            }).ConfigureAwait(false);*/
         }
     }
 }

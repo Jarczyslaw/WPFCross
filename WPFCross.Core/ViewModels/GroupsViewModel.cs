@@ -1,11 +1,14 @@
 ﻿using DataAccess.Core;
 using DataAccess.Models;
 using MvvmCross.Commands;
+using MvvmCross.Navigation;
 using Service.Core;
 using Service.Dialogs;
+using Service.Logger;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using WPFCross.Core.ViewModels.Base;
 
 namespace WPFCross.Core.ViewModels
 {
@@ -17,12 +20,11 @@ namespace WPFCross.Core.ViewModels
         private ObservableCollection<GroupItemViewModel> groups;
 
         private readonly IGroupsService groupsService;
-        private readonly IDialogsService dialogsService;
 
-        public GroupsViewModel(IDialogsService dialogsService, IGroupsService groupsService)
+        public GroupsViewModel(IMvxNavigationService navigationService, ILoggerService loggingService, IDialogsService dialogsService, IGroupsService groupsService)
+            : base(navigationService, loggingService, dialogsService)
         {
             this.groupsService = groupsService;
-            this.dialogsService = dialogsService;
 
             AddNewCommand = new MvxCommand(AddNew);
             EditCommand = new MvxCommand(Edit);

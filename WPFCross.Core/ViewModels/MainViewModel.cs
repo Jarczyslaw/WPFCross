@@ -1,18 +1,17 @@
-﻿using DataAccess.Core;
-using MvvmCross.Commands;
+﻿using MvvmCross.Commands;
 using MvvmCross.Navigation;
-using MvvmCross.ViewModels;
 using Service.Core;
 using Service.Dialogs;
 using Service.Logger;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using WPFCross.Core.ViewModels.Base;
 using WPFCross.Extensions;
 
 namespace WPFCross.Core.ViewModels
 {
-    public class MainViewModel : MvxViewModel
+    public class MainViewModel : ViewModelBase
     {
         private bool favourites;
         private GroupItemViewModel allGroups;
@@ -21,18 +20,13 @@ namespace WPFCross.Core.ViewModels
         private ObservableCollection<ContactItemViewModel> contacts;
         private ObservableCollection<GroupItemViewModel> groups;
 
-        private readonly IMvxNavigationService navigationService;
-        private readonly ILoggerService loggingService;
-        private readonly IDialogsService dialogsService;
         private readonly IGroupsService groupsService;
         private readonly IContactsService contactsService;
 
         public MainViewModel(IMvxNavigationService navigationService, ILoggerService loggingService, IDialogsService dialogsService,
             IContactsService contactsService, IGroupsService groupsService)
+            : base(navigationService, loggingService, dialogsService)
         {
-            this.navigationService = navigationService;
-            this.loggingService = loggingService;
-            this.dialogsService = dialogsService;
             this.contactsService = contactsService;
             this.groupsService = groupsService;
 
@@ -100,11 +94,15 @@ namespace WPFCross.Core.ViewModels
         private void DeleteContact()
         {
             if (SelectedContact == null)
+            {
                 return;
+            }
 
             var dialogResult = dialogsService.ShowYesNoQuestion($"Do you really want to remove {SelectedContact.Title}?");
             if (!dialogResult)
+            {
                 return;
+            }
 
             try
             {
@@ -121,7 +119,9 @@ namespace WPFCross.Core.ViewModels
             await navigationService.NavigateWithCallback<GroupsViewModel, bool>((changed) =>
             {
                 if (changed)
+                {
                     LoadAll();
+                }
             }).ConfigureAwait(false);
         }
 
