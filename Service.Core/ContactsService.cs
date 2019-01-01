@@ -1,4 +1,5 @@
 ﻿using DataAccess.Core;
+using DataAccess.Models;
 using System;
 
 namespace Service.Core
@@ -12,6 +13,9 @@ namespace Service.Core
             this.dataAccess = dataAccess;
         }
 
-
+        public void DeleteContact(Contact contact)
+        {
+            dataAccess.DeleteContact(contact.Id);
+        }
     }
 }

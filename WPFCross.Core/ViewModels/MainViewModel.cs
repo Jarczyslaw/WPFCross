@@ -96,7 +96,21 @@ namespace WPFCross.Core.ViewModels
 
         private void DeleteContact()
         {
-            throw new Exception("asd");
+            if (SelectedContact == null)
+                return;
+
+            var dialogResult = dialogsService.ShowYesNoQuestion($"Do you really want to remove {SelectedContact.Title}?");
+            if (!dialogResult)
+                return;
+
+            try
+            {
+
+            }
+            catch (Exception exc)
+            {
+                dialogsService.ShowException("Exception during deleting contact", exc);
+            }
         }
 
         private async void EditGroups()
@@ -132,17 +146,22 @@ namespace WPFCross.Core.ViewModels
 
         private void LoadAll()
         {
-            LoadContacts();
-            LoadGroups();
+            try
+            {
+                LoadContacts();
+                LoadGroups();
+            }
+            catch (Exception exc)
+            {
+                dialogsService.ShowException("Exception during loading data", exc);
+            }
         }
 
         private void LoadContacts()
         {
             Contacts = new ObservableCollection<ContactItemViewModel>(
-                dbDataAccess.GetContacts(SelectedGroup?.Group, Favourites).Select(c => new ContactItemViewModel
-                {
-                    Title = c.Title
-                }));
+                dbDataAccess.GetContacts(SelectedGroup?.Group, Favourites)
+                .Select(c => new ContactItemViewModel(c)));
         }
     }
 }

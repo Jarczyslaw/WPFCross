@@ -14,14 +14,10 @@
     <StackPanel Margin="3">
         <CheckBox Content="Favourite" />
         <Label Content="Title:" />
-        <TextBox />
+        <TextBox Text="{Binding Title}" />
         <Label Content="Name:" />
-        <TextBox />
-        <!--<controls:GroupSelection DataContext="{Binding GroupSelection}" 
-                                     Width="200"
-                                     HorizontalAlignment="Left"
-                                     Margin="3" />-->
-       
+        <TextBox Text="{Binding Name}" />
+
         <StackPanel Orientation="Horizontal">
             <ComboBox Width="150"
                       ItemsSource="{Binding Groups}"
