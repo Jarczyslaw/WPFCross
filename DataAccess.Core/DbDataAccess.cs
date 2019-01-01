@@ -59,5 +59,10 @@ namespace DataAccess.Core
         {
             throw new NotImplementedException();
         }
+
+        public bool GroupExists(string groupName)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -209,5 +209,10 @@ namespace DataAccess.Core
         {
             return groups.Single(g => g.Default);
         }
+
+        public bool GroupExists(string groupName)
+        {
+            return groups.Any(g => g.Name == groupName);
+        }
     }
 }

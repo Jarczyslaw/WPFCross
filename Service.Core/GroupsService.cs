@@ -30,8 +30,7 @@ namespace Service.Core
                 return result;
             }
 
-            var groups = dataAccess.GetGroups();
-            if (groups.Any(g => g.Name == group.Name))
+            if (dataAccess.GroupExists(group.Name))
             {
                 result.Errors.Add("Group with given name currently exists");
                 return result;
