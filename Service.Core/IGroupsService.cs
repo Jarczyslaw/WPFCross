@@ -8,6 +8,7 @@ namespace Service.Core
 {
     public interface IGroupsService
     {
+        bool ValidateGroupName(string groupName);
         ValueResult<IEnumerable<Group>> GetGroups();
         Result AddGroup(Group group);
         Result EditGroup(Group group);

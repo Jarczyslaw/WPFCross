@@ -14,6 +14,7 @@ namespace WPFCross.Core.ViewModels
 {
     public class ContactViewModel : InputOutputViewModelBase<Contact, bool>
     {
+        private bool addNew;
         private bool favourite;
         private string title, name;
         private GroupItemViewModel selectedGroup;
@@ -77,7 +78,33 @@ namespace WPFCross.Core.ViewModels
 
         private void Save()
         {
-            CloseWithResult(true);
+            var contact = new Contact
+            {
+                Favourite = Favourite,
+                Group = SelectedGroup.Group,
+                Name = Name,
+                Title = Title
+            };
+            AddOrSave(contact);
+        }
+
+        private void AddOrSave(Contact contact)
+        {
+            try
+            {
+                var result = contactsService.AddContact(contact);
+                if (!result.IsSuccess)
+                {
+                    dialogsService.ShowError(result.Errors.First().Content);
+                    return;
+                }
+
+                CloseWithResult(true);
+            }
+            catch (Exception exc)
+            {
+                dialogsService.ShowException("Exception during adding contact", exc);
+            }
         }
 
         private async void EditGroups()
@@ -86,18 +113,21 @@ namespace WPFCross.Core.ViewModels
             {
                 if (changed)
                 {
-                    
+                    LoadGroups(SelectedGroup.Group.Id);
                 }
             }).ConfigureAwait(false);
         }
 
-        private void LoadGroups()
+        private void LoadGroups(int? id = null)
         {
             try
             {
                 var result = groupsService.GetGroups();
                 Groups = new ObservableCollection<GroupItemViewModel>(result.Value.Select(g => new GroupItemViewModel(g)));
-                SelectedGroup = Groups.FirstOrDefault();
+                if (id == null)
+                    SelectedGroup = Groups.FirstOrDefault();
+                else
+                    SelectedGroup = Groups.SingleOrDefault(g => g.Group.Id == id);
             }
             catch (Exception exc)
             {
@@ -105,15 +135,21 @@ namespace WPFCross.Core.ViewModels
             }
         }
 
-        protected override void InitializeInput(Contact input)
+        public override void Prepare(Contact parameter)
         {
-            if (input == null)
+            addNew = parameter == null;
+            if (addNew)
                 return;
 
-            Title = input.Title;
-            Name = input.Title;
-            Favourite = input.Favourite;
-            SelectedGroup = Groups.FirstOrDefault(g => g.Group.Id == input.Group.Id);
+            LoadContact(parameter);
+        }
+
+        private void LoadContact(Contact contact)
+        {
+            Title = contact.Title;
+            Name = contact.Title;
+            Favourite = contact.Favourite;
+            SelectedGroup = Groups.FirstOrDefault(g => g.Group.Id == contact.Group.Id);
         }
     }
 }

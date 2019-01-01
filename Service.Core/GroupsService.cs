@@ -94,7 +94,7 @@ namespace Service.Core
             return result;
         }
 
-        private bool ValidateGroupName(string groupName)
+        public bool ValidateGroupName(string groupName)
         {
             return !string.IsNullOrEmpty(groupName) && groupName.Length >= 3;
         }

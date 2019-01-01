@@ -21,20 +21,10 @@ namespace WPFCross.Core.ViewModels.Base
             this.dialogsService = dialogsService;
         }
 
-        protected TInput Input { get; private set; }
-
         protected async void CloseWithResult(TOutput result)
         {
             await navigationService.Close(this, result)
                 .ConfigureAwait(false);
         }
-
-        public override void Prepare(TInput parameter)
-        {
-            Input = parameter;
-            InitializeInput(Input);
-        }
-
-        protected abstract void InitializeInput(TInput input);
     }
 }
