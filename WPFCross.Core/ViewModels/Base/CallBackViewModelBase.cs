@@ -16,7 +16,7 @@ namespace WPFCross.Core.ViewModels.Base
         protected readonly ILoggerService loggingService;
         protected readonly IDialogsService dialogsService;
 
-        public CallBackViewModelBase(IMvxNavigationService navigationService, ILoggerService loggingService, IDialogsService dialogsService)
+        protected CallBackViewModelBase(IMvxNavigationService navigationService, ILoggerService loggingService, IDialogsService dialogsService)
         {
             this.navigationService = navigationService;
             this.loggingService = loggingService;

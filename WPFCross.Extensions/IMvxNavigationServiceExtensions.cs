@@ -15,5 +15,12 @@ namespace WPFCross.Extensions
             return await navigationService.Navigate<TViewModel, Action<TCallbackType>>(callback)
                 .ConfigureAwait(false);
         }
+
+        public static async Task<TInputType> NavigateWithInput<TViewModel, TInputType>(this IMvxNavigationService navigationService, TInputType input)
+            where TViewModel : MvxViewModel<TInputType, TInputType>
+        {
+            return await navigationService.Navigate<TViewModel, TInputType, TInputType>(input)
+                .ConfigureAwait(false);
+        }
     }
 }

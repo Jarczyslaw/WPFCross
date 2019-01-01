@@ -12,7 +12,8 @@
         WindowStartupLocation="CenterScreen">
     
     <StackPanel Margin="3">
-        <CheckBox Content="Favourite" />
+        <CheckBox Content="Favourite"
+                  IsChecked="{Binding Favourite}" />
         <Label Content="Title:" />
         <TextBox Text="{Binding Title}" />
         <Label Content="Name:" />

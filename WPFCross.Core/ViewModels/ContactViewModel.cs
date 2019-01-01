@@ -1,19 +1,33 @@
-﻿using MvvmCross.Commands;
+﻿using DataAccess.Models;
+using MvvmCross.Commands;
 using MvvmCross.Navigation;
+using Service.Core;
 using Service.Dialogs;
 using Service.Logger;
 using System;
+using System.Collections.ObjectModel;
 using WPFCross.Core.ViewModels.Base;
+using WPFCross.Extensions;
 
 namespace WPFCross.Core.ViewModels
 {
-    public class ContactViewModel : ViewModelBase
+    public class ContactViewModel : InputOutputViewModelBase<Contact, bool>
     {
+        private bool favourite;
         private string title, name;
+        private GroupItemViewModel selectedGroup;
+        private ObservableCollection<GroupItemViewModel> groups;
 
-        public ContactViewModel(IMvxNavigationService navigationService, ILoggerService loggingService, IDialogsService dialogsService)
+        private readonly IGroupsService groupsService;
+        private readonly IContactsService contactsService;
+
+        public ContactViewModel(IMvxNavigationService navigationService, ILoggerService loggingService, IDialogsService dialogsService,
+            IGroupsService groupsService, IContactsService contactsService)
             : base(navigationService, loggingService, dialogsService)
         {
+            this.groupsService = groupsService;
+            this.contactsService = contactsService;
+
             SaveCommand = new MvxCommand(Save);
             CloseCommand = new MvxCommand(Close);
             EditGroupsCommand = new MvxCommand(EditGroups);
@@ -22,6 +36,12 @@ namespace WPFCross.Core.ViewModels
         public IMvxCommand SaveCommand { get; }
         public IMvxCommand CloseCommand { get; }
         public IMvxCommand EditGroupsCommand { get; }
+
+        public bool Favourite
+        {
+            get => favourite;
+            set => SetProperty(ref favourite, value);
+        }
 
         public string Title
         {
@@ -35,25 +55,47 @@ namespace WPFCross.Core.ViewModels
             set => SetProperty(ref name, value);
         }
 
+        public ObservableCollection<GroupItemViewModel> Groups
+        {
+            get => groups;
+            set => SetProperty(ref groups, value);
+        }
+
+        public GroupItemViewModel SelectedGroup
+        {
+            get => selectedGroup;
+            set => SetProperty(ref selectedGroup, value);
+        }
+
         private void Close()
         {
-            throw new NotImplementedException();
+            CloseWithResult(false);
         }
 
         private void Save()
         {
-            throw new NotImplementedException();
+            CloseWithResult(true);
         }
 
-        private void EditGroups()
+        private async void EditGroups()
         {
-            /*await navigationService.NavigateWithCallback<GroupsViewModel, bool>((changed) =>
+            await navigationService.NavigateWithCallback<GroupsViewModel, bool>((changed) =>
             {
                 if (changed)
                 {
-                    LoadAll();
+                    
                 }
-            }).ConfigureAwait(false);*/
+            }).ConfigureAwait(false);
+        }
+
+        protected override void InitializeInput(Contact input)
+        {
+            if (input == null)
+                return;
+
+            Title = input.Title;
+            Name = input.Title;
+            Favourite = input.Favourite;
         }
     }
 }

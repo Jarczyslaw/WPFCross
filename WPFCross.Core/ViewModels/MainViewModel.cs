@@ -1,4 +1,5 @@
-﻿using MvvmCross.Commands;
+﻿using DataAccess.Models;
+using MvvmCross.Commands;
 using MvvmCross.Navigation;
 using Service.Core;
 using Service.Dialogs;
@@ -6,6 +7,7 @@ using Service.Logger;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 using WPFCross.Core.ViewModels.Base;
 using WPFCross.Extensions;
 
@@ -83,13 +85,28 @@ namespace WPFCross.Core.ViewModels
 
         private async void AddNewContact()
         {
-            await navigationService.Navigate<ContactViewModel>()
+            await OpenContactViewModel(null)
                 .ConfigureAwait(false);
         }
 
-        private void EditContact()
+        private async void EditContact()
         {
-            loggingService.Debug("TEST");
+            if (SelectedContact == null)
+                return;
+
+            await OpenContactViewModel(SelectedContact.Contact)
+                .ConfigureAwait(false);
+        }
+
+        private async Task OpenContactViewModel(Contact contact)
+        {
+            var refresh = await navigationService.Navigate<ContactViewModel, Contact, bool>(contact)
+                .ConfigureAwait(false);
+
+            if (refresh)
+            {
+                LoadAll();
+            }
         }
 
         private void DeleteContact()
@@ -117,9 +134,9 @@ namespace WPFCross.Core.ViewModels
 
         private async void EditGroups()
         {
-            await navigationService.NavigateWithCallback<GroupsViewModel, bool>((changed) =>
+            await navigationService.NavigateWithCallback<GroupsViewModel, bool>((refresh) =>
             {
-                if (changed)
+                if (refresh)
                 {
                     LoadAll();
                 }
