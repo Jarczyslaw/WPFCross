@@ -6,6 +6,7 @@ using Service.Dialogs;
 using Service.Logger;
 using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 using WPFCross.Core.ViewModels.Base;
 using WPFCross.Extensions;
 
@@ -31,6 +32,8 @@ namespace WPFCross.Core.ViewModels
             SaveCommand = new MvxCommand(Save);
             CloseCommand = new MvxCommand(Close);
             EditGroupsCommand = new MvxCommand(EditGroups);
+
+            LoadGroups();
         }
 
         public IMvxCommand SaveCommand { get; }
@@ -88,6 +91,20 @@ namespace WPFCross.Core.ViewModels
             }).ConfigureAwait(false);
         }
 
+        private void LoadGroups()
+        {
+            try
+            {
+                var result = groupsService.GetGroups();
+                Groups = new ObservableCollection<GroupItemViewModel>(result.Value.Select(g => new GroupItemViewModel(g)));
+                SelectedGroup = Groups.FirstOrDefault();
+            }
+            catch (Exception exc)
+            {
+                dialogsService.ShowException("Exception during loading groups", exc);
+            }
+        }
+
         protected override void InitializeInput(Contact input)
         {
             if (input == null)
@@ -96,6 +113,7 @@ namespace WPFCross.Core.ViewModels
             Title = input.Title;
             Name = input.Title;
             Favourite = input.Favourite;
+            SelectedGroup = Groups.FirstOrDefault(g => g.Group.Id == input.Group.Id);
         }
     }
 }

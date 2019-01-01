@@ -64,11 +64,7 @@ namespace WPFCross.Core.ViewModels
             try
             {
                 var result = groupsService.GetGroups();
-                Groups = new ObservableCollection<GroupItemViewModel>(result.Value.Select(g => new GroupItemViewModel
-                {
-                    Name = g.Name,
-                    Group = g
-                }));
+                Groups = new ObservableCollection<GroupItemViewModel>(result.Value.Select(g => new GroupItemViewModel(g)));
 
                 if (selected == null)
                     SelectedGroup = Groups.FirstOrDefault();

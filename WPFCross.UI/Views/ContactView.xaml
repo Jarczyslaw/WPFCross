@@ -22,7 +22,8 @@
         <StackPanel Orientation="Horizontal">
             <ComboBox Width="150"
                       ItemsSource="{Binding Groups}"
-                      SelectedItem="{Binding SelectedGroup}" />
+                      SelectedItem="{Binding SelectedGroup}"
+                      DisplayMemberPath="Name" />
             <Button Content="..."
                     Width="30"
                     Command="{Binding EditGroupsCommand}" />
