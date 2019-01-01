@@ -11,7 +11,7 @@ namespace WPFCross.Core.ViewModels
     {
         private string title, name;
 
-        protected ContactViewModel(IMvxNavigationService navigationService, ILoggerService loggingService, IDialogsService dialogsService)
+        public ContactViewModel(IMvxNavigationService navigationService, ILoggerService loggingService, IDialogsService dialogsService)
             : base(navigationService, loggingService, dialogsService)
         {
             SaveCommand = new MvxCommand(Save);

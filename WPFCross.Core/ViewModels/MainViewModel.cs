@@ -81,9 +81,10 @@ namespace WPFCross.Core.ViewModels
             }
         }
 
-        private void AddNewContact()
+        private async void AddNewContact()
         {
-            navigationService.Navigate<ContactViewModel>();
+            await navigationService.Navigate<ContactViewModel>()
+                .ConfigureAwait(false);
         }
 
         private void EditContact()
