@@ -35,7 +35,6 @@ namespace WPFCross.Core.ViewModels
             CloseCommand = new MvxCommand(Close);
             EditGroupsCommand = new MvxCommand(EditGroups);
             AddEntryCommand = new MvxCommand(AddEntry);
-            RemoveEntryCommand = new MvxCommand(RemoveEntry);
 
             LoadGroups();
         }
@@ -44,7 +43,6 @@ namespace WPFCross.Core.ViewModels
         public IMvxCommand CloseCommand { get; }
         public IMvxCommand EditGroupsCommand { get; }
         public IMvxCommand AddEntryCommand { get; }
-        public IMvxCommand RemoveEntryCommand { get; }
 
         public bool Favourite
         {
@@ -164,14 +162,9 @@ namespace WPFCross.Core.ViewModels
             LoadEntries(contact);
         }
 
-        private void RemoveEntry()
-        {
-            throw new NotImplementedException();
-        }
-
         private void AddEntry()
         {
-            throw new NotImplementedException();
+            ContactEntries.Add(new ContactEntryViewModel());
         }
 
         private void LoadEntries(Contact contact)

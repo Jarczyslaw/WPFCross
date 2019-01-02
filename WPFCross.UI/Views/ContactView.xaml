@@ -4,6 +4,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:mvx="clr-namespace:MvvmCross.Platforms.Wpf.Views;assembly=MvvmCross.Platforms.Wpf"
+        xmlns:system="clr-namespace:System;assembly=mscorlib"
+        xmlns:models="clr-namespace:DataAccess.Models;assembly=DataAccess.Models"
         mc:Ignorable="d"
         Title="ContactView"
         Width="350"
@@ -12,36 +14,47 @@
         WindowStartupLocation="CenterScreen">
     
     <mvx:MvxWindow.Resources>
+        <ObjectDataProvider x:Key="EntryTypes"
+                            MethodName="GetValues"
+                            ObjectType="{x:Type system:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="models:ContactEntryType"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+        
         <DataTemplate x:Key="EntryTemplate">
-            <Border Padding="3">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="Auto" />
-                    </Grid.ColumnDefinitions>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
 
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                    </Grid.RowDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
 
-                    <Label Content="Type:" />
-                    <ComboBox Grid.Column="1"
-                              ItemsSource="{Binding ContactEntriesTypes}"
-                              SelectedItem="{Binding SelectedContactEntryType}"
-                              DisplayMemberPath="Name" />
-                    <Button Command="{Binding DeleteEntryCommand}" />
+                <Label Content="Type:" />
+                <ComboBox Grid.Column="1"
+                              ItemsSource="{Binding Source={StaticResource EntryTypes}}"
+                              SelectedItem="{Binding ContactEntryType}"
+                              HorizontalAlignment="Left"
+                              Width="120" />
+                <Button Grid.Column="2"
+                            Width="20"
+                            Height="20"
+                            Content="X"
+                            Command="{Binding DeleteEntryCommand}" />
 
-                    <Label Grid.Row="1"
+                <Label Grid.Row="1"
                        Content="Value:" />
-                    <TextBox Grid.Row="1"
+                <TextBox Grid.Row="1"
                              Grid.Column="1"
                              Grid.ColumnSpan="2"
                              Text="{Binding Value}" />
 
-                </Grid>
-            </Border>
+            </Grid>
         </DataTemplate>
     </mvx:MvxWindow.Resources>
     
@@ -63,16 +76,13 @@
                     Command="{Binding EditGroupsCommand}" />
         </StackPanel>
 
-        <UniformGrid Columns="2">
-            <Button Content="Add entry"
+        <Button Content="Add new entry"
                     Command="{Binding AddEntryCommand}" />
-            <Button Content="Remove entry"
-                    Command="{Binding RemoveEntryCommand}" />
-        </UniformGrid>
 
-        <ListView Height="120"
+        <ListView Height="140"
                   ItemsSource="{Binding ContactEntries}"
-                  ItemTemplate="{StaticResource EntryTemplate}" />
+                  ItemTemplate="{StaticResource EntryTemplate}"
+                  HorizontalContentAlignment="Stretch" />
 
         <UniformGrid Columns="2">
             <Button Content="Save"

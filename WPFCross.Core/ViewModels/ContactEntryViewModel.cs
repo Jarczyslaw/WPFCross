@@ -1,14 +1,18 @@
 ﻿using DataAccess.Models;
 using MvvmCross.ViewModels;
 using System;
-using System.Collections.Generic;
-using System.Text;
+using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace WPFCross.Core.ViewModels
 {
     public class ContactEntryViewModel : MvxViewModel
     {
         private ContactEntry contactEntry;
+
+        public ContactEntryViewModel() : this(new ContactEntry())
+        {
+        }
 
         public ContactEntryViewModel(ContactEntry contactEntry)
         {
