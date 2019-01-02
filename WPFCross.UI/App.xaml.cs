@@ -35,7 +35,7 @@ namespace WPFCross.UI
         public override void ApplicationInitialized()
         {
             base.ApplicationInitialized();
-            globalExceptionHandler = Mvx.IoCProvider.RegisterTypeAndResolve<AppGlobalExceptionHandler>();
+            globalExceptionHandler = Mvx.IoCProvider.IoCConstruct<AppGlobalExceptionHandler>();
         }
     }
 }

@@ -12,7 +12,6 @@ namespace DataAccess.Models
 
         public Group()
         {
-
         }
 
         public Group(Group group)
