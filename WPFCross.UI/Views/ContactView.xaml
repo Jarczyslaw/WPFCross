@@ -11,6 +11,40 @@
         ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen">
     
+    <mvx:MvxWindow.Resources>
+        <DataTemplate x:Key="EntryTemplate">
+            <Border Padding="3">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <Label Content="Type:" />
+                    <ComboBox Grid.Column="1"
+                              ItemsSource="{Binding ContactEntriesTypes}"
+                              SelectedItem="{Binding SelectedContactEntryType}"
+                              DisplayMemberPath="Name" />
+                    <Button Command="{Binding DeleteEntryCommand}" />
+
+                    <Label Grid.Row="1"
+                       Content="Value:" />
+                    <TextBox Grid.Row="1"
+                             Grid.Column="1"
+                             Grid.ColumnSpan="2"
+                             Text="{Binding Value}" />
+
+                </Grid>
+            </Border>
+        </DataTemplate>
+    </mvx:MvxWindow.Resources>
+    
     <StackPanel Margin="3">
         <CheckBox Content="Favourite"
                   IsChecked="{Binding Favourite}" />
@@ -36,9 +70,9 @@
                     Command="{Binding RemoveEntryCommand}" />
         </UniformGrid>
 
-        <ListView Height="120">
-
-        </ListView>
+        <ListView Height="120"
+                  ItemsSource="{Binding ContactEntries}"
+                  ItemTemplate="{StaticResource EntryTemplate}" />
 
         <UniformGrid Columns="2">
             <Button Content="Save"

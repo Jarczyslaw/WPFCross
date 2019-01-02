@@ -19,6 +19,7 @@ namespace WPFCross.Core.ViewModels
         private string title, name;
         private GroupItemViewModel selectedGroup;
         private ObservableCollection<GroupItemViewModel> groups;
+        private ObservableCollection<ContactEntryViewModel> contactEntries;
 
         private readonly IGroupsService groupsService;
         private readonly IContactsService contactsService;
@@ -73,6 +74,12 @@ namespace WPFCross.Core.ViewModels
         {
             get => selectedGroup;
             set => SetProperty(ref selectedGroup, value);
+        }
+
+        public ObservableCollection<ContactEntryViewModel> ContactEntries
+        {
+            get => contactEntries;
+            set => SetProperty(ref contactEntries, value);
         }
 
         private void Close()
@@ -154,6 +161,7 @@ namespace WPFCross.Core.ViewModels
             Name = contact.Title;
             Favourite = contact.Favourite;
             SelectedGroup = Groups.FirstOrDefault(g => g.Group.Id == contact.Group.Id);
+            LoadEntries(contact);
         }
 
         private void RemoveEntry()
@@ -164,6 +172,12 @@ namespace WPFCross.Core.ViewModels
         private void AddEntry()
         {
             throw new NotImplementedException();
+        }
+
+        private void LoadEntries(Contact contact)
+        {
+            ContactEntries = new ObservableCollection<ContactEntryViewModel>(contact.Items
+                .Select(c => new ContactEntryViewModel(c)));
         }
     }
 }
