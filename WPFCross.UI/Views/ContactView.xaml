@@ -79,7 +79,7 @@
         <Button Content="Add new entry"
                     Command="{Binding AddEntryCommand}" />
 
-        <ListView Height="140"
+        <ListView Height="200"
                   ItemsSource="{Binding ContactEntries}"
                   ItemTemplate="{StaticResource EntryTemplate}"
                   HorizontalContentAlignment="Stretch" />
