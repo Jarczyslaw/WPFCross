@@ -6,6 +6,7 @@
         xmlns:mvx="clr-namespace:MvvmCross.Platforms.Wpf.Views;assembly=MvvmCross.Platforms.Wpf"
         xmlns:system="clr-namespace:System;assembly=mscorlib"
         xmlns:models="clr-namespace:DataAccess.Models;assembly=DataAccess.Models"
+        xmlns:local="clr-namespace:WPFCross.UI"
         mc:Ignorable="d"
         Title="ContactView"
         Width="350"
@@ -14,14 +15,16 @@
         WindowStartupLocation="CenterScreen">
     
     <mvx:MvxWindow.Resources>
-        <ObjectDataProvider x:Key="EntryTypes"
+        <ObjectDataProvider x:Key="ContactEntryTypes"
                             MethodName="GetValues"
                             ObjectType="{x:Type system:Enum}">
             <ObjectDataProvider.MethodParameters>
                 <x:Type TypeName="models:ContactEntryType"/>
             </ObjectDataProvider.MethodParameters>
         </ObjectDataProvider>
-        
+
+        <local:BindingProxy x:Key="BindingProxy" Data="{Binding}" />
+
         <DataTemplate x:Key="EntryTemplate">
             <Grid>
                 <Grid.ColumnDefinitions>
@@ -37,7 +40,7 @@
 
                 <Label Content="Type:" />
                 <ComboBox Grid.Column="1"
-                              ItemsSource="{Binding Source={StaticResource EntryTypes}}"
+                              ItemsSource="{Binding Source={StaticResource ContactEntryTypes}}"
                               SelectedItem="{Binding ContactEntryType}"
                               HorizontalAlignment="Left"
                               Width="120" />
@@ -45,7 +48,8 @@
                             Width="20"
                             Height="20"
                             Content="X"
-                            Command="{Binding DeleteEntryCommand}" />
+                            Command="{Binding Data.DeleteEntryCommand, Source={StaticResource BindingProxy}}"
+                            CommandParameter="{Binding}" />
 
                 <Label Grid.Row="1"
                        Content="Value:" />

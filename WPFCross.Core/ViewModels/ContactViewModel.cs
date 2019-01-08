@@ -35,6 +35,7 @@ namespace WPFCross.Core.ViewModels
             CloseCommand = new MvxCommand(Close);
             EditGroupsCommand = new MvxCommand(EditGroups);
             AddEntryCommand = new MvxCommand(AddEntry);
+            DeleteEntryCommand = new MvxCommand<ContactEntryViewModel>(DeleteEntry);
 
             LoadGroups();
         }
@@ -43,6 +44,7 @@ namespace WPFCross.Core.ViewModels
         public IMvxCommand CloseCommand { get; }
         public IMvxCommand EditGroupsCommand { get; }
         public IMvxCommand AddEntryCommand { get; }
+        public IMvxCommand<ContactEntryViewModel> DeleteEntryCommand { get; }
 
         public bool Favourite
         {
@@ -134,9 +136,13 @@ namespace WPFCross.Core.ViewModels
                 var result = groupsService.GetGroups();
                 Groups = new ObservableCollection<GroupItemViewModel>(result.Value.Select(g => new GroupItemViewModel(g)));
                 if (id == null)
+                {
                     SelectedGroup = Groups.FirstOrDefault();
+                }
                 else
+                {
                     SelectedGroup = Groups.SingleOrDefault(g => g.Group.Id == id);
+                }
             }
             catch (Exception exc)
             {
@@ -148,7 +154,9 @@ namespace WPFCross.Core.ViewModels
         {
             addNew = parameter == null;
             if (addNew)
+            {
                 return;
+            }
 
             LoadContact(parameter);
         }
@@ -165,6 +173,11 @@ namespace WPFCross.Core.ViewModels
         private void AddEntry()
         {
             ContactEntries.Add(new ContactEntryViewModel());
+        }
+
+        private void DeleteEntry(ContactEntryViewModel entry)
+        {
+            
         }
 
         private void LoadEntries(Contact contact)

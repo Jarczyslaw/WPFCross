@@ -83,6 +83,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="BindingProxy.cs" />
     <Compile Include="GlobalExceptions\AppGlobalExceptionHandler.cs" />
     <Compile Include="Services\AppSettings.cs" />
     <Compile Include="CrossApplication.cs" />
