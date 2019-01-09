@@ -1,25 +1,17 @@
 ﻿using MvvmCross;
 using MvvmCross.Core;
-using MvvmCross.IoC;
 using MvvmCross.Platforms.Wpf.Views;
-using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Globalization;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Threading;
-using WPFCross.Extensions;
 using WPFCross.UI.GlobalExceptions;
+using WPFCross.UI.Services;
 
 namespace WPFCross.UI
 {
     public partial class App : MvxApplication
     {
         private AppGlobalExceptionHandler globalExceptionHandler;
+
+        public static ArgsService ArgsService { get; private set; }
 
         protected override void RegisterSetup()
         {
@@ -28,6 +20,9 @@ namespace WPFCross.UI
 
         protected override void OnStartup(StartupEventArgs e)
         {
+            ArgsService = new ArgsService();
+            ArgsService.Parse(e.Args);
+
             var mainWindow = new MainWindow();
             mainWindow.Show();
         }

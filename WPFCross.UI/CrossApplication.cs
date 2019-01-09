@@ -20,6 +20,7 @@ namespace WPFCross.UI
 
         private void RegisterDependencies()
         {
+            Mvx.IoCProvider.RegisterSingleton<IArgsService>(App.ArgsService);
             Mvx.IoCProvider.RegisterSingleton<IAppSettings>(() => Mvx.IoCProvider.IoCConstruct<AppSettings>());
             Mvx.IoCProvider.RegisterSingleton<ILoggerService>(() => Mvx.IoCProvider.IoCConstruct<LoggerService>());
             Mvx.IoCProvider.RegisterSingleton<IDialogsService>(() => Mvx.IoCProvider.IoCConstruct<DialogsService>());
