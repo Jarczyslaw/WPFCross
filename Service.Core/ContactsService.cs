@@ -3,12 +3,14 @@ using DataAccess.Core;
 using DataAccess.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Service.Core
 {
     public class ContactsService : IContactsService
     {
         private readonly IDbDataAccess dataAccess;
+        private readonly int minLength = 3;
 
         public ContactsService(IDbDataAccess dataAccess)
         {
@@ -20,14 +22,24 @@ namespace Service.Core
             return new ValueResult<IEnumerable<Contact>>(dataAccess.GetContacts(group, favourites));
         }
 
+        private bool CheckStringValue(string value)
+        {
+            return !string.IsNullOrEmpty(value) && value.Length >= minLength;
+        }
+
         public bool ValidateContactName(string name)
         {
-            return !string.IsNullOrEmpty(name) && name.Length >= 3;
+            return CheckStringValue(name);
         }
 
         public bool ValidateContactTitle(string title)
         {
-            return !string.IsNullOrEmpty(title) && title.Length >= 3;
+            return CheckStringValue(title);
+        }
+
+        public bool ValidateContactEntry(ContactEntry entry)
+        {
+            return CheckStringValue(entry.Value);
         }
 
         public Result ValidateContact(Contact contact)
@@ -52,6 +64,12 @@ namespace Service.Core
                 return result;
             }
 
+            if (contact.Items == null || contact.Items.Count == 0 || contact.Items.Any(e => !ValidateContactEntry(e)))
+            {
+                result.Errors.Add("Can not add contact with no entries or empty entries");
+                return result;
+            }
+
             return result;
         }
 
@@ -64,6 +82,19 @@ namespace Service.Core
                 return validationResult;
 
             dataAccess.AddContact(contact);
+
+            return result;
+        }
+
+        public Result EditContact(Contact contact)
+        {
+            var result = new Result();
+
+            var validationResult = ValidateContact(contact);
+            if (!validationResult.IsSuccess)
+                return validationResult;
+
+            dataAccess.EditContact(contact);
 
             return result;
         }

@@ -25,7 +25,14 @@ namespace WPFCross.UI
             Mvx.IoCProvider.RegisterSingleton<ILoggerService>(() => Mvx.IoCProvider.IoCConstruct<LoggerService>());
             Mvx.IoCProvider.RegisterSingleton<IDialogsService>(() => Mvx.IoCProvider.IoCConstruct<DialogsService>());
             Mvx.IoCProvider.RegisterSingleton<IDataMapperService>(() => Mvx.IoCProvider.IoCConstruct<DataMapperService>());
-            Mvx.IoCProvider.RegisterSingleton<IDbDataAccess>(() => Mvx.IoCProvider.IoCConstruct<DbDataAccessMock>());
+            if (App.ArgsService.Mock)
+            {
+                Mvx.IoCProvider.RegisterSingleton<IDbDataAccess>(() => Mvx.IoCProvider.IoCConstruct<DbDataAccessMock>());
+            }
+            else
+            {
+                Mvx.IoCProvider.RegisterSingleton<IDbDataAccess>(() => Mvx.IoCProvider.IoCConstruct<DbDataAccess>());
+            }   
             Mvx.IoCProvider.RegisterSingleton<IContactsService>(() => Mvx.IoCProvider.IoCConstruct<ContactsService>());
             Mvx.IoCProvider.RegisterSingleton<IGroupsService>(() => Mvx.IoCProvider.IoCConstruct<GroupsService>());
         }

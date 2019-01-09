@@ -13,6 +13,7 @@ namespace Service.Core
         Result ValidateContact(Contact contact);
         ValueResult<IEnumerable<Contact>> GetContacts(Group group, bool favourites);
         Result AddContact(Contact contact);
+        Result EditContact(Contact contact);
         void DeleteContact(Contact contact);
     }
 }

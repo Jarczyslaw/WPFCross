@@ -1,4 +1,5 @@
-﻿using DataAccess.Models;
+﻿using Commons;
+using DataAccess.Models;
 using MvvmCross.Commands;
 using MvvmCross.Navigation;
 using Service.Core;
@@ -14,12 +15,12 @@ namespace WPFCross.Core.ViewModels
 {
     public class ContactViewModel : InputOutputViewModelBase<Contact, bool>
     {
-        private bool addNew;
+        private int? contactId;
         private bool favourite;
         private string title, name;
         private GroupItemViewModel selectedGroup;
         private ObservableCollection<GroupItemViewModel> groups;
-        private ObservableCollection<ContactEntryViewModel> contactEntries;
+        private ObservableCollection<ContactEntryViewModel> contactEntries = new ObservableCollection<ContactEntryViewModel>();
 
         private readonly IGroupsService groupsService;
         private readonly IContactsService contactsService;
@@ -91,19 +92,22 @@ namespace WPFCross.Core.ViewModels
         {
             var contact = new Contact
             {
+                Id = contactId.HasValue ? contactId.Value : 0,
                 Favourite = Favourite,
                 Group = SelectedGroup.Group,
                 Name = Name,
-                Title = Title
+                Title = Title,
+                Items = ContactEntries?.Select(e => e.ContactEntry).ToList()
             };
-            AddOrSave(contact);
-        }
 
-        private void AddOrSave(Contact contact)
-        {
             try
             {
-                var result = contactsService.AddContact(contact);
+                Result result = null;
+                if (!contactId.HasValue)
+                    result = contactsService.AddContact(contact);
+                else
+                    result = contactsService.EditContact(contact);
+
                 if (!result.IsSuccess)
                 {
                     dialogsService.ShowError(result.Errors.First().Content);
@@ -114,7 +118,7 @@ namespace WPFCross.Core.ViewModels
             }
             catch (Exception exc)
             {
-                dialogsService.ShowException("Exception during adding contact", exc);
+                dialogsService.ShowException("Exception during saving contact", exc);
             }
         }
 
@@ -152,8 +156,7 @@ namespace WPFCross.Core.ViewModels
 
         public override void Prepare(Contact parameter)
         {
-            addNew = parameter == null;
-            if (addNew)
+            if (parameter == null)
             {
                 return;
             }
@@ -163,8 +166,9 @@ namespace WPFCross.Core.ViewModels
 
         private void LoadContact(Contact contact)
         {
+            contactId = contact.Id;
             Title = contact.Title;
-            Name = contact.Title;
+            Name = contact.Name;
             Favourite = contact.Favourite;
             SelectedGroup = Groups.FirstOrDefault(g => g.Group.Id == contact.Group.Id);
             LoadEntries(contact);
@@ -177,7 +181,7 @@ namespace WPFCross.Core.ViewModels
 
         private void DeleteEntry(ContactEntryViewModel entry)
         {
-            
+            ContactEntries.Remove(entry);
         }
 
         private void LoadEntries(Contact contact)
