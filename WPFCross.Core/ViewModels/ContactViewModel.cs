@@ -92,12 +92,12 @@ namespace WPFCross.Core.ViewModels
         {
             var contact = new Contact
             {
-                Id = contactId.HasValue ? contactId.Value : 0,
+                Id = contactId ?? 0,
                 Favourite = Favourite,
                 Group = SelectedGroup.Group,
                 Name = Name,
                 Title = Title,
-                Items = ContactEntries?.Select(e => e.ContactEntry).ToList()
+                Items = ContactEntries?.Select(e => e.GetContact()).ToList()
             };
 
             try

@@ -9,7 +9,8 @@ namespace WPFCross.Core.ViewModels
 {
     public class ContactEntryViewModel : MvxViewModel
     {
-        private ContactEntry contactEntry;
+        private string contactEntryValue;
+        private ContactEntryType contactEntryType;
 
         public ContactEntryViewModel() : this(new ContactEntry())
         {
@@ -17,33 +18,29 @@ namespace WPFCross.Core.ViewModels
 
         public ContactEntryViewModel(ContactEntry contactEntry)
         {
-            ContactEntry = contactEntry;
-        }
-
-        public ContactEntry ContactEntry
-        {
-            get => contactEntry;
-            set => SetProperty(ref contactEntry, value);
+            ContactEntryValue = contactEntry.Value;
+            ContactEntryType = contactEntry.Type;
         }
 
         public ContactEntryType ContactEntryType
         {
-            get => ContactEntry.Type;
-            set
-            {
-                ContactEntry.Type = value;
-                RaisePropertyChanged(nameof(ContactEntryType));
-            }
+            get => contactEntryType;
+            set => SetProperty(ref contactEntryType, value);
         }
 
-        public string Value
+        public string ContactEntryValue
         {
-            get => ContactEntry.Value;
-            set
+            get => contactEntryValue;
+            set => SetProperty(ref contactEntryValue, value);
+        }
+
+        public ContactEntry GetContact()
+        {
+            return new ContactEntry
             {
-                ContactEntry.Value = value;
-                RaisePropertyChanged(nameof(Value));
-            }
+                Type = ContactEntryType,
+                Value = ContactEntryValue
+            };
         }
     }
 }

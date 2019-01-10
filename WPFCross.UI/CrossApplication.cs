@@ -32,7 +32,7 @@ namespace WPFCross.UI
             else
             {
                 Mvx.IoCProvider.RegisterSingleton<IDbDataAccess>(() => Mvx.IoCProvider.IoCConstruct<DbDataAccess>());
-            }   
+            }
             Mvx.IoCProvider.RegisterSingleton<IContactsService>(() => Mvx.IoCProvider.IoCConstruct<ContactsService>());
             Mvx.IoCProvider.RegisterSingleton<IGroupsService>(() => Mvx.IoCProvider.IoCConstruct<GroupsService>());
         }
