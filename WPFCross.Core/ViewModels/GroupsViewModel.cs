@@ -106,9 +106,11 @@ namespace WPFCross.Core.ViewModels
         {
             try
             {
-                var edited = new Group(SelectedGroup.Group)
+                var edited = new Group
                 {
-                    Name = GroupName
+                    Name = GroupName,
+                    Default = SelectedGroup.Group.Default,
+                    Id = SelectedGroup.Group.Id
                 };
 
                 var result = groupsService.EditGroup(edited);
