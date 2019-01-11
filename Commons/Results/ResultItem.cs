@@ -3,7 +3,8 @@
     public abstract class ResultItem
     {
         public int Code { get; set; }
-        public string Content { get; set; }
+
+        public virtual string Content { get; set; }
 
         protected ResultItem()
         {
