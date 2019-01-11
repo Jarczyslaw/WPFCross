@@ -9,5 +9,16 @@ namespace DataAccess.Models
         public int Id { get; set; }
         public bool Default { get; set; }
         public string Name { get; set; }
+
+        public Group()
+        {
+        }
+
+        public Group(Group group)
+        {
+            Id = group.Id;
+            Default = group.Default;
+            Name = group.Name;
+        }
     }
 }
