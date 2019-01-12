@@ -14,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using WPFCross.Core.ViewModels;
 
 namespace WPFCross.UI
 {
@@ -23,6 +24,15 @@ namespace WPFCross.UI
         public MainView()
         {
             InitializeComponent();
+        }
+
+        private void ListViewItem_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if (DataContext is MainViewModel mainViewModel
+                && ((FrameworkElement)e.OriginalSource).DataContext is ContactItemViewModel contactViewModel)
+            {
+                mainViewModel.EditCommand.Execute();
+            }
         }
     }
 }

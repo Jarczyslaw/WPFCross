@@ -65,7 +65,8 @@
                 SelectedItem="{Binding SelectedContact}"
                 ItemTemplate="{StaticResource ContactItemTemplate}" 
                 Background="Transparent"
-                BorderThickness="0" />
+                BorderThickness="0" 
+                MouseDoubleClick="ListViewItem_MouseDoubleClick" />
 
         <Grid Grid.Row="2" 
               Margin="3">
