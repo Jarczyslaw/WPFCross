@@ -1,4 +1,5 @@
-﻿using DataAccess.Core;
+﻿using System.Threading.Tasks;
+using DataAccess.Core;
 using MvvmCross;
 using MvvmCross.ViewModels;
 using Service.Core;
@@ -16,6 +17,17 @@ namespace WPFCross.UI
         {
             RegisterDependencies();
             RegisterAppStart<MainViewModel>();
+        }
+
+        public override Task Startup()
+        {
+            var argsService = Mvx.IoCProvider.Resolve<IArgsService>();
+            var dbDataAccess = Mvx.IoCProvider.Resolve<IDbDataAccess>();
+
+            if (argsService.DbInitialize)
+                dbDataAccess.Initialize();
+
+            return base.Startup();
         }
 
         private void RegisterDependencies()

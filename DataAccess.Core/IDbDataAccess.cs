@@ -7,6 +7,7 @@ namespace DataAccess.Core
 {
     public interface IDbDataAccess
     {
+        void Initialize();
         void AddContact(Contact contact);
         void AddGroup(Group group);
         void DeleteContact(int id);

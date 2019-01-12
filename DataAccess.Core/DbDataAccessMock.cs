@@ -19,9 +19,6 @@ namespace DataAccess.Core
         public DbDataAccessMock(IDataMapperService dataMapperService)
         {
             this.dataMapperService = dataMapperService;
-
-            InitializeGroups();
-            InitializeContacts();
         }
 
         public void AddContact(Contact contact)
@@ -213,6 +210,12 @@ namespace DataAccess.Core
         public bool GroupExists(string groupName)
         {
             return groups.Any(g => g.Name == groupName);
+        }
+
+        public void Initialize()
+        {
+            InitializeGroups();
+            InitializeContacts();
         }
     }
 }
