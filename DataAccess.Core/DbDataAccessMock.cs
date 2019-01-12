@@ -15,7 +15,6 @@ namespace DataAccess.Core
         public DbDataAccessMock(IDataMapperService dataMapperService)
         {
             this.dataMapperService = dataMapperService;
-            var db = new LiteDB.LiteDatabase("asd");
         }
 
         public void AddContact(Contact contact)
