@@ -9,10 +9,12 @@ namespace DataAccess.Core
     public class DbDataAccess : IDbDataAccess
     {
         private readonly IDataMapperService dataMapperService;
+        private readonly LiteDbAccess liteDbAccess;
 
         public DbDataAccess(IDataMapperService dataMapperService)
         {
             this.dataMapperService = dataMapperService;
+            liteDbAccess = new LiteDbAccess();
         }
 
         public void AddContact(Contact contact)
