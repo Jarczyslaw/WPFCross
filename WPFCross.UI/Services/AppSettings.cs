@@ -1,14 +1,15 @@
-﻿using System;
+﻿using DataAccess.Core;
+using System;
 using System.Configuration;
 using System.Runtime.CompilerServices;
 
 namespace WPFCross.UI.Services
 {
-    public class AppSettings : IAppSettings
+    public class AppSettings : IAppSettings, IDbConnectionProvider
     {
-        public ConnectionStringSettings LiteDbConnectionString
+        public string DbConnection
         {
-            get { return GetConnectionString(); }
+            get { return GetConnectionString().ConnectionString; }
         }
 
         private ConnectionStringSettings GetConnectionString([CallerMemberName] string key = null)

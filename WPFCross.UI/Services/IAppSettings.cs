@@ -4,6 +4,6 @@ namespace WPFCross.UI.Services
 {
     public interface IAppSettings
     {
-        ConnectionStringSettings LiteDbConnectionString { get; }
+        string DbConnection { get; }
     }
 }
