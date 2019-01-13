@@ -9,22 +9,48 @@ namespace DataAccess.Core
     public class DbDataAccess : IDbDataAccess
     {
         private readonly IDataMapperService dataMapperService;
-        private readonly LiteDbAccess liteDbAccess;
+        private readonly IDbConnectionProvider connectionProvider;
 
-        public DbDataAccess(IDataMapperService dataMapperService)
+        private readonly ILiteDbAccess liteDbAccess;
+
+        public DbDataAccess(IDataMapperService dataMapperService, IDbConnectionProvider connectionProvider)
         {
             this.dataMapperService = dataMapperService;
+            this.connectionProvider = connectionProvider;
+
             liteDbAccess = new LiteDbAccess();
         }
 
         public void AddContact(Contact contact)
         {
-            throw new NotImplementedException();
+            liteDbAccess.InvokeContactsAction(connectionProvider.DbConnection, (_, collection) => collection.Insert(contact));
+        }
+
+        private void AddContacts(IEnumerable<Contact> contacts)
+        {
+            liteDbAccess.InvokeContactsAction(connectionProvider.DbConnection, (_, collection) =>
+            {
+                foreach (var contact in contacts)
+                {
+                    collection.Insert(contact);
+                }
+            });
         }
 
         public void AddGroup(Group group)
         {
-            throw new NotImplementedException();
+            liteDbAccess.InvokeGroupsAction(connectionProvider.DbConnection, (_, collection) => collection.Insert(group));
+        }
+
+        private void AddGroups(IEnumerable<Group> groups)
+        {
+            liteDbAccess.InvokeGroupsAction(connectionProvider.DbConnection, (_, collection) =>
+            {
+                foreach (var group in groups)
+                {
+                    collection.Insert(group);
+                }
+            });
         }
 
         public void DeleteContact(int id)
@@ -69,7 +95,13 @@ namespace DataAccess.Core
 
         public void Initialize()
         {
-            throw new NotImplementedException();
+            liteDbAccess.DropGroups(connectionProvider.DbConnection);
+            var groups = DbDataInitializer.CreateGroups();
+            AddGroups(groups);
+
+            liteDbAccess.DropContacts(connectionProvider.DbConnection);
+            var contacts = DbDataInitializer.CreateContacts(groups);
+            AddContacts(contacts);
         }
     }
 }
