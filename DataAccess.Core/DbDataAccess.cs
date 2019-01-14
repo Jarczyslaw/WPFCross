@@ -61,22 +61,42 @@ namespace DataAccess.Core
 
         public void DeleteContact(int id)
         {
-            throw new NotImplementedException();
+            using (var db = new LiteDatabase(ConnectionString))
+            {
+                var collection = db.GetCollection<Contact>(ContactsCollection);
+                collection.Delete(c => c.Id == id);
+            }
         }
 
         public void DeleteGroup(int id)
         {
-            throw new NotImplementedException();
+            using (var db = new LiteDatabase(ConnectionString))
+            {
+                var collection = db.GetCollection<Group>(GroupsCollection);
+                collection.Delete(g => g.Id == id);
+            }
         }
 
         public void EditContact(Contact contact)
         {
-            throw new NotImplementedException();
+            using (var db = new LiteDatabase(ConnectionString))
+            {
+                var collection = db.GetCollection<Contact>(ContactsCollection);
+                var edited = collection.FindById(contact.Id);
+                dataMapperService.Map(contact, edited);
+                collection.Update(edited);
+            }
         }
 
         public void EditGroup(Group group)
         {
-            throw new NotImplementedException();
+            using (var db = new LiteDatabase(ConnectionString))
+            {
+                var collection = db.GetCollection<Group>(GroupsCollection);
+                var edited = collection.FindById(group.Id);
+                dataMapperService.Map(group, edited);
+                collection.Update(edited);
+            }
         }
 
         public IEnumerable<Contact> GetContacts(Group group, bool favourites)
