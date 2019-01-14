@@ -19,6 +19,11 @@ namespace DataAccess.Core
         {
             this.dataMapperService = dataMapperService;
             this.connectionProvider = connectionProvider;
+
+            BsonMapper.Global
+                .Entity<Contact>().Id(c => c.Id);
+            BsonMapper.Global
+                .Entity<Group>().Id(g => g.Id);
         }
 
         private string ConnectionString => connectionProvider.DbConnection;
@@ -27,7 +32,7 @@ namespace DataAccess.Core
         {
             using (var db = new LiteDatabase(ConnectionString))
             {
-                var collection = db.GetCollection<Contact>(ContactsCollection);
+                var collection = GetContactsCollection(db);
                 collection.Insert(contact);
             }
         }
@@ -36,8 +41,8 @@ namespace DataAccess.Core
         {
             using (var db = new LiteDatabase(ConnectionString))
             {
-                var collection = db.GetCollection<Contact>(ContactsCollection);
-                collection.InsertBulk(contacts);
+                var collection = GetContactsCollection(db);
+                collection.Insert(contacts);
             }
         }
 
@@ -45,7 +50,7 @@ namespace DataAccess.Core
         {
             using (var db = new LiteDatabase(ConnectionString))
             {
-                var collection = db.GetCollection<Group>(GroupsCollection);
+                var collection = GetGroupsCollection(db);
                 collection.Insert(group);
             }
         }
@@ -54,8 +59,8 @@ namespace DataAccess.Core
         {
             using (var db = new LiteDatabase(ConnectionString))
             {
-                var collection = db.GetCollection<Group>(GroupsCollection);
-                collection.InsertBulk(groups);
+                var collection = GetGroupsCollection(db);
+                collection.Insert(groups);
             }
         }
 
@@ -63,7 +68,7 @@ namespace DataAccess.Core
         {
             using (var db = new LiteDatabase(ConnectionString))
             {
-                var collection = db.GetCollection<Contact>(ContactsCollection);
+                var collection = GetContactsCollection(db);
                 collection.Delete(c => c.Id == id);
             }
         }
@@ -72,7 +77,7 @@ namespace DataAccess.Core
         {
             using (var db = new LiteDatabase(ConnectionString))
             {
-                var collection = db.GetCollection<Group>(GroupsCollection);
+                var collection = GetGroupsCollection(db);
                 collection.Delete(g => g.Id == id);
             }
         }
@@ -81,7 +86,7 @@ namespace DataAccess.Core
         {
             using (var db = new LiteDatabase(ConnectionString))
             {
-                var collection = db.GetCollection<Contact>(ContactsCollection);
+                var collection = GetContactsCollection(db);
                 var edited = collection.FindById(contact.Id);
                 dataMapperService.Map(contact, edited);
                 collection.Update(edited);
@@ -92,7 +97,7 @@ namespace DataAccess.Core
         {
             using (var db = new LiteDatabase(ConnectionString))
             {
-                var collection = db.GetCollection<Group>(GroupsCollection);
+                var collection = GetGroupsCollection(db);
                 var edited = collection.FindById(group.Id);
                 dataMapperService.Map(group, edited);
                 collection.Update(edited);
@@ -103,7 +108,7 @@ namespace DataAccess.Core
         {
             using (var db = new LiteDatabase(ConnectionString))
             {
-                var collection = db.GetCollection<Contact>(GroupsCollection);
+                var collection = GetContactsCollection(db);
                 return collection.Find(c => (group == null || c.Group.Id == group.Id)
                     && (!favourites || c.Favourite));
             }
@@ -113,7 +118,7 @@ namespace DataAccess.Core
         {
             using (var db = new LiteDatabase(ConnectionString))
             {
-                var collection = db.GetCollection<Group>(GroupsCollection);
+                var collection = GetGroupsCollection(db);
                 return collection.FindAll().Single(g => g.Default);
             }
         }
@@ -122,7 +127,7 @@ namespace DataAccess.Core
         {
             using (var db = new LiteDatabase(ConnectionString))
             {
-                var collection = db.GetCollection<Group>(GroupsCollection);
+                var collection = GetGroupsCollection(db);
                 return collection.FindAll();
             }
         }
@@ -131,7 +136,7 @@ namespace DataAccess.Core
         {
             using (var db = new LiteDatabase(ConnectionString))
             {
-                var collection = db.GetCollection<Group>(GroupsCollection);
+                var collection = GetGroupsCollection(db);
                 return collection.Find(g => g.Name == groupName).Any();
             }
         }
@@ -141,14 +146,26 @@ namespace DataAccess.Core
             using (var db = new LiteDatabase(ConnectionString))
             {
                 db.DropCollection(GroupsCollection);
-                var groupsCollection = db.GetCollection<Group>(GroupsCollection);
+                var groupsCollection = GetGroupsCollection(db);
                 AddGroups(DbDataInitializer.CreateGroups());
 
-                db.DropCollection(GroupsCollection);
-                var contactsCollection = db.GetCollection<Contact>(ContactsCollection);
+                db.DropCollection(ContactsCollection);
+                var contactsCollection = GetContactsCollection(db);
                 var groups = GetGroups();
                 AddContacts(DbDataInitializer.CreateContacts(groups));
+
+                var c = GetContacts(null, false);
             }
+        }
+
+        private LiteCollection<Contact> GetContactsCollection(LiteDatabase database)
+        {
+            return database.GetCollection<Contact>(ContactsCollection);
+        }
+
+        private LiteCollection<Group> GetGroupsCollection(LiteDatabase database)
+        {
+            return database.GetCollection<Group>(GroupsCollection);
         }
     }
 }
