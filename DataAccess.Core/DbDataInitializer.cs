@@ -8,7 +8,7 @@ namespace DataAccess.Core
 {
     public static class DbDataInitializer
     {
-        private static Group FindGroup(List<Group> groups, string groupName)
+        private static Group FindGroup(IEnumerable<Group> groups, string groupName)
         {
             var group = groups.SingleOrDefault(g => g.Name == groupName);
             if (group == null)
@@ -16,7 +16,7 @@ namespace DataAccess.Core
             return group;
         }
 
-        public static List<Contact> CreateContacts(List<Group> groups, int initialContactId = 0)
+        public static List<Contact> CreateContacts(IEnumerable<Group> groups, int initialContactId = 0)
         {
             int contactItemsId = 0;
             return new List<Contact>

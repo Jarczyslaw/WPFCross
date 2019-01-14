@@ -1,56 +1,62 @@
 ﻿using DataAccess.Models;
+using LiteDB;
 using Service.DataMapper;
 using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 
 namespace DataAccess.Core
 {
     public class DbDataAccess : IDbDataAccess
     {
+        public string ContactsCollection { get; } = "Contacts";
+        public string GroupsCollection { get; } = "Groups";
+
         private readonly IDataMapperService dataMapperService;
         private readonly IDbConnectionProvider connectionProvider;
-
-        private readonly ILiteDbAccess liteDbAccess;
 
         public DbDataAccess(IDataMapperService dataMapperService, IDbConnectionProvider connectionProvider)
         {
             this.dataMapperService = dataMapperService;
             this.connectionProvider = connectionProvider;
-
-            liteDbAccess = new LiteDbAccess();
         }
+
+        private string ConnectionString => connectionProvider.DbConnection;
 
         public void AddContact(Contact contact)
         {
-            liteDbAccess.InvokeContactsAction(connectionProvider.DbConnection, (_, collection) => collection.Insert(contact));
+            using (var db = new LiteDatabase(ConnectionString))
+            {
+                var collection = db.GetCollection<Contact>(ContactsCollection);
+                collection.Insert(contact);
+            }
         }
 
         private void AddContacts(IEnumerable<Contact> contacts)
         {
-            liteDbAccess.InvokeContactsAction(connectionProvider.DbConnection, (_, collection) =>
+            using (var db = new LiteDatabase(ConnectionString))
             {
-                foreach (var contact in contacts)
-                {
-                    collection.Insert(contact);
-                }
-            });
+                var collection = db.GetCollection<Contact>(ContactsCollection);
+                collection.InsertBulk(contacts);
+            }
         }
 
         public void AddGroup(Group group)
         {
-            liteDbAccess.InvokeGroupsAction(connectionProvider.DbConnection, (_, collection) => collection.Insert(group));
+            using (var db = new LiteDatabase(ConnectionString))
+            {
+                var collection = db.GetCollection<Group>(GroupsCollection);
+                collection.Insert(group);
+            }
         }
 
         private void AddGroups(IEnumerable<Group> groups)
         {
-            liteDbAccess.InvokeGroupsAction(connectionProvider.DbConnection, (_, collection) =>
+            using (var db = new LiteDatabase(ConnectionString))
             {
-                foreach (var group in groups)
-                {
-                    collection.Insert(group);
-                }
-            });
+                var collection = db.GetCollection<Group>(GroupsCollection);
+                collection.InsertBulk(groups);
+            }
         }
 
         public void DeleteContact(int id)
@@ -75,33 +81,54 @@ namespace DataAccess.Core
 
         public IEnumerable<Contact> GetContacts(Group group, bool favourites)
         {
-            throw new NotImplementedException();
+            using (var db = new LiteDatabase(ConnectionString))
+            {
+                var collection = db.GetCollection<Contact>(GroupsCollection);
+                return collection.Find(c => (group == null || c.Group.Id == group.Id)
+                    && (!favourites || c.Favourite));
+            }
         }
 
         public Group GetDefaultGroup()
         {
-            throw new NotImplementedException();
+            using (var db = new LiteDatabase(ConnectionString))
+            {
+                var collection = db.GetCollection<Group>(GroupsCollection);
+                return collection.FindAll().Single(g => g.Default);
+            }
         }
 
         public IEnumerable<Group> GetGroups()
         {
-            throw new NotImplementedException();
+            using (var db = new LiteDatabase(ConnectionString))
+            {
+                var collection = db.GetCollection<Group>(GroupsCollection);
+                return collection.FindAll();
+            }
         }
 
         public bool GroupExists(string groupName)
         {
-            throw new NotImplementedException();
+            using (var db = new LiteDatabase(ConnectionString))
+            {
+                var collection = db.GetCollection<Group>(GroupsCollection);
+                return collection.Find(g => g.Name == groupName).Any();
+            }
         }
 
         public void Initialize()
         {
-            liteDbAccess.DropGroups(connectionProvider.DbConnection);
-            var groups = DbDataInitializer.CreateGroups();
-            AddGroups(groups);
+            using (var db = new LiteDatabase(ConnectionString))
+            {
+                db.DropCollection(GroupsCollection);
+                var groupsCollection = db.GetCollection<Group>(GroupsCollection);
+                AddGroups(DbDataInitializer.CreateGroups());
 
-            liteDbAccess.DropContacts(connectionProvider.DbConnection);
-            var contacts = DbDataInitializer.CreateContacts(groups);
-            AddContacts(contacts);
+                db.DropCollection(GroupsCollection);
+                var contactsCollection = db.GetCollection<Contact>(ContactsCollection);
+                var groups = GetGroups();
+                AddContacts(DbDataInitializer.CreateContacts(groups));
+            }
         }
     }
 }
