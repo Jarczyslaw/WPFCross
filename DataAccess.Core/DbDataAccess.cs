@@ -109,7 +109,7 @@ namespace DataAccess.Core
             using (var db = new LiteDatabase(ConnectionString))
             {
                 var collection = GetContactsCollection(db);
-                return collection.Find(c => (group == null || c.Group.Id == group.Id)
+                return collection.FindAll().Where(c => (group == null || c.Group.Id == group.Id)
                     && (!favourites || c.Favourite));
             }
         }
@@ -137,7 +137,7 @@ namespace DataAccess.Core
             using (var db = new LiteDatabase(ConnectionString))
             {
                 var collection = GetGroupsCollection(db);
-                return collection.Find(g => g.Name == groupName).Any();
+                return collection.FindAll().Any(g => g.Name == groupName);
             }
         }
 
