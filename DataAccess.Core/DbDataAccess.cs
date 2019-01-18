@@ -153,8 +153,6 @@ namespace DataAccess.Core
                 var contactsCollection = GetContactsCollection(db);
                 var groups = GetGroups();
                 AddContacts(DbDataInitializer.CreateContacts(groups));
-
-                var c = GetContacts(null, false);
             }
         }
 
