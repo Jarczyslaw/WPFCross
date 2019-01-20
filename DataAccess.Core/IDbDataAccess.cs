@@ -18,5 +18,6 @@ namespace DataAccess.Core
         IEnumerable<Group> GetGroups();
         bool GroupExists(string groupName);
         Group GetDefaultGroup();
+        void Clear();
     }
 }

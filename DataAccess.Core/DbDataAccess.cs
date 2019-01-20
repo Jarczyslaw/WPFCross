@@ -165,5 +165,14 @@ namespace DataAccess.Core
         {
             return database.GetCollection<Group>(GroupsCollection);
         }
+
+        public void Clear()
+        {
+            using (var db = new LiteDatabase(ConnectionString))
+            {
+                db.DropCollection(GroupsCollection);
+                db.DropCollection(ContactsCollection);
+            }
+        }
     }
 }

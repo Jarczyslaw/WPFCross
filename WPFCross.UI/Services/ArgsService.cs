@@ -6,9 +6,11 @@ namespace WPFCross.UI.Services
     {
         private readonly FluentCommandLineParser parser;
 
-        public bool Mock { get; set; }
+        public bool Mock { get; private set; }
 
-        public bool DbInitialize { get; set; }
+        public bool DbInitialize { get; private set; }
+
+        public bool Clear { get; private set; }
 
         public ArgsService()
         {
@@ -19,6 +21,10 @@ namespace WPFCross.UI.Services
 
             parser.Setup<bool>('i', "dbInitialize")
                 .Callback(i => DbInitialize = i)
+                .SetDefault(false);
+
+            parser.Setup<bool>('c', "dbClear")
+                .Callback(c => Clear = c)
                 .SetDefault(false);
         }
 

@@ -2,7 +2,8 @@
 {
     public interface IArgsService
     {
-        bool Mock { get; set; }
-        bool DbInitialize { get; set; }
+        bool Mock { get; }
+        bool DbInitialize { get; }
+        bool Clear { get; }
     }
 }

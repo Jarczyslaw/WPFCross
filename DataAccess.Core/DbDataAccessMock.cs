@@ -78,5 +78,11 @@ namespace DataAccess.Core
             groups = DbDataInitializer.CreateGroups();
             contacts = DbDataInitializer.CreateContacts(groups);
         }
+
+        public void Clear()
+        {
+            contacts.Clear();
+            groups.Clear();
+        }
     }
 }
