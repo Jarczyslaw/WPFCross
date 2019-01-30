@@ -33,8 +33,8 @@ namespace WPFCross.Core.ViewModels
             this.groupsService = groupsService;
 
             AddNewCommand = new MvxCommand(AddNewContact);
-            EditCommand = new MvxCommand(EditContact);
-            DeleteCommand = new MvxCommand(DeleteContact);
+            EditCommand = new MvxCommand(EditContact, () => EditionEnabled);
+            DeleteCommand = new MvxCommand(DeleteContact, () => EditionEnabled);
             EditGroupsCommand = new MvxCommand(EditGroups);
 
             LoadAll();
@@ -44,6 +44,11 @@ namespace WPFCross.Core.ViewModels
         public IMvxCommand EditCommand { get; }
         public IMvxCommand DeleteCommand { get; }
         public IMvxCommand EditGroupsCommand { get; }
+
+        public bool EditionEnabled
+        {
+            get => SelectedContact != null;
+        }
 
         public ObservableCollection<ContactItemViewModel> Contacts
         {
@@ -70,7 +75,12 @@ namespace WPFCross.Core.ViewModels
         public ContactItemViewModel SelectedContact
         {
             get => selectedContact;
-            set => SetProperty(ref selectedContact, value);
+            set
+            {
+                SetProperty(ref selectedContact, value);
+                EditCommand.RaiseCanExecuteChanged();
+                DeleteCommand.RaiseCanExecuteChanged();
+            }
         }
 
         public GroupItemViewModel SelectedGroup
