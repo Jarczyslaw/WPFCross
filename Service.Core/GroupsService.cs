@@ -8,9 +8,9 @@ namespace Service.Core
 {
     public class GroupsService : IGroupsService
     {
-        private readonly IDbDataAccess dataAccess;
+        private readonly IDbAccess dataAccess;
 
-        public GroupsService(IDbDataAccess dataAccess)
+        public GroupsService(IDbAccess dataAccess)
         {
             this.dataAccess = dataAccess;
         }

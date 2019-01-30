@@ -7,18 +7,20 @@ using System.Linq;
 
 namespace DataAccess.Core
 {
-    public class DbDataAccess : IDbDataAccess
+    public class DbAccess : IDbAccess
     {
         public string ContactsCollection { get; } = "Contacts";
         public string GroupsCollection { get; } = "Groups";
 
         private readonly IDataMapperService dataMapperService;
         private readonly IDbConnectionProvider connectionProvider;
+        private readonly IDbInitializer dbInitializer;
 
-        public DbDataAccess(IDataMapperService dataMapperService, IDbConnectionProvider connectionProvider)
+        public DbAccess(IDataMapperService dataMapperService, IDbConnectionProvider connectionProvider)
         {
             this.dataMapperService = dataMapperService;
             this.connectionProvider = connectionProvider;
+            dbInitializer = new DbInitializer();
 
             BsonMapper.Global
                 .Entity<Contact>().Id(c => c.Id);
@@ -147,12 +149,12 @@ namespace DataAccess.Core
             {
                 db.DropCollection(GroupsCollection);
                 var groupsCollection = GetGroupsCollection(db);
-                AddGroups(DbDataInitializer.CreateGroups());
+                AddGroups(dbInitializer.CreateGroups());
 
                 db.DropCollection(ContactsCollection);
                 var contactsCollection = GetContactsCollection(db);
                 var groups = GetGroups();
-                AddContacts(DbDataInitializer.CreateContacts(groups));
+                AddContacts(dbInitializer.CreateContacts(groups));
             }
         }
 
@@ -172,6 +174,9 @@ namespace DataAccess.Core
             {
                 db.DropCollection(GroupsCollection);
                 db.DropCollection(ContactsCollection);
+
+                var groups = GetGroupsCollection(db);
+                groups.Insert(dbInitializer.CreateDefaultGroup());
             }
         }
     }

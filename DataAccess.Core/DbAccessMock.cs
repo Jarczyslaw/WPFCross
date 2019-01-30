@@ -5,16 +5,18 @@ using System.Linq;
 
 namespace DataAccess.Core
 {
-    public class DbDataAccessMock : IDbDataAccess
+    public class DbAccessMock : IDbAccess
     {
         private readonly IDataMapperService dataMapperService;
+        private readonly IDbInitializer dbInitializer;
 
         private List<Contact> contacts = new List<Contact>();
         private List<Group> groups = new List<Group>();
 
-        public DbDataAccessMock(IDataMapperService dataMapperService)
+        public DbAccessMock(IDataMapperService dataMapperService)
         {
             this.dataMapperService = dataMapperService;
+            dbInitializer = new DbInitializer();
         }
 
         public void AddContact(Contact contact)
@@ -75,14 +77,15 @@ namespace DataAccess.Core
 
         public void Initialize()
         {
-            groups = DbDataInitializer.CreateGroups();
-            contacts = DbDataInitializer.CreateContacts(groups);
+            groups = dbInitializer.CreateGroups();
+            contacts = dbInitializer.CreateContacts(groups);
         }
 
         public void Clear()
         {
             contacts.Clear();
             groups.Clear();
+            groups.Add(dbInitializer.CreateDefaultGroup());
         }
     }
 }

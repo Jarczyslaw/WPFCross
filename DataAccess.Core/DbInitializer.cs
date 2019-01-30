@@ -6,17 +6,15 @@ using System.Linq;
 
 namespace DataAccess.Core
 {
-    public static class DbDataInitializer
+    internal class DbInitializer : IDbInitializer
     {
-        private static Group FindGroup(IEnumerable<Group> groups, string groupName)
+        private Group FindGroup(IEnumerable<Group> groups, string groupName)
         {
             var group = groups.SingleOrDefault(g => g.Name == groupName);
-            if (group == null)
-                return groups.Single(g => g.Default);
-            return group;
+            return group == null ? groups.Single(g => g.Default) : group;
         }
 
-        public static List<Contact> CreateContacts(IEnumerable<Group> groups, int initialContactId = 0)
+        public List<Contact> CreateContacts(IEnumerable<Group> groups, int initialContactId = 0)
         {
             int contactItemsId = 0;
             return new List<Contact>
@@ -127,16 +125,11 @@ namespace DataAccess.Core
             };
         }
 
-        public static List<Group> CreateGroups(int initialGroupId = 0)
+        public List<Group> CreateGroups(int initialGroupId = 0)
         {
             return new List<Group>
             {
-                new Group
-                {
-                    Id = ++initialGroupId,
-                    Default = true,
-                    Name = "General"
-                },
+                CreateDefaultGroup(),
                 new Group
                 {
                     Id = ++initialGroupId,
@@ -155,6 +148,16 @@ namespace DataAccess.Core
                     Default = false,
                     Name = "Work"
                 }
+            };
+        }
+
+        public Group CreateDefaultGroup(int groupId = 0)
+        {
+            return new Group
+            {
+                Id = groupId,
+                Default = true,
+                Name = "General"
             };
         }
     }

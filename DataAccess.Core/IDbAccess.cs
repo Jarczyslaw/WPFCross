@@ -5,7 +5,7 @@ using System.Text;
 
 namespace DataAccess.Core
 {
-    public interface IDbDataAccess
+    public interface IDbAccess
     {
         void Initialize();
         void AddContact(Contact contact);

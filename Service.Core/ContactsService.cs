@@ -9,10 +9,10 @@ namespace Service.Core
 {
     public class ContactsService : IContactsService
     {
-        private readonly IDbDataAccess dataAccess;
+        private readonly IDbAccess dataAccess;
         private readonly int minLength = 3;
 
-        public ContactsService(IDbDataAccess dataAccess)
+        public ContactsService(IDbAccess dataAccess)
         {
             this.dataAccess = dataAccess;
         }

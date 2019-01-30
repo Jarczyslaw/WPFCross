@@ -22,7 +22,7 @@ namespace WPFCross.UI
         public override Task Startup()
         {
             var argsService = Mvx.IoCProvider.Resolve<IArgsService>();
-            var dbDataAccess = Mvx.IoCProvider.Resolve<IDbDataAccess>();
+            var dbDataAccess = Mvx.IoCProvider.Resolve<IDbAccess>();
 
             if (argsService.DbInitialize && !argsService.Clear)
                 dbDataAccess.Initialize();
@@ -44,11 +44,11 @@ namespace WPFCross.UI
             Mvx.IoCProvider.RegisterSingleton<IDataMapperService>(() => Mvx.IoCProvider.IoCConstruct<DataMapperService>());
             if (App.ArgsService.Mock)
             {
-                Mvx.IoCProvider.RegisterSingleton<IDbDataAccess>(() => Mvx.IoCProvider.IoCConstruct<DbDataAccessMock>());
+                Mvx.IoCProvider.RegisterSingleton<IDbAccess>(() => Mvx.IoCProvider.IoCConstruct<DbAccessMock>());
             }
             else
             {
-                Mvx.IoCProvider.RegisterSingleton<IDbDataAccess>(() => Mvx.IoCProvider.IoCConstruct<DbDataAccess>());
+                Mvx.IoCProvider.RegisterSingleton<IDbAccess>(() => Mvx.IoCProvider.IoCConstruct<DbAccess>());
             }
             Mvx.IoCProvider.RegisterSingleton<IContactsService>(() => Mvx.IoCProvider.IoCConstruct<ContactsService>());
             Mvx.IoCProvider.RegisterSingleton<IGroupsService>(() => Mvx.IoCProvider.IoCConstruct<GroupsService>());
