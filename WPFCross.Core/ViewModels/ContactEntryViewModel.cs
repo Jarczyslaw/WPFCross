@@ -1,25 +1,25 @@
 ﻿using DataAccess.Models;
-using MvvmCross.Commands;
 using MvvmCross.ViewModels;
-using System;
-using System.Collections.ObjectModel;
-using System.Linq;
 
 namespace WPFCross.Core.ViewModels
 {
     public class ContactEntryViewModel : MvxViewModel
     {
+        private int contactEntryId;
         private string contactEntryValue;
         private ContactEntryType contactEntryType;
 
-        public ContactEntryViewModel() : this(new ContactEntry())
-        {
-        }
-
         public ContactEntryViewModel(ContactEntry contactEntry)
         {
+            ContactEntryId = contactEntry.Id;
             ContactEntryValue = contactEntry.Value;
             ContactEntryType = contactEntry.Type;
+        }
+
+        public int ContactEntryId
+        {
+            get => contactEntryId;
+            set => SetProperty(ref contactEntryId, value);
         }
 
         public ContactEntryType ContactEntryType

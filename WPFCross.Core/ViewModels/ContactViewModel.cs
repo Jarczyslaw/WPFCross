@@ -176,7 +176,11 @@ namespace WPFCross.Core.ViewModels
 
         private void AddEntry()
         {
-            ContactEntries.Add(new ContactEntryViewModel());
+            var newEntry = new ContactEntry
+            {
+                Id = ContactEntries.SafeMax(c => c.ContactEntryId) + 1
+            };
+            ContactEntries.Add(new ContactEntryViewModel(newEntry));
         }
 
         private void DeleteEntry(ContactEntryViewModel entry)

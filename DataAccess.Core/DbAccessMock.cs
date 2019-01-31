@@ -1,4 +1,5 @@
-﻿using DataAccess.Models;
+﻿using Commons;
+using DataAccess.Models;
 using Service.DataMapper;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,13 +22,13 @@ namespace DataAccess.Core
 
         public void AddContact(Contact contact)
         {
-            contact.Id = contacts.Max(c => c.Id) + 1;
+            contact.Id = contacts.SafeMax(c => c.Id) + 1;
             contacts.Add(contact);
         }
 
         public void AddGroup(Group group)
         {
-            group.Id = groups.Max(c => c.Id) + 1;
+            group.Id = groups.SafeMax(c => c.Id) + 1;
             groups.Add(group);
         }
 
@@ -77,14 +78,14 @@ namespace DataAccess.Core
 
         public void Initialize()
         {
-            groups = dbInitializer.CreateGroups();
-            contacts = dbInitializer.CreateContacts(groups);
+            AddGroup(dbInitializer.CreateDefaultGroup());
+            dbInitializer.CreateGroups().ForEach(AddGroup);
+
+            contacts.AddRange(dbInitializer.CreateContacts(groups));
         }
 
         public void Clear()
         {
-            contacts.Clear();
-            groups.Clear();
             groups.Add(dbInitializer.CreateDefaultGroup());
         }
     }

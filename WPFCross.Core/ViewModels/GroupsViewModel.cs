@@ -27,8 +27,8 @@ namespace WPFCross.Core.ViewModels
             this.groupsService = groupsService;
 
             AddNewCommand = new MvxCommand(AddNew);
-            EditCommand = new MvxCommand(Edit);
-            DeleteCommand = new MvxCommand(Delete);
+            EditCommand = new MvxCommand(Edit, () => EditionEnabled);
+            DeleteCommand = new MvxCommand(Delete, () => EditionEnabled);
 
             LoadGroups();
         }
@@ -36,6 +36,11 @@ namespace WPFCross.Core.ViewModels
         public IMvxCommand AddNewCommand { get; }
         public IMvxCommand EditCommand { get; }
         public IMvxCommand DeleteCommand { get; }
+
+        public bool EditionEnabled
+        {
+            get => SelectedGroup?.Group.Default == false;
+        }
 
         public ObservableCollection<GroupItemViewModel> Groups
         {
@@ -56,6 +61,8 @@ namespace WPFCross.Core.ViewModels
             {
                 SetProperty(ref selectedGroup, value);
                 GroupName = selectedGroup?.Name;
+                EditCommand.RaiseCanExecuteChanged();
+                DeleteCommand.RaiseCanExecuteChanged();
             }
         }
 

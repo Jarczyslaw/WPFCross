@@ -24,11 +24,14 @@ namespace WPFCross.UI
             var argsService = Mvx.IoCProvider.Resolve<IArgsService>();
             var dbDataAccess = Mvx.IoCProvider.Resolve<IDbAccess>();
 
-            if (argsService.DbInitialize && !argsService.Clear)
+            if (argsService.DbInitialize)
+            {
                 dbDataAccess.Initialize();
-
-            if (argsService.Clear)
+            }
+            else if (argsService.Clear)
+            {
                 dbDataAccess.Clear();
+            }
 
             return base.Startup();
         }

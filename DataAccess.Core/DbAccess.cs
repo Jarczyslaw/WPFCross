@@ -26,6 +26,8 @@ namespace DataAccess.Core
                 .Entity<Contact>().Id(c => c.Id);
             BsonMapper.Global
                 .Entity<Group>().Id(g => g.Id);
+            BsonMapper.Global
+                .Entity<ContactEntry>().Id(c => c.Id);
         }
 
         private string ConnectionString => connectionProvider.DbConnection;
@@ -145,14 +147,10 @@ namespace DataAccess.Core
 
         public void Initialize()
         {
+            Clear();
             using (var db = new LiteDatabase(ConnectionString))
             {
-                db.DropCollection(GroupsCollection);
-                var groupsCollection = GetGroupsCollection(db);
                 AddGroups(dbInitializer.CreateGroups());
-
-                db.DropCollection(ContactsCollection);
-                var contactsCollection = GetContactsCollection(db);
                 var groups = GetGroups();
                 AddContacts(dbInitializer.CreateContacts(groups));
             }
