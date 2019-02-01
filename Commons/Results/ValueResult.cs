@@ -18,6 +18,12 @@
         {
         }
 
+        public ValueResult(ValueResult<T> valueResult)
+            : base(valueResult)
+        {
+            Value = valueResult.Value;
+        }
+
         public override void Clear()
         {
             Value = default(T);
