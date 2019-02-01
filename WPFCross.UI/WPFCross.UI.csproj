@@ -177,6 +177,10 @@
       <Project>{b17a9095-29f5-4141-8eba-00887e3029ea}</Project>
       <Name>DataAccess.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\DataAccess.LiteDbAccess\DataAccess.LiteDbAccess.csproj">
+      <Project>{c427a21a-3102-4178-bd7b-d264c16ccfe7}</Project>
+      <Name>DataAccess.LiteDbAccess</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DataAccess.Models\DataAccess.Models.csproj">
       <Project>{b4d1fb8d-91df-4ffd-90ff-fe6ce89e705a}</Project>
       <Name>DataAccess.Models</Name>

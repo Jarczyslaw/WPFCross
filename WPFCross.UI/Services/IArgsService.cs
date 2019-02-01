@@ -1,8 +1,10 @@
-﻿namespace WPFCross.UI.Services
+﻿using DataAccess.Core;
+
+namespace WPFCross.UI.Services
 {
     public interface IArgsService
     {
-        bool Mock { get; }
+        DbAccessType DbAccessType { get; }
         bool DbInitialize { get; }
         bool Clear { get; }
     }

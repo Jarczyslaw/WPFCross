@@ -1,11 +1,11 @@
-﻿using DataAccess.Models;
+﻿using DataAccess.Core;
+using DataAccess.Models;
 using LiteDB;
 using Service.DataMapper;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace DataAccess.Core
+namespace DataAccess.LiteDbAccess
 {
     public class DbAccess : IDbAccess
     {
