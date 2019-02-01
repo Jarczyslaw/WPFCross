@@ -6,9 +6,9 @@ namespace Commons
 {
     public static class IEnumerableExtensions
     {
-        public static int SafeMax<T>(this IEnumerable<T> enumerable, Func<T, int> selector)
+        public static int SafeMax<T>(this IEnumerable<T> enumerable, Func<T, int> selector, int defaultValue = default(int))
         {
-            return enumerable.Any() ? enumerable.Max(selector) : 0;
+            return enumerable.Any() ? enumerable.Max(selector) : defaultValue;
         }
     }
 }
