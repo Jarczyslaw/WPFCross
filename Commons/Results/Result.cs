@@ -16,7 +16,7 @@ namespace Commons
         }
 
         public Result(Result result)
-            : this (new ResultErrors(result.Errors), new ResultInfos(result.Infos))
+            : this (result.Errors, result.Infos)
         {
         }
 

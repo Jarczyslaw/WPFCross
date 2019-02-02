@@ -11,7 +11,7 @@ namespace Commons
 
         public ResultInfos(ResultInfos infos)
         {
-            AddRange(infos.Select(i => new ResultInfo(i)));
+            AddRange(infos);
         }
 
         public void Add(string content)

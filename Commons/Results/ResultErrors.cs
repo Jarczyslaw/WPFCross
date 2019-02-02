@@ -12,7 +12,7 @@ namespace Commons
 
         public ResultErrors(ResultErrors errors)
         {
-            AddRange(errors.Select(i => new ResultError(i)));
+            AddRange(errors);
         }
 
         public void Add(Exception exception)
