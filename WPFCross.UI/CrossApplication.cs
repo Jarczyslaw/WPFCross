@@ -1,6 +1,5 @@
 ﻿using System.Threading.Tasks;
 using DataAccess.Core;
-using DataAccess.LiteDbAccess;
 using MvvmCross;
 using MvvmCross.ViewModels;
 using Service.Core;
@@ -46,16 +45,25 @@ namespace WPFCross.UI
             Mvx.IoCProvider.RegisterSingleton<ILoggerService>(() => Mvx.IoCProvider.IoCConstruct<LoggerService>());
             Mvx.IoCProvider.RegisterSingleton<IDialogsService>(() => Mvx.IoCProvider.IoCConstruct<DialogsService>());
             Mvx.IoCProvider.RegisterSingleton<IDataMapperService>(() => Mvx.IoCProvider.IoCConstruct<DataMapperService>());
-            if (App.ArgsService.DbAccessType == DbAccessType.Mock)
-            {
-                Mvx.IoCProvider.RegisterSingleton<IDbAccess>(() => Mvx.IoCProvider.IoCConstruct<DbAccessMock>());
-            }
-            else if (App.ArgsService.DbAccessType == DbAccessType.LiteDb)
-            {
-                Mvx.IoCProvider.RegisterSingleton<IDbAccess>(() => Mvx.IoCProvider.IoCConstruct<DbAccess>());
-            }
             Mvx.IoCProvider.RegisterSingleton<IContactsService>(() => Mvx.IoCProvider.IoCConstruct<ContactsService>());
             Mvx.IoCProvider.RegisterSingleton<IGroupsService>(() => Mvx.IoCProvider.IoCConstruct<GroupsService>());
+            RegisterDbAccess();
+        }
+
+        private void RegisterDbAccess()
+        {
+            switch (App.ArgsService.DbAccessType)
+            {
+                case DbAccessType.Mock:
+                    Mvx.IoCProvider.RegisterSingleton<IDbAccess>(() => Mvx.IoCProvider.IoCConstruct<DbAccessMock>());
+                    break;
+                case DbAccessType.LiteDb:
+                    Mvx.IoCProvider.RegisterSingleton<IDbAccess>(() => Mvx.IoCProvider.IoCConstruct<DataAccess.LiteDbAccess.DbAccess>());
+                    break;
+                case DbAccessType.SQLite:
+                    Mvx.IoCProvider.RegisterSingleton<IDbAccess>(() => Mvx.IoCProvider.IoCConstruct<DataAccess.SQLiteAccess.DbAccess>());
+                    break;
+            }
         }
     }
 }

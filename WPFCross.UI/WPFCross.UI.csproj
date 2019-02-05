@@ -185,6 +185,10 @@
       <Project>{b4d1fb8d-91df-4ffd-90ff-fe6ce89e705a}</Project>
       <Name>DataAccess.Models</Name>
     </ProjectReference>
+    <ProjectReference Include="..\DataAccess.SQLiteAccess\DataAccess.SQLiteAccess.csproj">
+      <Project>{b99efb12-ebf4-4634-839f-db17a01e9e6f}</Project>
+      <Name>DataAccess.SQLiteAccess</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Service.Core\Service.Core.csproj">
       <Project>{197EAFEF-553D-4AE6-A2A7-5C3EDA63F124}</Project>
       <Name>Service.Core</Name>

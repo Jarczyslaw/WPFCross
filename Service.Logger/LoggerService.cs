@@ -5,7 +5,7 @@ namespace Service.Logger
 {
     public class LoggerService : ILoggerService
     {
-        private ILogger logger;
+        private readonly ILogger logger;
 
         private readonly string noMessage = "No message provided";
 

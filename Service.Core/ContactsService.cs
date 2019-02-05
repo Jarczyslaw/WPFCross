@@ -60,7 +60,7 @@ namespace Service.Core
 
             if (contact.Group == null)
             {
-                result.Errors.Add("Contact has to be in group");
+                result.Errors.Add("Contact has to be in a group");
                 return result;
             }
 

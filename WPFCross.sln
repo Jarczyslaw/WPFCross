@@ -23,7 +23,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Service.Core", "Service.Cor
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Service.DataMapper", "Service.DataMapper\Service.DataMapper.csproj", "{62DA867A-4BDD-4B6B-8D9A-186034486036}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccess.LiteDbAccess", "DataAccess.LiteDbAccess\DataAccess.LiteDbAccess.csproj", "{C427A21A-3102-4178-BD7B-D264C16CCFE7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAccess.LiteDbAccess", "DataAccess.LiteDbAccess\DataAccess.LiteDbAccess.csproj", "{C427A21A-3102-4178-BD7B-D264C16CCFE7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccess.SQLiteAccess", "DataAccess.SQLiteAccess\DataAccess.SQLiteAccess.csproj", "{B99EFB12-EBF4-4634-839F-DB17A01E9E6F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -75,6 +77,10 @@ Global
 		{C427A21A-3102-4178-BD7B-D264C16CCFE7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C427A21A-3102-4178-BD7B-D264C16CCFE7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C427A21A-3102-4178-BD7B-D264C16CCFE7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B99EFB12-EBF4-4634-839F-DB17A01E9E6F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B99EFB12-EBF4-4634-839F-DB17A01E9E6F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B99EFB12-EBF4-4634-839F-DB17A01E9E6F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B99EFB12-EBF4-4634-839F-DB17A01E9E6F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

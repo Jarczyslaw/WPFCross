@@ -6,8 +6,8 @@ namespace DataAccess.Models
 {
     public enum ContactEntryType
     {
-        Phone,
-        Email,
-        Website
+        Phone = 1,
+        Email = 2,
+        Website = 3
     }
 }
