@@ -1,12 +1,18 @@
 ﻿using DataAccess.Core;
 using DataAccess.Models;
+using Service.DataMapper;
 using System;
 using System.Collections.Generic;
 
 namespace DataAccess.SQLiteAccess
 {
-    public class DbAccess : IDbAccess
+    public class DbAccess : DbAccessBase, IDbAccess
     {
+        public DbAccess(IDataMapperService dataMapperService, IDbConnectionProvider connectionProvider)
+            : base(dataMapperService, connectionProvider)
+        {
+        }
+
         public void AddContact(Contact contact)
         {
             throw new NotImplementedException();

@@ -7,19 +7,16 @@ using System.Linq;
 
 namespace DataAccess.LiteDbAccess
 {
-    public class DbAccess : IDbAccess
+    public class DbAccess : DbAccessBase, IDbAccess
     {
         public string ContactsCollection { get; } = "Contacts";
         public string GroupsCollection { get; } = "Groups";
 
-        private readonly IDataMapperService dataMapperService;
-        private readonly IDbConnectionProvider connectionProvider;
         private readonly IDbInitializer dbInitializer;
 
         public DbAccess(IDataMapperService dataMapperService, IDbConnectionProvider connectionProvider)
+            : base(dataMapperService, connectionProvider)
         {
-            this.dataMapperService = dataMapperService;
-            this.connectionProvider = connectionProvider;
             dbInitializer = new DbInitializer();
 
             BsonMapper.Global

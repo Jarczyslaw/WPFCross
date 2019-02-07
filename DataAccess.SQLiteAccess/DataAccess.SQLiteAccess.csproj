@@ -10,6 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\DataAccess.Core.DbLib\DataAccess.Core.DbLib.csproj" />
     <ProjectReference Include="..\DataAccess.Core\DataAccess.Core.csproj" />
     <ProjectReference Include="..\DataAccess.Models\DataAccess.Models.csproj" />
   </ItemGroup>
