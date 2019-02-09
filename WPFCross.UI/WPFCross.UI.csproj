@@ -96,6 +96,7 @@
     <Compile Include="GlobalExceptions\GlobalExceptionHandler.cs" />
     <Compile Include="CrossSetup.cs" />
     <Compile Include="Services\ArgsService.cs" />
+    <Compile Include="ConnectionStringProvider.cs" />
     <Compile Include="Services\IAppSettings.cs" />
     <Compile Include="Services\IArgsService.cs" />
     <Compile Include="Views\ContactView.xaml.cs">

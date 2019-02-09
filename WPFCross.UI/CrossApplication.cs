@@ -7,6 +7,7 @@ using Service.DataMapper;
 using Service.Dialogs;
 using Service.Logger;
 using WPFCross.Core.ViewModels;
+using WPFCross.Extensions;
 using WPFCross.UI.Services;
 
 namespace WPFCross.UI
@@ -39,29 +40,28 @@ namespace WPFCross.UI
         private void RegisterDependencies()
         {
             Mvx.IoCProvider.RegisterSingleton<IArgsService>(App.ArgsService);
-            var appSettings = Mvx.IoCProvider.IoCConstruct<AppSettings>();
-            Mvx.IoCProvider.RegisterSingleton<IAppSettings>(appSettings);
-            Mvx.IoCProvider.RegisterSingleton<IDbConnectionProvider>(appSettings);
-            Mvx.IoCProvider.RegisterSingleton<ILoggerService>(() => Mvx.IoCProvider.IoCConstruct<LoggerService>());
-            Mvx.IoCProvider.RegisterSingleton<IDialogsService>(() => Mvx.IoCProvider.IoCConstruct<DialogsService>());
-            Mvx.IoCProvider.RegisterSingleton<IDataMapperService>(() => Mvx.IoCProvider.IoCConstruct<DataMapperService>());
-            Mvx.IoCProvider.RegisterSingleton<IContactsService>(() => Mvx.IoCProvider.IoCConstruct<ContactsService>());
-            Mvx.IoCProvider.RegisterSingleton<IGroupsService>(() => Mvx.IoCProvider.IoCConstruct<GroupsService>());
+            Mvx.IoCProvider.RegisterAndConstruct<IAppSettings, AppSettings>();
+            Mvx.IoCProvider.RegisterAndConstruct<ILoggerService, LoggerService>();
+            Mvx.IoCProvider.RegisterAndConstruct<IDialogsService, DialogsService>();
+            Mvx.IoCProvider.RegisterAndConstruct<IDataMapperService, DataMapperService>();
+            Mvx.IoCProvider.RegisterAndConstruct<IContactsService, ContactsService>();
+            Mvx.IoCProvider.RegisterAndConstruct<IGroupsService, GroupsService>();
             RegisterDbAccess();
         }
 
         private void RegisterDbAccess()
         {
+            Mvx.IoCProvider.RegisterAndConstruct<IConnectionStringProvider, ConnectionStringProvider>();
             switch (App.ArgsService.DbAccessType)
             {
                 case DbAccessType.Mock:
-                    Mvx.IoCProvider.RegisterSingleton<IDbAccess>(() => Mvx.IoCProvider.IoCConstruct<DbAccessMock>());
+                    Mvx.IoCProvider.RegisterAndConstruct<IDbAccess, DbAccessMock>();
                     break;
                 case DbAccessType.LiteDb:
-                    Mvx.IoCProvider.RegisterSingleton<IDbAccess>(() => Mvx.IoCProvider.IoCConstruct<DataAccess.LiteDbAccess.DbAccess>());
+                    Mvx.IoCProvider.RegisterAndConstruct<IDbAccess, DataAccess.LiteDbAccess.DbAccess>();
                     break;
                 case DbAccessType.SQLite:
-                    Mvx.IoCProvider.RegisterSingleton<IDbAccess>(() => Mvx.IoCProvider.IoCConstruct<DataAccess.SQLiteAccess.DbAccess>());
+                    Mvx.IoCProvider.RegisterAndConstruct<IDbAccess, DataAccess.SQLiteAccess.DbAccess>();
                     break;
             }
         }

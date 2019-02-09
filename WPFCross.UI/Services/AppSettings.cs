@@ -5,11 +5,16 @@ using System.Runtime.CompilerServices;
 
 namespace WPFCross.UI.Services
 {
-    public class AppSettings : IAppSettings, IDbConnectionProvider
+    public class AppSettings : IAppSettings
     {
-        public string DbConnection
+        public string LiteDbConnection
         {
-            get { return GetConnectionString().ConnectionString; }
+            get { return GetConnectionString("LiteDbConnection").ConnectionString; }
+        }
+
+        public string SQLiteConnection
+        {
+            get { return GetConnectionString("SQLiteConnection").ConnectionString; }
         }
 
         private ConnectionStringSettings GetConnectionString([CallerMemberName] string key = null)

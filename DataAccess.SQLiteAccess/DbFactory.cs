@@ -1,4 +1,5 @@
-﻿using DataAccess.Core.DbLib;
+﻿using DataAccess.Core;
+using DataAccess.Core.DbLib;
 using System.Data;
 using System.Data.SQLite;
 
@@ -6,16 +7,16 @@ namespace DataAccess.SQLiteAccess
 {
     public class DbFactory : IDbFactory
     {
-        public string ConnectionString { get; }
+        public readonly IConnectionStringProvider connectionStringProvider;
 
-        public DbFactory(string connectionString)
+        public DbFactory(IConnectionStringProvider connectionStringProvider)
         {
-            ConnectionString = connectionString;
+            this.connectionStringProvider = connectionStringProvider;
         }
 
         public IDbConnection CreateConnection()
         {
-            return new SQLiteConnection($"Data Source={ConnectionString};Version=3;Pooling=True;");
+            return new SQLiteConnection(connectionStringProvider.ConnectionString);
         }
     }
 }

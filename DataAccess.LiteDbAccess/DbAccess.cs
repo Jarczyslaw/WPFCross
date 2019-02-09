@@ -14,7 +14,7 @@ namespace DataAccess.LiteDbAccess
 
         private readonly IDbInitializer dbInitializer;
 
-        public DbAccess(IDataMapperService dataMapperService, IDbConnectionProvider connectionProvider)
+        public DbAccess(IDataMapperService dataMapperService, IConnectionStringProvider connectionProvider)
             : base(dataMapperService, connectionProvider)
         {
             dbInitializer = new DbInitializer();
@@ -27,7 +27,7 @@ namespace DataAccess.LiteDbAccess
                 .Entity<ContactEntry>().Id(c => c.Id);
         }
 
-        private string ConnectionString => connectionProvider.DbConnection;
+        private string ConnectionString => connectionProvider.ConnectionString;
 
         public void AddContact(Contact contact)
         {

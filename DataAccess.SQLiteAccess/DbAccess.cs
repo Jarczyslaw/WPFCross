@@ -8,7 +8,7 @@ namespace DataAccess.SQLiteAccess
 {
     public class DbAccess : DbAccessBase, IDbAccess
     {
-        public DbAccess(IDataMapperService dataMapperService, IDbConnectionProvider connectionProvider)
+        public DbAccess(IDataMapperService dataMapperService, IConnectionStringProvider connectionProvider)
             : base(dataMapperService, connectionProvider)
         {
         }

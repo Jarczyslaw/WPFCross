@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace DataAccess.Core
+﻿namespace DataAccess.Core
 {
-    public interface IDbConnectionProvider
+    public interface IConnectionStringProvider
     {
-        string DbConnection { get; }
+        string ConnectionString { get; }
     }
 }

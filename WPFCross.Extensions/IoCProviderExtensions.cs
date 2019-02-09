@@ -10,5 +10,12 @@ namespace WPFCross.Extensions
             iocProvider.RegisterType<T>();
             return iocProvider.Resolve<T>();
         }
+
+        public static void RegisterAndConstruct<TInterface, TType>(this IMvxIoCProvider iocProvider)
+            where TType : class, TInterface
+            where TInterface : class
+        {
+            iocProvider.RegisterSingleton<TInterface>(() => iocProvider.IoCConstruct<TType>());
+        }
     }
 }
