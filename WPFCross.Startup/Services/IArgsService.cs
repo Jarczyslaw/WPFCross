@@ -1,6 +1,6 @@
 ﻿using DataAccess.Core;
 
-namespace WPFCross.UI.Services
+namespace WPFCross.Startup.Services
 {
     public interface IArgsService
     {

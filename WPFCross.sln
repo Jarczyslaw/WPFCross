@@ -5,7 +5,7 @@ VisualStudioVersion = 15.0.28010.2026
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WPFCross.Core", "WPFCross.Core\WPFCross.Core.csproj", "{AAB9DB0F-6E0E-41B0-89BB-8783027C8DB2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPFCross.UI", "WPFCross.UI\WPFCross.UI.csproj", "{E6247934-3818-4DE2-B1AD-4F575ABD8DFA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPFCross.Startup", "WPFCross.Startup\WPFCross.Startup.csproj", "{E6247934-3818-4DE2-B1AD-4F575ABD8DFA}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Service.Logger", "Service.Logger\Service.Logger.csproj", "{9D4E01D2-918A-4496-A724-AD6DFF79F7CA}"
 EndProject
@@ -25,9 +25,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Service.DataMapper", "Servi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAccess.LiteDbAccess", "DataAccess.LiteDbAccess\DataAccess.LiteDbAccess.csproj", "{C427A21A-3102-4178-BD7B-D264C16CCFE7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccess.SQLiteAccess", "DataAccess.SQLiteAccess\DataAccess.SQLiteAccess.csproj", "{B99EFB12-EBF4-4634-839F-DB17A01E9E6F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAccess.SQLiteAccess", "DataAccess.SQLiteAccess\DataAccess.SQLiteAccess.csproj", "{B99EFB12-EBF4-4634-839F-DB17A01E9E6F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccess.Core.DbLib", "DataAccess.Core.DbLib\DataAccess.Core.DbLib.csproj", "{986ADEF6-1914-40EF-9666-5B4864B0BD15}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAccess.Core.DbLib", "DataAccess.Core.DbLib\DataAccess.Core.DbLib.csproj", "{986ADEF6-1914-40EF-9666-5B4864B0BD15}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

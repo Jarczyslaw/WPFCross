@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using WPFCross.Core.ViewModels;
 
-namespace WPFCross.UI
+namespace WPFCross.Startup
 {
     public class CrossSetup : MvxWpfSetup
     {

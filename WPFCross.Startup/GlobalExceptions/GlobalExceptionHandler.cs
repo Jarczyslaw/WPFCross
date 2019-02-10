@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace WPFCross.UI.GlobalExceptions
+namespace WPFCross.Startup.GlobalExceptions
 {
     public abstract class GlobalExceptionHandler
     {

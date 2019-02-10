@@ -1,7 +1,7 @@
 ﻿using DataAccess.Core;
 using Fclp;
 
-namespace WPFCross.UI.Services
+namespace WPFCross.Startup.Services
 {
     public class ArgsService : IArgsService
     {

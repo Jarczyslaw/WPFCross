@@ -2,10 +2,10 @@
 using MvvmCross.Core;
 using MvvmCross.Platforms.Wpf.Views;
 using System.Windows;
-using WPFCross.UI.GlobalExceptions;
-using WPFCross.UI.Services;
+using WPFCross.Startup.GlobalExceptions;
+using WPFCross.Startup.Services;
 
-namespace WPFCross.UI
+namespace WPFCross.Startup
 {
     public partial class App : MvxApplication
     {

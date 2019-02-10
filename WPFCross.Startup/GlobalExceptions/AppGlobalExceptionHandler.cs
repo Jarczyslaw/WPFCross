@@ -2,7 +2,7 @@
 using Service.Logger;
 using System;
 
-namespace WPFCross.UI.GlobalExceptions
+namespace WPFCross.Startup.GlobalExceptions
 {
     public class AppGlobalExceptionHandler : GlobalExceptionHandler
     {

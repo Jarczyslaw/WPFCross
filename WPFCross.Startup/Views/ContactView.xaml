@@ -1,4 +1,4 @@
-﻿<mvx:MvxWindow x:Class="WPFCross.UI.Views.ContactView"
+﻿<mvx:MvxWindow x:Class="WPFCross.Startup.Views.ContactView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -6,13 +6,14 @@
         xmlns:mvx="clr-namespace:MvvmCross.Platforms.Wpf.Views;assembly=MvvmCross.Platforms.Wpf"
         xmlns:system="clr-namespace:System;assembly=mscorlib"
         xmlns:models="clr-namespace:DataAccess.Models;assembly=DataAccess.Models"
-        xmlns:local="clr-namespace:WPFCross.UI"
+        xmlns:local="clr-namespace:WPFCross.Startup"
         mc:Ignorable="d"
         Title="Contact"
         Width="350"
         SizeToContent="Height"
         ResizeMode="NoResize"
-        WindowStartupLocation="CenterScreen">
+        WindowStartupLocation="CenterScreen"
+        Icon="jt_icon.ico">
     
     <mvx:MvxWindow.Resources>
         <ObjectDataProvider x:Key="ContactEntryTypes"

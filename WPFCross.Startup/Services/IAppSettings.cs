@@ -1,6 +1,6 @@
 ﻿using System.Configuration;
 
-namespace WPFCross.UI.Services
+namespace WPFCross.Startup.Services
 {
     public interface IAppSettings
     {

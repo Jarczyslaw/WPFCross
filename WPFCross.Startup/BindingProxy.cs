@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace WPFCross.UI
+namespace WPFCross.Startup
 {
     public class BindingProxy : Freezable
     {

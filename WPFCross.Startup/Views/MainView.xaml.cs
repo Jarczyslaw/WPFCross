@@ -4,7 +4,7 @@ using System.Windows;
 using System.Windows.Input;
 using WPFCross.Core.ViewModels;
 
-namespace WPFCross.UI
+namespace WPFCross.Startup
 {
     [MvxContentPresentation(WindowIdentifier = nameof(MainWindow), StackNavigation = false)]
     public partial class MainView : MvxWpfView

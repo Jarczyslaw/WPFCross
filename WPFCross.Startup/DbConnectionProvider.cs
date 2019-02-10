@@ -1,9 +1,9 @@
 ﻿using DataAccess.Core;
 using System.IO;
 using System.Windows;
-using WPFCross.UI.Services;
+using WPFCross.Startup.Services;
 
-namespace WPFCross.UI
+namespace WPFCross.Startup
 {
     public class DbConnectionProvider : IDbConnectionProvider
     {

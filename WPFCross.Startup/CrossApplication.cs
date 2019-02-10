@@ -8,9 +8,9 @@ using Service.Dialogs;
 using Service.Logger;
 using WPFCross.Core.ViewModels;
 using WPFCross.Extensions;
-using WPFCross.UI.Services;
+using WPFCross.Startup.Services;
 
-namespace WPFCross.UI
+namespace WPFCross.Startup
 {
     public class CrossApplication : MvxApplication
     {

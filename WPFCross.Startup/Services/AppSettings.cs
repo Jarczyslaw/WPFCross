@@ -3,7 +3,7 @@ using System;
 using System.Configuration;
 using System.Runtime.CompilerServices;
 
-namespace WPFCross.UI.Services
+namespace WPFCross.Startup.Services
 {
     public class AppSettings : IAppSettings
     {

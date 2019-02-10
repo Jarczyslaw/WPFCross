@@ -15,7 +15,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace WPFCross.UI
+namespace WPFCross.Startup
 {
     [MvxWindowPresentation(Identifier = nameof(MainWindow), Modal = false)]
     public partial class MainWindow : MvxWindow
