@@ -7,5 +7,6 @@ namespace WPFCross.Startup.Services
         DbAccessType DbAccessType { get; }
         bool DbInitialize { get; }
         bool Clear { get; }
+        bool Test { get; }
     }
 }

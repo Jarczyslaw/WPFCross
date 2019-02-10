@@ -1,0 +1,17 @@
+﻿<mvx:MvxWpfView x:Class="WPFCross.Startup.Views.TestView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:mvx="clr-namespace:MvvmCross.Platforms.Wpf.Views;assembly=MvvmCross.Platforms.Wpf"
+        mc:Ignorable="d">
+
+    <StackPanel Margin="3">
+        <Button Content="Test1"
+                    Command="{Binding Test1Command}" />
+        <Button Content="Test2"
+                    Command="{Binding Test2Command}" />
+        <Button Content="Test3"
+                    Command="{Binding Test3Command}" />
+    </StackPanel>
+</mvx:MvxWpfView>

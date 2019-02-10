@@ -17,7 +17,14 @@ namespace WPFCross.Startup
         public override void Initialize()
         {
             RegisterDependencies();
-            RegisterAppStart<MainViewModel>();
+            if (!App.ArgsService.Test)
+            {
+                RegisterAppStart<MainViewModel>();
+            }
+            else
+            {
+                RegisterAppStart<TestViewModel>();
+            }
         }
 
         public override Task Startup()

@@ -23,8 +23,16 @@ namespace WPFCross.Startup
             ArgsService = new ArgsService();
             ArgsService.Parse(e.Args);
 
-            var mainWindow = new MainWindow();
-            mainWindow.Show();
+            Window startupWindow = null;
+            if (!ArgsService.Test)
+            {
+                startupWindow = new MainWindow();
+            }
+            else
+            {
+                startupWindow = new TestWindow();
+            }
+            startupWindow.Show();
         }
 
         public override void ApplicationInitialized()
