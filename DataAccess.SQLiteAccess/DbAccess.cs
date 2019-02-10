@@ -1,9 +1,11 @@
-﻿using DataAccess.Core;
+﻿using Dapper;
+using DataAccess.Core;
 using DataAccess.Core.DbLib;
 using DataAccess.Models;
 using Service.DataMapper;
 using System;
 using System.Collections.Generic;
+using System.Data.SQLite;
 using System.IO;
 
 namespace DataAccess.SQLiteAccess
@@ -30,7 +32,10 @@ namespace DataAccess.SQLiteAccess
 
         public void Clear()
         {
-            throw new NotImplementedException();
+            using (var db = CreateDbContext())
+            {
+                //db.Connection.Execute("DROP TABLE IF EXISTS Contacts");
+            }
         }
 
         public void DeleteContact(int id)
@@ -85,7 +90,21 @@ namespace DataAccess.SQLiteAccess
 
         private void InitializeDatabase()
         {
+            if (!File.Exists(dbConnectionProvider.DbFilePath))
+            {
+                SQLiteConnection.CreateFile(dbConnectionProvider.DbFilePath);
 
+                using (var db = CreateDbContext())
+                {
+                    var sql = @"CREATE TABLE Contacts (
+                                Id    INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
+	                            Title TEXT,
+	                            Name  TEXT,
+	                            Favourite INTEGER DEFAULT 0
+                            );";
+                    db.Connection.Execute(sql);
+                }
+            }
         }
     }
 }
