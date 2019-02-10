@@ -7,16 +7,16 @@ namespace DataAccess.SQLiteAccess
 {
     public class DbFactory : IDbFactory
     {
-        public readonly IConnectionStringProvider connectionStringProvider;
+        public readonly IDbConnectionProvider dbConnectionProvider;
 
-        public DbFactory(IConnectionStringProvider connectionStringProvider)
+        public DbFactory(IDbConnectionProvider dbConnectionProvider)
         {
-            this.connectionStringProvider = connectionStringProvider;
+            this.dbConnectionProvider = dbConnectionProvider;
         }
 
         public IDbConnection CreateConnection()
         {
-            return new SQLiteConnection(connectionStringProvider.ConnectionString);
+            return new SQLiteConnection(dbConnectionProvider.ConnectionString);
         }
     }
 }

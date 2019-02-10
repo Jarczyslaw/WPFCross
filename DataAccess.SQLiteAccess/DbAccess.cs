@@ -1,16 +1,21 @@
 ﻿using DataAccess.Core;
+using DataAccess.Core.DbLib;
 using DataAccess.Models;
 using Service.DataMapper;
 using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace DataAccess.SQLiteAccess
 {
     public class DbAccess : DbAccessBase, IDbAccess
     {
-        public DbAccess(IDataMapperService dataMapperService, IConnectionStringProvider connectionProvider)
-            : base(dataMapperService, connectionProvider)
+        private readonly IDbFactory dbFactory;
+
+        public DbAccess(IDataMapperService dataMapperService, IDbConnectionProvider dbConnectionProvider)
+            : base(dataMapperService, dbConnectionProvider)
         {
+            dbFactory = new DbFactory(dbConnectionProvider);
         }
 
         public void AddContact(Contact contact)
@@ -71,6 +76,16 @@ namespace DataAccess.SQLiteAccess
         public void Initialize()
         {
             throw new NotImplementedException();
+        }
+
+        private DbContext CreateDbContext()
+        {
+            return new DbContext(dbFactory);
+        }
+
+        private void InitializeDatabase()
+        {
+
         }
     }
 }

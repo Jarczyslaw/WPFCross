@@ -8,12 +8,12 @@ namespace DataAccess.Core
     public class DbAccessBase
     {
         protected readonly IDataMapperService dataMapperService;
-        protected readonly IConnectionStringProvider connectionProvider;
+        protected readonly IDbConnectionProvider dbConnectionProvider;
 
-        public DbAccessBase(IDataMapperService dataMapperService, IConnectionStringProvider connectionProvider)
+        public DbAccessBase(IDataMapperService dataMapperService, IDbConnectionProvider dbConnectionProvider)
         {
             this.dataMapperService = dataMapperService;
-            this.connectionProvider = connectionProvider;
+            this.dbConnectionProvider = dbConnectionProvider;
         }
     }
 }

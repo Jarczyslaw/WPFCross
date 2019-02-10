@@ -7,6 +7,16 @@ namespace WPFCross.UI.Services
 {
     public class AppSettings : IAppSettings
     {
+        public string LiteDbFileName
+        {
+            get { return GetSetting(); }
+        }
+
+        public string SQLiteFileName
+        {
+            get { return GetSetting(); }
+        }
+
         public string LiteDbConnection
         {
             get { return GetConnectionString("LiteDbConnection").ConnectionString; }

@@ -1,7 +1,8 @@
 ﻿namespace DataAccess.Core
 {
-    public interface IConnectionStringProvider
+    public interface IDbConnectionProvider
     {
+        string DbFilePath { get; }
         string ConnectionString { get; }
     }
 }

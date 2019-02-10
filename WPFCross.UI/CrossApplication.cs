@@ -51,7 +51,7 @@ namespace WPFCross.UI
 
         private void RegisterDbAccess()
         {
-            Mvx.IoCProvider.RegisterAndConstruct<IConnectionStringProvider, ConnectionStringProvider>();
+            Mvx.IoCProvider.RegisterAndConstruct<IDbConnectionProvider, DbConnectionProvider>();
             switch (App.ArgsService.DbAccessType)
             {
                 case DbAccessType.Mock:
