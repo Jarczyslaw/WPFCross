@@ -13,7 +13,7 @@
         SizeToContent="Height"
         ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen"
-        Icon="jt_icon.ico">
+        Icon="/WPFCross;component/jt_icon.ico">
     
     <mvx:MvxWindow.Resources>
         <ObjectDataProvider x:Key="ContactEntryTypes"

@@ -10,7 +10,7 @@
         Width="{StaticResource MainWindowWidth}"
         MinHeight="{StaticResource MainWindowHeight}"
         MinWidth="{StaticResource MainWindowWidth}"
-        Icon="jt_icon.ico"
+        Icon="/WPFCross;component/jt_icon.ico"
         ResizeMode="CanMinimize"
         WindowStartupLocation="CenterScreen">
     <Grid>

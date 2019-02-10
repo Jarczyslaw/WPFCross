@@ -10,7 +10,7 @@
         SizeToContent="Height"
         ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen"
-        Icon="jt_icon.ico">
+        Icon="/WPFCross;component/jt_icon.ico">
 
     <StackPanel Margin="3">
         <Label Content="Group:" />

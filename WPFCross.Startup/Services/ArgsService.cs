@@ -7,15 +7,13 @@ namespace WPFCross.Startup.Services
     {
         private readonly FluentCommandLineParser parser;
 
-        public DbAccessType DbAccessType { get; private set; }
-
-        public bool DbInitialize { get; private set; }
-
-        public bool Clear { get; private set; }
-
         public ArgsService()
         {
             parser = new FluentCommandLineParser();
+            parser.Setup<bool>('t', "test")
+                .Callback(t => Test = t)
+                .SetDefault(false);
+
             parser.Setup<DbAccessType>('d', "db")
                 .Callback(m => DbAccessType = m)
                 .SetDefault(DbAccessType.Mock);
@@ -28,6 +26,14 @@ namespace WPFCross.Startup.Services
                 .Callback(c => Clear = c)
                 .SetDefault(false);
         }
+
+        public bool Test { get; private set; }
+
+        public DbAccessType DbAccessType { get; private set; }
+
+        public bool DbInitialize { get; private set; }
+
+        public bool Clear { get; private set; }
 
         public bool Parse(string[] args)
         {
