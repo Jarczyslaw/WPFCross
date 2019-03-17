@@ -102,7 +102,9 @@ namespace WPFCross.Core.ViewModels
         private async void EditContact()
         {
             if (SelectedContact == null)
+            {
                 return;
+            }
 
             await OpenContactViewModel(SelectedContact.Contact)
                 .ConfigureAwait(false);

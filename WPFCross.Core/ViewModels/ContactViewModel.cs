@@ -104,9 +104,13 @@ namespace WPFCross.Core.ViewModels
             {
                 Result result = null;
                 if (!contactId.HasValue)
+                {
                     result = contactsService.AddContact(contact);
+                }
                 else
+                {
                     result = contactsService.EditContact(contact);
+                }
 
                 if (!result.IsSuccess)
                 {

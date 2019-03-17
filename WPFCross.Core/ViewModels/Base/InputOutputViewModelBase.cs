@@ -2,9 +2,6 @@
 using MvvmCross.ViewModels;
 using Service.Dialogs;
 using Service.Logger;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace WPFCross.Core.ViewModels.Base
 {

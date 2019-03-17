@@ -1,8 +1,8 @@
-﻿using System;
-using MvvmCross.Commands;
+﻿using MvvmCross.Commands;
 using MvvmCross.Navigation;
 using Service.Dialogs;
 using Service.Logger;
+using System;
 using WPFCross.Core.ViewModels.Base;
 
 namespace WPFCross.Core.ViewModels

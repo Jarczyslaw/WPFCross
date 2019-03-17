@@ -1,5 +1,4 @@
-﻿using DataAccess.Core;
-using System;
+﻿using System;
 using System.Configuration;
 using System.Runtime.CompilerServices;
 

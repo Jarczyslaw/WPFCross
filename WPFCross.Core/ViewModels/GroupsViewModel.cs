@@ -1,5 +1,4 @@
-﻿using DataAccess.Core;
-using DataAccess.Models;
+﻿using DataAccess.Models;
 using MvvmCross.Commands;
 using MvvmCross.Navigation;
 using Service.Core;
@@ -74,9 +73,13 @@ namespace WPFCross.Core.ViewModels
                 Groups = new ObservableCollection<GroupItemViewModel>(result.Value.Select(g => new GroupItemViewModel(g)));
 
                 if (selected == null)
+                {
                     SelectedGroup = Groups.FirstOrDefault();
+                }
                 else
+                {
                     SelectedGroup = Groups.FirstOrDefault(g => g.Group.Id == selected.Id);
+                }
             }
             catch (Exception exc)
             {
@@ -147,7 +150,9 @@ namespace WPFCross.Core.ViewModels
 
             var dialogResult = dialogsService.ShowYesNoQuestion($"Do you really want to remove {SelectedGroup.Name}?");
             if (!dialogResult)
+            {
                 return;
+            }
 
             try
             {
@@ -159,7 +164,9 @@ namespace WPFCross.Core.ViewModels
                 }
 
                 if (result.Infos.Any())
+                {
                     dialogsService.ShowInfo(result.Infos.First().Content);
+                }
 
                 dataChanged = true;
                 LoadGroups();
