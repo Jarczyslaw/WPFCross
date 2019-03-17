@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using DataAccess.Models;
-using System;
 
 namespace Service.DataMapper
 {

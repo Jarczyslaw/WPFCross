@@ -1,7 +1,6 @@
 ﻿using Commons;
 using DataAccess.Core;
 using DataAccess.Models;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -79,7 +78,9 @@ namespace Service.Core
 
             var validationResult = ValidateContact(contact);
             if (!validationResult.IsSuccess)
+            {
                 return validationResult;
+            }
 
             dataAccess.AddContact(contact);
 
@@ -92,7 +93,9 @@ namespace Service.Core
 
             var validationResult = ValidateContact(contact);
             if (!validationResult.IsSuccess)
+            {
                 return validationResult;
+            }
 
             dataAccess.EditContact(contact);
 
