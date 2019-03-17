@@ -89,13 +89,13 @@ namespace DataAccess.SQLiteAccess
             if (!File.Exists(dbConnectionProvider.DbFilePath))
             {
                 SQLiteConnection.CreateFile(dbConnectionProvider.DbFilePath);
+            }
 
-                using (var db = CreateDbContext())
-                {
-                    InitializeContacts(db.Connection);
-                    InitializeContactEntries(db.Connection);
-                    InitializeGroups(db.Connection);
-                }
+            using (var db = CreateDbContext())
+            {
+                InitializeContacts(db.Connection);
+                InitializeContactEntries(db.Connection);
+                InitializeGroups(db.Connection);
             }
         }
 
@@ -117,7 +117,7 @@ namespace DataAccess.SQLiteAccess
 
         private void InitializeContactEntries(IDbConnection connection)
         {
-            const string sql = @"CREATE TABLE IF NOT EXISTS 'ContactEntries' (
+            const string sql = @"CREATE TABLE IF NOT EXISTS 'ContactEntrys' (
                                 'Id'    INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
 	                            'Type'  INTEGER NOT NULL DEFAULT 0,
 	                            'Value' TEXT,
