@@ -47,11 +47,11 @@
     <Reference Include="LiteDB, Version=4.1.4.0, Culture=neutral, PublicKeyToken=4ee40123013c9f27, processorArchitecture=MSIL">
       <HintPath>..\packages\LiteDB.4.1.4\lib\net40\LiteDB.dll</HintPath>
     </Reference>
-    <Reference Include="MvvmCross, Version=6.2.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\MvvmCross.6.2.2\lib\net461\MvvmCross.dll</HintPath>
+    <Reference Include="MvvmCross, Version=6.2.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MvvmCross.6.2.3\lib\net461\MvvmCross.dll</HintPath>
     </Reference>
-    <Reference Include="MvvmCross.Platforms.Wpf, Version=6.2.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\MvvmCross.Platforms.Wpf.6.2.2\lib\net461\MvvmCross.Platforms.Wpf.dll</HintPath>
+    <Reference Include="MvvmCross.Platforms.Wpf, Version=6.2.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MvvmCross.Platforms.Wpf.6.2.3\lib\net461\MvvmCross.Platforms.Wpf.dll</HintPath>
     </Reference>
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
       <HintPath>..\packages\NLog.4.5.11\lib\net45\NLog.dll</HintPath>
