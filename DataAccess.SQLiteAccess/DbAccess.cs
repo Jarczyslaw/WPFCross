@@ -5,6 +5,7 @@ using DataAccess.Models;
 using Service.DataMapper;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SQLite;
 using System.IO;
 
@@ -39,7 +40,7 @@ namespace DataAccess.SQLiteAccess
         {
             using (var db = CreateDbContext())
             {
-                //db.Connection.Execute("DROP TABLE IF EXISTS Contacts");
+                db.Connection.Execute("DROP TABLE IF EXISTS Contacts");
             }
         }
 
@@ -85,7 +86,17 @@ namespace DataAccess.SQLiteAccess
 
         public void Initialize()
         {
-            throw new NotImplementedException();
+            if (!File.Exists(dbConnectionProvider.DbFilePath))
+            {
+                SQLiteConnection.CreateFile(dbConnectionProvider.DbFilePath);
+
+                using (var db = CreateDbContext())
+                {
+                    InitializeContacts(db.Connection);
+                    InitializeContactEntries(db.Connection);
+                    InitializeGroups(db.Connection);
+                }
+            }
         }
 
         private DbContext CreateDbContext()
@@ -93,23 +104,34 @@ namespace DataAccess.SQLiteAccess
             return new DbContext(dbFactory);
         }
 
-        private void InitializeDatabase()
+        private void InitializeContacts(IDbConnection connection)
         {
-            if (!File.Exists(dbConnectionProvider.DbFilePath))
-            {
-                SQLiteConnection.CreateFile(dbConnectionProvider.DbFilePath);
+            const string sql = @"CREATE TABLE IF NOT EXISTS 'Contacts' (
+                                'Id'    INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
+	                            'Title' TEXT,
+	                            'Name'  TEXT,
+	                            'Favourite' INTEGER NOT NULL DEFAULT 0,
+	                            'GroupId'   INTEGER);";
+            connection.Execute(sql);
+        }
 
-                using (var db = CreateDbContext())
-                {
-                    var sql = @"CREATE TABLE Contacts (
-                                Id    INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
-	                            Title TEXT,
-	                            Name  TEXT,
-	                            Favourite INTEGER DEFAULT 0
-                            );";
-                    db.Connection.Execute(sql);
-                }
-            }
+        private void InitializeContactEntries(IDbConnection connection)
+        {
+            const string sql = @"CREATE TABLE IF NOT EXISTS 'ContactEntries' (
+                                'Id'    INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
+	                            'Type'  INTEGER NOT NULL DEFAULT 0,
+	                            'Value' TEXT,
+                                'ContactId'	INTEGER);";
+            connection.Execute(sql);
+        }
+
+        private void InitializeGroups(IDbConnection connection)
+        {
+            const string sql = @"CREATE TABLE IF NOT EXISTS 'Groups' (
+                                'Id'    INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
+	                            'Default'   INTEGER NOT NULL DEFAULT 0,
+	                            'Name'  TEXT);";
+            connection.Execute(sql);
         }
     }
 }
