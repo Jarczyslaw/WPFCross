@@ -25,6 +25,11 @@ namespace DataAccess.SQLiteAccess
             throw new NotImplementedException();
         }
 
+        public void AddDummyData()
+        {
+            throw new NotImplementedException();
+        }
+
         public void AddGroup(Group group)
         {
             throw new NotImplementedException();

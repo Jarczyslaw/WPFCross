@@ -1,13 +1,13 @@
 ﻿using DataAccess.Models;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace DataAccess.Core
 {
     public interface IDbAccess
     {
         void Initialize();
+        void Clear();
+        void AddDummyData();
         void AddContact(Contact contact);
         void AddGroup(Group group);
         void DeleteContact(int id);
@@ -18,6 +18,5 @@ namespace DataAccess.Core
         IEnumerable<Group> GetGroups();
         bool GroupExists(string groupName);
         Group GetDefaultGroup();
-        void Clear();
     }
 }

@@ -30,18 +30,24 @@ namespace WPFCross.Startup
         public override Task Startup()
         {
             var argsService = Mvx.IoCProvider.Resolve<IArgsService>();
+            InitializeDatabase(argsService);
+
+            return base.Startup();
+        }
+
+        private void InitializeDatabase(IArgsService argsService)
+        {
             var dbDataAccess = Mvx.IoCProvider.Resolve<IDbAccess>();
 
-            if (argsService.DbInitialize)
+            dbDataAccess.Initialize();
+            if (argsService.DummyData)
             {
-                dbDataAccess.Initialize();
+                dbDataAccess.AddDummyData();
             }
             else if (argsService.Clear)
             {
                 dbDataAccess.Clear();
             }
-
-            return base.Startup();
         }
 
         private void RegisterDependencies()

@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace DataAccess.Core
 {
-    public class DbInitializer : IDbInitializer
+    public class DbDummyData : IDbDummyData
     {
         private string familyGroup = "Family";
         private string workGroup = "Work";

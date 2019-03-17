@@ -185,7 +185,10 @@ namespace WPFCross.Core.ViewModels
 
         private void DeleteEntry(ContactEntryViewModel entry)
         {
-            ContactEntries.Remove(entry);
+            if (dialogsService.ShowYesNoQuestion("Do you really want to remove selected entry?"))
+            {
+                ContactEntries.Remove(entry);
+            }
         }
 
         private void LoadEntries(Contact contact)

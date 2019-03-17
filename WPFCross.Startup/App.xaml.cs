@@ -21,7 +21,10 @@ namespace WPFCross.Startup
         protected override void OnStartup(StartupEventArgs e)
         {
             ArgsService = new ArgsService();
-            ArgsService.Parse(e.Args);
+            if (!ArgsService.Parse(e.Args))
+            {
+                MessageBox.Show("Error while parsing app arguments!");
+            }
 
             Window startupWindow = null;
             if (!ArgsService.Test)

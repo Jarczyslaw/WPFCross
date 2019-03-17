@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace DataAccess.Core
 {
-    public interface IDbInitializer
+    public interface IDbDummyData
     {
         List<Contact> CreateContacts(IEnumerable<Group> groups);
         List<Group> CreateGroups();
