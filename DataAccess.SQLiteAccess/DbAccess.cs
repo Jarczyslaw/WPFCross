@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SQLite;
 using System.IO;
+using System.Linq;
 
 namespace DataAccess.SQLiteAccess
 {
@@ -25,7 +26,18 @@ namespace DataAccess.SQLiteAccess
 
         public void AddContact(Contact contact)
         {
-            throw new NotImplementedException();
+            AddContacts(new List<Contact> { contact });
+        }
+
+        private void AddContacts(IEnumerable<Contact> contacts)
+        {
+            const string sql = @"INSERT INTO Contacts ('Title', 'Name', 'Favourite', 'GroupId') 
+                                VALUES(@Title, @Name, @Favourite, @GroupId);";
+            using (var db = CreateDbContext())
+            {
+                db.Connection.Execute(sql, contacts.Select(c => new { c.Title, c.Name, c.Favourite, c.Group.Id })
+                    .ToArray());
+            }
         }
 
         public void AddDummyData()
@@ -146,7 +158,11 @@ namespace DataAccess.SQLiteAccess
 
         public int GetContactsCount()
         {
-            throw new NotImplementedException();
+            const string sql = "SELECT COUNT(*) FROM Contacts";
+            using (var db = CreateDbContext())
+            {
+                return db.Connection.ExecuteScalar<int>(sql);
+            }
         }
     }
 }
