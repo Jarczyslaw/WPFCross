@@ -31,26 +31,40 @@ namespace DataAccess.SQLiteAccess
 
         private void AddContacts(IEnumerable<Contact> contacts)
         {
-            const string sql = @"INSERT INTO Contacts ('Title', 'Name', 'Favourite', 'GroupId') 
+            const string sql = @"INSERT INTO Contacts (`Title`, `Name`, `Favourite`, `GroupId`) 
                                 VALUES(@Title, @Name, @Favourite, @GroupId);";
             using (var db = CreateDbContext())
             {
-                db.Connection.Execute(sql, contacts.Select(c => new { c.Title, c.Name, c.Favourite, c.Group.Id })
-                    .ToArray());
+                db.Connection.Execute(sql, contacts.Select(c => new Entities.Contact
+                {
+                    Favourite = c.Favourite ? 1 : 0,
+                    GroupId = c.Group.Id,
+                    Name = c.Name,
+                    Title = c.Title
+                }).ToArray());
             }
         }
 
         public void AddDummyData()
         {
             Clear();
+            AddGroups(dbDummyData.CreateGroups());
+            var groups = GetGroups();
+            AddContacts(dbDummyData.CreateContacts(groups));
         }
 
         public void AddGroup(Group group)
         {
-            const string sql = "INSERT INTO Groups ('Default', 'Name') VALUES (@Default, @Name);";
+            AddGroups(new List<Group> { group });
+        }
+
+        private void AddGroups(IEnumerable<Group> groups)
+        {
+            const string sql = "INSERT INTO Groups (`Default`, `Name`) VALUES (@Default, @Name);";
             using (var db = CreateDbContext())
             {
-                db.Connection.Execute(sql, new { group.Default, group.Name });
+                db.Connection.Execute(sql, groups.Select(g => new { g.Default, g.Name })
+                    .ToArray());
             }
         }
 
@@ -58,9 +72,9 @@ namespace DataAccess.SQLiteAccess
         {
             using (var db = CreateDbContext())
             {
-                db.Connection.Execute("DELETE FROM Groups;");
-                db.Connection.Execute("DELETE FROM Contacts;");
-                db.Connection.Execute("DELETE FROM ContactEntrys;");
+                db.Connection.Execute("DELETE FROM `Groups`;");
+                db.Connection.Execute("DELETE FROM `Contacts`;");
+                db.Connection.Execute("DELETE FROM `ContactEntrys`;");
 
                 AddGroup(dbDummyData.CreateDefaultGroup());
             }
@@ -98,7 +112,16 @@ namespace DataAccess.SQLiteAccess
 
         public IEnumerable<Group> GetGroups()
         {
-            throw new NotImplementedException();
+            const string sql = "SELECT `Id`, `Default`, `Name` FROM Groups";
+            using (var db = CreateDbContext())
+            {
+                return db.Connection.Query<Entities.Group>(sql).Select(g => new Group
+                {
+                    Default = g.Default == 1,
+                    Id = g.Id,
+                    Name = g.Name
+                }).ToList();
+            }
         }
 
         public bool GroupExists(string groupName)
@@ -128,37 +151,37 @@ namespace DataAccess.SQLiteAccess
 
         private void InitializeContacts(IDbConnection connection)
         {
-            const string sql = @"CREATE TABLE IF NOT EXISTS 'Contacts' (
-                                'Id'    INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
-	                            'Title' TEXT,
-	                            'Name'  TEXT,
-	                            'Favourite' INTEGER NOT NULL DEFAULT 0,
-	                            'GroupId'   INTEGER);";
+            const string sql = @"CREATE TABLE IF NOT EXISTS `Contacts` (
+                                `Id`    INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
+	                            `Title` TEXT,
+	                            `Name`  TEXT,
+	                            `Favourite` INTEGER NOT NULL DEFAULT 0,
+	                            `GroupId`   INTEGER);";
             connection.Execute(sql);
         }
 
         private void InitializeContactEntries(IDbConnection connection)
         {
-            const string sql = @"CREATE TABLE IF NOT EXISTS 'ContactEntrys' (
-                                'Id'    INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
-	                            'Type'  INTEGER NOT NULL DEFAULT 0,
-	                            'Value' TEXT,
-                                'ContactId'	INTEGER);";
+            const string sql = @"CREATE TABLE IF NOT EXISTS `ContactEntrys` (
+                                `Id`    INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
+	                            `Type`  INTEGER NOT NULL DEFAULT 0,
+	                            `Value` TEXT,
+                                `ContactId`	INTEGER);";
             connection.Execute(sql);
         }
 
         private void InitializeGroups(IDbConnection connection)
         {
-            const string sql = @"CREATE TABLE IF NOT EXISTS 'Groups' (
-                                'Id'    INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
-	                            'Default'   INTEGER NOT NULL DEFAULT 0,
-	                            'Name'  TEXT);";
+            const string sql = @"CREATE TABLE IF NOT EXISTS `Groups` (
+                                `Id`    INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
+	                            `Default`   INTEGER NOT NULL DEFAULT 0,
+	                            `Name`  TEXT);";
             connection.Execute(sql);
         }
 
         public int GetContactsCount()
         {
-            const string sql = "SELECT COUNT(*) FROM Contacts";
+            const string sql = "SELECT COUNT(*) FROM `Contacts`";
             using (var db = CreateDbContext())
             {
                 return db.Connection.ExecuteScalar<int>(sql);
