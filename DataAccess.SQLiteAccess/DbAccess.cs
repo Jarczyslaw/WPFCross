@@ -14,11 +14,13 @@ namespace DataAccess.SQLiteAccess
     public class DbAccess : DbAccessBase, IDbAccess
     {
         private readonly IDbFactory dbFactory;
+        private readonly IDbDummyData dbDummyData;
 
         public DbAccess(IDataMapperService dataMapperService, IDbConnectionProvider dbConnectionProvider)
             : base(dataMapperService, dbConnectionProvider)
         {
             dbFactory = new DbFactory(dbConnectionProvider);
+            dbDummyData = new DbDummyData();
         }
 
         public void AddContact(Contact contact)
@@ -28,19 +30,27 @@ namespace DataAccess.SQLiteAccess
 
         public void AddDummyData()
         {
-            throw new NotImplementedException();
+            Clear();
         }
 
         public void AddGroup(Group group)
         {
-            throw new NotImplementedException();
+            const string sql = "INSERT INTO Groups ('Default', 'Name') VALUES (@Default, @Name);";
+            using (var db = CreateDbContext())
+            {
+                db.Connection.Execute(sql, new { group.Default, group.Name });
+            }
         }
 
         public void Clear()
         {
             using (var db = CreateDbContext())
             {
-                db.Connection.Execute("DROP TABLE IF EXISTS Contacts");
+                db.Connection.Execute("DELETE FROM Groups;");
+                db.Connection.Execute("DELETE FROM Contacts;");
+                db.Connection.Execute("DELETE FROM ContactEntrys;");
+
+                AddGroup(dbDummyData.CreateDefaultGroup());
             }
         }
 
@@ -132,6 +142,11 @@ namespace DataAccess.SQLiteAccess
 	                            'Default'   INTEGER NOT NULL DEFAULT 0,
 	                            'Name'  TEXT);";
             connection.Execute(sql);
+        }
+
+        public int GetContactsCount()
+        {
+            throw new NotImplementedException();
         }
     }
 }

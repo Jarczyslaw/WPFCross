@@ -12,12 +12,12 @@ namespace DataAccess.LiteDbAccess
         public string ContactsCollection { get; } = "Contacts";
         public string GroupsCollection { get; } = "Groups";
 
-        private readonly IDbDummyData dbInitializer;
+        private readonly IDbDummyData dbDummyData;
 
         public DbAccess(IDataMapperService dataMapperService, IDbConnectionProvider dbConnectionProvider)
             : base(dataMapperService, dbConnectionProvider)
         {
-            dbInitializer = new DbDummyData();
+            dbDummyData = new DbDummyData();
 
             BsonMapper.Global
                 .Entity<Contact>().Id(c => c.Id);
@@ -160,7 +160,7 @@ namespace DataAccess.LiteDbAccess
                 db.DropCollection(ContactsCollection);
 
                 var groups = GetGroupsCollection(db);
-                groups.Insert(dbInitializer.CreateDefaultGroup());
+                groups.Insert(dbDummyData.CreateDefaultGroup());
             }
         }
 
@@ -171,9 +171,17 @@ namespace DataAccess.LiteDbAccess
             Clear();
             using (var db = new LiteDatabase(ConnectionString))
             {
-                AddGroups(dbInitializer.CreateGroups());
+                AddGroups(dbDummyData.CreateGroups());
                 var groups = GetGroups();
-                AddContacts(dbInitializer.CreateContacts(groups));
+                AddContacts(dbDummyData.CreateContacts(groups));
+            }
+        }
+
+        public int GetContactsCount()
+        {
+            using (var db = new LiteDatabase(ConnectionString))
+            {
+                return GetContactsCollection(db).Count();
             }
         }
     }
