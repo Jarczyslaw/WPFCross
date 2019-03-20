@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SQLite;
+using System.Dynamic;
 using System.IO;
 using System.Linq;
 
@@ -122,13 +123,15 @@ namespace DataAccess.SQLiteAccess
         public IEnumerable<Contact> GetContacts(Group group, bool favourites)
         {
             string sql = @"
-                SELECT 
-                    FROM ContactEntrys 
+                SELECT
+                    *
+                FROM Contacts
                 WHERE 1 = 1";
 
+            var parameters = new ExpandoObject();
             if (group != null)
             {
-                sql += " AND GroupId = @Id";
+                sql += $" AND GroupId = {group.Id}";
             }
 
             if (favourites)
@@ -138,7 +141,7 @@ namespace DataAccess.SQLiteAccess
 
             using (var db = CreateDbContext())
             {
-                return db.Connection.Query<Entities.Contact>(sql, new { GroupId = group.Id }).Select(c => new Contact
+                return db.Connection.Query<Entities.Contact>(sql).Select(c => new Contact
                 {
                     Favourite = c.Favourite == 1,
                     Id = c.Id,
