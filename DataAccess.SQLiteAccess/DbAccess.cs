@@ -31,7 +31,7 @@ namespace DataAccess.SQLiteAccess
 
         private void AddContacts(IEnumerable<Contact> contacts)
         {
-            const string sql = @"INSERT INTO Contacts (`Title`, `Name`, `Favourite`, `GroupId`) 
+            const string sql = @"INSERT INTO Contacts (Title, Name, Favourite, GroupId) 
                                 VALUES(@Title, @Name, @Favourite, @GroupId);";
             using (var db = CreateDbContext())
             {
@@ -60,7 +60,7 @@ namespace DataAccess.SQLiteAccess
 
         private void AddGroups(IEnumerable<Group> groups)
         {
-            const string sql = "INSERT INTO Groups (`Default`, `Name`) VALUES (@Default, @Name);";
+            const string sql = "INSERT INTO Groups (`Default`, Name) VALUES (@Default, @Name);";
             using (var db = CreateDbContext())
             {
                 db.Connection.Execute(sql, groups.Select(g => new { g.Default, g.Name })
@@ -72,19 +72,27 @@ namespace DataAccess.SQLiteAccess
         {
             using (var db = CreateDbContext())
             {
-                db.Connection.Execute("DELETE FROM `Groups`;");
-                db.Connection.Execute("DELETE FROM `Contacts`;");
-                db.Connection.Execute("DELETE FROM `ContactEntrys`;");
+                db.Connection.Execute(GetClearQuery("ContactEntrys"));
+                db.Connection.Execute(GetClearQuery("Contacts"));
+                db.Connection.Execute(GetClearQuery("Groups"));
 
                 AddGroup(dbDummyData.CreateDefaultGroup());
             }
+        }
+
+        private string GetClearQuery(string tableName)
+        {
+            return $@"DELETE FROM {tableName}; 
+                    DELETE FROM sqlite_sequence WHERE name = '{tableName}';
+                    VACUUM;";
         }
 
         public void DeleteContact(int id)
         {
             using (var db = CreateDbContext())
             {
-                db.Connection.Execute("DELETE FROM `Contacts` WHERE `Id` = @Id", new { Id = id });
+                db.Connection.Execute("DELETE FROM ContactEntrys WHERE ContactId = @ContactId", new { ContactId = id });
+                db.Connection.Execute("DELETE FROM Contacts WHERE Id = @Id", new { Id = id });
             }
         }
 
@@ -92,7 +100,8 @@ namespace DataAccess.SQLiteAccess
         {
             using (var db = CreateDbContext())
             {
-                db.Connection.Execute("DELETE FROM `Groups` WHERE `Id` = @Id", new { Id = id });
+                db.Connection.Execute("DELETE FROM Contacts WHERE GroupId = @GroupId", new { GroupId = id });
+                db.Connection.Execute("DELETE FROM Groups WHERE Id = @Id", new { Id = id });
             }
         }
 
@@ -103,7 +112,7 @@ namespace DataAccess.SQLiteAccess
 
         public void EditGroup(Group group)
         {
-            const string sql = "UPDATE `Groups` SET `Name` = @Name";
+            const string sql = "UPDATE Groups SET Name = @Name";
             using (var db = CreateDbContext())
             {
                 db.Connection.Execute(sql, new { group.Name });
@@ -114,7 +123,7 @@ namespace DataAccess.SQLiteAccess
         {
             string sql = @"
                 SELECT 
-                    FROM `ContactEntrys` 
+                    FROM ContactEntrys 
                 WHERE 1 = 1";
 
             if (group != null)
@@ -160,7 +169,7 @@ namespace DataAccess.SQLiteAccess
 
         public bool GroupExists(string groupName)
         {
-            const string sql = "SELECT count(*) FROM `Groups` WHERE Name = @Name";
+            const string sql = "SELECT count(*) FROM Groups WHERE Name = @Name";
             using (var db = CreateDbContext())
             {
                 return db.Connection.ExecuteScalar<int>(sql, new { Name = groupName }) > 0;
@@ -189,41 +198,37 @@ namespace DataAccess.SQLiteAccess
 
         private void InitializeContacts(IDbConnection connection)
         {
-            const string sql = @"CREATE TABLE IF NOT EXISTS `Contacts` (
-                                `Id`    INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
-	                            `Title` TEXT,
-	                            `Name`  TEXT,
-	                            `Favourite` INTEGER NOT NULL DEFAULT 0,
-	                            `GroupId`   INTEGER);";
+            const string sql = @"CREATE TABLE IF NOT EXISTS Contacts (
+                                Id    INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
+	                            Title TEXT,
+	                            Name  TEXT,
+	                            Favourite INTEGER NOT NULL DEFAULT 0,
+	                            GroupId   INTEGER);";
             connection.Execute(sql);
         }
 
         private void InitializeContactEntries(IDbConnection connection)
         {
-            const string sql = @"CREATE TABLE IF NOT EXISTS `ContactEntrys` (
-                                `Id`    INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
-	                            `Type`  INTEGER NOT NULL DEFAULT 0,
-	                            `Value` TEXT,
-                                `ContactId`	INTEGER);";
+            const string sql = @"CREATE TABLE IF NOT EXISTS ContactEntrys (
+                                Id    INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
+	                            Type  INTEGER NOT NULL DEFAULT 0,
+	                            Value TEXT,
+                                ContactId	INTEGER);";
             connection.Execute(sql);
         }
 
         private void InitializeGroups(IDbConnection connection)
         {
-            const string sql = @"CREATE TABLE IF NOT EXISTS `Groups` (
-                                `Id`    INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
+            const string sql = @"CREATE TABLE IF NOT EXISTS Groups (
+                                Id    INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
 	                            `Default`   INTEGER NOT NULL DEFAULT 0,
-	                            `Name`  TEXT);";
+	                            Name  TEXT);";
             connection.Execute(sql);
         }
 
         public int GetContactsCount()
         {
-            const string sql = "SELECT COUNT(*) FROM `Contacts`";
-            using (var db = CreateDbContext())
-            {
-                return db.Connection.ExecuteScalar<int>(sql);
-            }
+            return GetContacts(null, false).Count();
         }
     }
 }
