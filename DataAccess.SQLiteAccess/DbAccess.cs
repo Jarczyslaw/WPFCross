@@ -82,12 +82,18 @@ namespace DataAccess.SQLiteAccess
 
         public void DeleteContact(int id)
         {
-            throw new NotImplementedException();
+            using (var db = CreateDbContext())
+            {
+                db.Connection.Execute("DELETE FROM `Contacts` WHERE `Id` = @Id", new { Id = id });
+            }
         }
 
         public void DeleteGroup(int id)
         {
-            throw new NotImplementedException();
+            using (var db = CreateDbContext())
+            {
+                db.Connection.Execute("DELETE FROM `Groups` WHERE `Id` = @Id", new { Id = id });
+            }
         }
 
         public void EditContact(Contact contact)
@@ -97,22 +103,50 @@ namespace DataAccess.SQLiteAccess
 
         public void EditGroup(Group group)
         {
-            throw new NotImplementedException();
+            const string sql = "UPDATE `Groups` SET `Name` = @Name";
+            using (var db = CreateDbContext())
+            {
+                db.Connection.Execute(sql, new { group.Name });
+            }
         }
 
         public IEnumerable<Contact> GetContacts(Group group, bool favourites)
         {
-            throw new NotImplementedException();
+            string sql = @"
+                SELECT 
+                    FROM `ContactEntrys` 
+                WHERE 1 = 1";
+
+            if (group != null)
+            {
+                sql += " AND GroupId = @Id";
+            }
+
+            if (favourites)
+            {
+                sql += " AND Favourite = 1";
+            }
+
+            using (var db = CreateDbContext())
+            {
+                return db.Connection.Query<Entities.Contact>(sql, new { GroupId = group.Id }).Select(c => new Contact
+                {
+                    Favourite = c.Favourite == 1,
+                    Id = c.Id,
+                    Name = c.Name,
+                    Title = c.Title
+                }).ToList();
+            }
         }
 
         public Group GetDefaultGroup()
         {
-            throw new NotImplementedException();
+            return GetGroups().Single(g => g.Default);
         }
 
         public IEnumerable<Group> GetGroups()
         {
-            const string sql = "SELECT `Id`, `Default`, `Name` FROM Groups";
+            const string sql = "SELECT * FROM Groups";
             using (var db = CreateDbContext())
             {
                 return db.Connection.Query<Entities.Group>(sql).Select(g => new Group
@@ -126,7 +160,11 @@ namespace DataAccess.SQLiteAccess
 
         public bool GroupExists(string groupName)
         {
-            throw new NotImplementedException();
+            const string sql = "SELECT count(*) FROM `Groups` WHERE Name = @Name";
+            using (var db = CreateDbContext())
+            {
+                return db.Connection.ExecuteScalar<int>(sql, new { Name = groupName }) > 0;
+            }
         }
 
         public void Initialize()
