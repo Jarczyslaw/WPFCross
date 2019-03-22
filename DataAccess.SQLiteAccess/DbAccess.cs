@@ -7,9 +7,9 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SQLite;
-using System.Dynamic;
 using System.IO;
 using System.Linq;
+using System.Transactions;
 
 namespace DataAccess.SQLiteAccess
 {
@@ -27,82 +27,109 @@ namespace DataAccess.SQLiteAccess
 
         public void AddContact(Contact contact)
         {
-            AddContacts(new List<Contact> { contact });
+            using (var transactionScope = new TransactionScope())
+            {
+                using (var db = GetDbContext())
+                {
+                    AddContacts(new List<Contact> { contact }, db.Connection);
+                    transactionScope.Complete();
+                }
+            }
         }
 
-        private void AddContacts(IEnumerable<Contact> contacts)
+        private void AddContacts(IEnumerable<Contact> contacts, IDbConnection connection)
         {
             const string sql = @"INSERT INTO Contacts (Title, Name, Favourite, GroupId) 
                                 VALUES(@Title, @Name, @Favourite, @GroupId);";
-            using (var db = CreateDbContext())
+            connection.Execute(sql, contacts.Select(c => new Entities.Contact
             {
-                db.Connection.Execute(sql, contacts.Select(c => new Entities.Contact
-                {
-                    Favourite = c.Favourite ? 1 : 0,
-                    GroupId = c.Group.Id,
-                    Name = c.Name,
-                    Title = c.Title
-                }).ToArray());
-            }
+                Favourite = c.Favourite ? 1 : 0,
+                GroupId = c.Group.Id,
+                Name = c.Name,
+                Title = c.Title
+            }).ToArray());
         }
 
         public void AddDummyData()
         {
-            Clear();
-            AddGroups(dbDummyData.CreateGroups());
-            var groups = GetGroups();
-            AddContacts(dbDummyData.CreateContacts(groups));
+            using (var transactionScope = new TransactionScope())
+            {
+                using (var db = GetDbContext())
+                {
+                    Clear(db.Connection);
+                    AddGroups(dbDummyData.CreateGroups(), db.Connection);
+                    var groups = GetGroups(db.Connection);
+                    AddContacts(dbDummyData.CreateContacts(groups), db.Connection);
+                    transactionScope.Complete();
+                }
+            }
         }
 
         public void AddGroup(Group group)
         {
-            AddGroups(new List<Group> { group });
+            using (var db = GetDbContext())
+            {
+                AddGroups(new List<Group> { group }, db.Connection);
+            }
         }
 
-        private void AddGroups(IEnumerable<Group> groups)
+        private void AddGroups(IEnumerable<Group> groups, IDbConnection connection)
         {
             const string sql = "INSERT INTO Groups (`Default`, Name) VALUES (@Default, @Name);";
-            using (var db = CreateDbContext())
-            {
-                db.Connection.Execute(sql, groups.Select(g => new { g.Default, g.Name })
+            connection.Execute(sql, groups.Select(g => new { g.Default, g.Name })
                     .ToArray());
-            }
         }
 
         public void Clear()
         {
-            using (var db = CreateDbContext())
+            using (var transactionScope = new TransactionScope())
             {
-                db.Connection.Execute(GetClearQuery("ContactEntrys"));
-                db.Connection.Execute(GetClearQuery("Contacts"));
-                db.Connection.Execute(GetClearQuery("Groups"));
-
-                AddGroup(dbDummyData.CreateDefaultGroup());
+                using (var db = GetDbContext())
+                {
+                    Clear(db.Connection);
+                    transactionScope.Complete();
+                }
             }
+        }
+
+        private void Clear(IDbConnection connection)
+        {
+            connection.Execute(GetClearQuery("ContactEntrys"));
+            connection.Execute(GetClearQuery("Contacts"));
+            connection.Execute(GetClearQuery("Groups"));
+
+            AddGroups(new List<Group> { dbDummyData.CreateDefaultGroup() }, connection);
         }
 
         private string GetClearQuery(string tableName)
         {
             return $@"DELETE FROM {tableName}; 
-                    DELETE FROM sqlite_sequence WHERE name = '{tableName}';
-                    VACUUM;";
+                    DELETE FROM sqlite_sequence WHERE name = '{tableName}';";
         }
 
         public void DeleteContact(int id)
         {
-            using (var db = CreateDbContext())
+            using (var transactionScope = new TransactionScope())
             {
-                db.Connection.Execute("DELETE FROM ContactEntrys WHERE ContactId = @ContactId", new { ContactId = id });
-                db.Connection.Execute("DELETE FROM Contacts WHERE Id = @Id", new { Id = id });
+                using (var db = GetDbContext())
+                {
+                    db.Connection.Execute("DELETE FROM ContactEntrys WHERE ContactId = @ContactId", new { ContactId = id });
+                    db.Connection.Execute("DELETE FROM Contacts WHERE Id = @Id", new { Id = id });
+                    transactionScope.Complete();
+                }
             }
         }
 
         public void DeleteGroup(int id)
         {
-            using (var db = CreateDbContext())
+            using (var transactionScope = new TransactionScope())
             {
-                db.Connection.Execute("DELETE FROM Contacts WHERE GroupId = @GroupId", new { GroupId = id });
-                db.Connection.Execute("DELETE FROM Groups WHERE Id = @Id", new { Id = id });
+                using (var db = GetDbContext())
+                {
+                    db.Connection.Execute("DELETE FROM Contacts WHERE GroupId = @GroupId", new { GroupId = id });
+                    db.Connection.Execute("DELETE FROM Groups WHERE Id = @Id", new { Id = id });
+                    transactionScope.Complete();
+                }
             }
         }
 
@@ -114,7 +141,7 @@ namespace DataAccess.SQLiteAccess
         public void EditGroup(Group group)
         {
             const string sql = "UPDATE Groups SET Name = @Name";
-            using (var db = CreateDbContext())
+            using (var db = GetDbContext())
             {
                 db.Connection.Execute(sql, new { group.Name });
             }
@@ -128,7 +155,6 @@ namespace DataAccess.SQLiteAccess
                 FROM Contacts
                 WHERE 1 = 1";
 
-            var parameters = new ExpandoObject();
             if (group != null)
             {
                 sql += $" AND GroupId = {group.Id}";
@@ -139,7 +165,7 @@ namespace DataAccess.SQLiteAccess
                 sql += " AND Favourite = 1";
             }
 
-            using (var db = CreateDbContext())
+            using (var db = GetDbContext())
             {
                 return db.Connection.Query<Entities.Contact>(sql).Select(c => new Contact
                 {
@@ -158,22 +184,27 @@ namespace DataAccess.SQLiteAccess
 
         public IEnumerable<Group> GetGroups()
         {
-            const string sql = "SELECT * FROM Groups";
-            using (var db = CreateDbContext())
+            using (var db = GetDbContext())
             {
-                return db.Connection.Query<Entities.Group>(sql).Select(g => new Group
-                {
-                    Default = g.Default == 1,
-                    Id = g.Id,
-                    Name = g.Name
-                }).ToList();
+                return GetGroups(db.Connection);
             }
+        }
+
+        private IEnumerable<Group> GetGroups(IDbConnection connection)
+        {
+            const string sql = "SELECT * FROM Groups";
+            return connection.Query<Entities.Group>(sql).Select(g => new Group
+            {
+                Default = g.Default == 1,
+                Id = g.Id,
+                Name = g.Name
+            }).ToList();
         }
 
         public bool GroupExists(string groupName)
         {
             const string sql = "SELECT count(*) FROM Groups WHERE Name = @Name";
-            using (var db = CreateDbContext())
+            using (var db = GetDbContext())
             {
                 return db.Connection.ExecuteScalar<int>(sql, new { Name = groupName }) > 0;
             }
@@ -186,15 +217,19 @@ namespace DataAccess.SQLiteAccess
                 SQLiteConnection.CreateFile(dbConnectionProvider.DbFilePath);
             }
 
-            using (var db = CreateDbContext())
+            using (var transactionScope = new TransactionScope())
             {
-                InitializeContacts(db.Connection);
-                InitializeContactEntries(db.Connection);
-                InitializeGroups(db.Connection);
+                using (var db = GetDbContext())
+                {
+                    InitializeContacts(db.Connection);
+                    InitializeContactEntries(db.Connection);
+                    InitializeGroups(db.Connection);
+                    transactionScope.Complete();
+                }
             }
         }
 
-        private DbContext CreateDbContext()
+        private DbContext GetDbContext()
         {
             return new DbContext(dbFactory);
         }
