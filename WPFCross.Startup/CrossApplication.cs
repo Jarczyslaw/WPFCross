@@ -8,15 +8,30 @@ using Service.Dialogs;
 using Service.Logger;
 using WPFCross.Core.ViewModels;
 using WPFCross.Extensions;
+using WPFCross.Startup.GlobalExceptions;
 using WPFCross.Startup.Services;
 
 namespace WPFCross.Startup
 {
     public class CrossApplication : MvxApplication
     {
+        private AppGlobalExceptionHandler globalExceptionHandler;
+
         public override void Initialize()
         {
             RegisterDependencies();
+            InitializeViewModels();
+        }
+
+        public override Task Startup()
+        {
+            globalExceptionHandler = Mvx.IoCProvider.IoCConstruct<AppGlobalExceptionHandler>();
+            InitializeDatabase();
+            return base.Startup();
+        }
+
+        private void InitializeViewModels()
+        {
             if (!App.ArgsService.Test)
             {
                 RegisterAppStart<MainViewModel>();
@@ -27,24 +42,16 @@ namespace WPFCross.Startup
             }
         }
 
-        public override Task Startup()
-        {
-            var argsService = Mvx.IoCProvider.Resolve<IArgsService>();
-            InitializeDatabase(argsService);
-
-            return base.Startup();
-        }
-
-        private void InitializeDatabase(IArgsService argsService)
+        private void InitializeDatabase()
         {
             var dbDataAccess = Mvx.IoCProvider.Resolve<IDbAccess>();
-
             dbDataAccess.Initialize();
-            if (argsService.DummyData)
+
+            if (App.ArgsService.DummyData)
             {
                 dbDataAccess.AddDummyData();
             }
-            else if (argsService.Clear)
+            else if (App.ArgsService.Clear)
             {
                 dbDataAccess.Clear();
             }

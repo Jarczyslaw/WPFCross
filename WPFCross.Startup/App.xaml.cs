@@ -1,16 +1,12 @@
-﻿using MvvmCross;
-using MvvmCross.Core;
+﻿using MvvmCross.Core;
 using MvvmCross.Platforms.Wpf.Views;
 using System.Windows;
-using WPFCross.Startup.GlobalExceptions;
 using WPFCross.Startup.Services;
 
 namespace WPFCross.Startup
 {
     public partial class App : MvxApplication
     {
-        private AppGlobalExceptionHandler globalExceptionHandler;
-
         public static ArgsService ArgsService { get; private set; }
 
         protected override void RegisterSetup()
@@ -36,12 +32,6 @@ namespace WPFCross.Startup
                 startupWindow = new TestWindow();
             }
             startupWindow.Show();
-        }
-
-        public override void ApplicationInitialized()
-        {
-            base.ApplicationInitialized();
-            globalExceptionHandler = Mvx.IoCProvider.IoCConstruct<AppGlobalExceptionHandler>();
         }
     }
 }
