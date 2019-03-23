@@ -15,8 +15,6 @@ namespace WPFCross.Startup
 {
     public class CrossApplication : MvxApplication
     {
-        private AppGlobalExceptionHandler globalExceptionHandler;
-
         public override void Initialize()
         {
             RegisterDependencies();
@@ -25,7 +23,7 @@ namespace WPFCross.Startup
 
         public override Task Startup()
         {
-            globalExceptionHandler = Mvx.IoCProvider.IoCConstruct<AppGlobalExceptionHandler>();
+            Mvx.IoCProvider.IoCConstruct<AppGlobalExceptionHandler>();
             InitializeDatabase();
             return base.Startup();
         }

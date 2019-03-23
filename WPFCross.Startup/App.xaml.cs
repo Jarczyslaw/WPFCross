@@ -22,6 +22,11 @@ namespace WPFCross.Startup
                 MessageBox.Show("Error while parsing app arguments!");
             }
 
+            ShowWindow();
+        }
+
+        private void ShowWindow()
+        {
             Window startupWindow = null;
             if (!ArgsService.Test)
             {
