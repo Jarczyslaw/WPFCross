@@ -41,13 +41,7 @@ namespace DataAccess.SQLiteAccess
         {
             const string sql = @"INSERT INTO Contacts (Title, Name, Favourite, GroupId) 
                                 VALUES(@Title, @Name, @Favourite, @GroupId);";
-            connection.Execute(sql, contacts.Select(c => new Entities.Contact
-            {
-                Favourite = c.Favourite ? 1 : 0,
-                GroupId = c.Group.Id,
-                Name = c.Name,
-                Title = c.Title
-            }).ToArray());
+            connection.Execute(sql, contacts.Select(c => new Entities.Contact(c)).ToArray());
         }
 
         public void AddDummyData()
@@ -152,29 +146,47 @@ namespace DataAccess.SQLiteAccess
             string sql = @"
                 SELECT
                     *
-                FROM Contacts
+                FROM Contacts c
+                JOIN Groups g ON c.GroupId = g.Id
+                LEFT JOIN ContactEntrys ce ON ce.ContactId = c.Id 
                 WHERE 1 = 1";
 
             if (group != null)
             {
-                sql += $" AND GroupId = {group.Id}";
+                sql += $" AND c.GroupId = {group.Id}";
             }
 
             if (favourites)
             {
-                sql += " AND Favourite = 1";
+                sql += " AND c.Favourite = 1";
             }
 
             using (var db = GetDbContext())
             {
-                return db.Connection.Query<Entities.Contact>(sql).Select(c => new Contact
-                {
-                    Favourite = c.Favourite == 1,
-                    Id = c.Id,
-                    Name = c.Name,
-                    Title = c.Title
-                }).ToList();
+                var lookup = new Dictionary<int, Contact>();
+                var queryResult = db.Connection.Query<Entities.Contact, Entities.Group, Entities.ContactEntry, Entities.Contact>(sql, (contact, contactEntry, g) =>
+                    GetContactsLookup(lookup, contact, contactEntry, g));
+
+                return lookup.Values;
             }
+        }
+
+        private Entities.Contact GetContactsLookup(Dictionary<int, Contact> lookup, Entities.Contact contact, Entities.Group group, Entities.ContactEntry contactEntry)
+        {
+            if (!lookup.TryGetValue(contact.Id, out Contact tempContact))
+            {
+                tempContact = contact.ToModel();
+                tempContact.Group = group.ToModel();
+                tempContact.Items = new List<ContactEntry>();
+                lookup.Add(contact.Id, tempContact);
+            }
+
+            if (contactEntry != null)
+            {
+                tempContact.Items.Add(contactEntry.ToModel());
+            }
+            
+            return contact;
         }
 
         public Group GetDefaultGroup()
@@ -193,12 +205,7 @@ namespace DataAccess.SQLiteAccess
         private IEnumerable<Group> GetGroups(IDbConnection connection)
         {
             const string sql = "SELECT * FROM Groups";
-            return connection.Query<Entities.Group>(sql).Select(g => new Group
-            {
-                Default = g.Default == 1,
-                Id = g.Id,
-                Name = g.Name
-            }).ToList();
+            return connection.Query<Entities.Group>(sql).Select(g => g.ToModel()).ToList();
         }
 
         public bool GroupExists(string groupName)

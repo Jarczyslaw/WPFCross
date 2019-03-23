@@ -7,5 +7,15 @@
         public string Name { get; set; }
 
         public bool MappedDefault => Default != 0;
+
+        public Models.Group ToModel()
+        {
+            return new Models.Group
+            {
+                Default = Default == 1,
+                Id = Id,
+                Name = Name
+            };
+        }
     }
 }

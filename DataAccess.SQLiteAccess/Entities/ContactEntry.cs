@@ -10,5 +10,15 @@ namespace DataAccess.SQLiteAccess.Entities
         public int ContactId { get; set; }
 
         public ContactEntryType MappedType => (ContactEntryType)Type;
+
+        public Models.ContactEntry ToModel()
+        {
+            return new Models.ContactEntry
+            {
+                Id = Id,
+                Type = MappedType,
+                Value = Value
+            };
+        }
     }
 }
