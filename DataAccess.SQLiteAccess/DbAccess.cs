@@ -181,10 +181,10 @@ namespace DataAccess.SQLiteAccess
 
         public void EditGroup(Group group)
         {
-            const string sql = "UPDATE Groups SET Name = @Name";
+            const string sql = "UPDATE Groups SET Name = @Name WHERE Id = @Id";
             using (var db = GetDbContext())
             {
-                db.Connection.Execute(sql, new { group.Name });
+                db.Connection.Execute(sql, new Entities.Group(group));
             }
         }
 
