@@ -58,7 +58,7 @@ namespace DataAccess.SQLiteAccess
                     {
                         AddGroup(db.Connection, group);
                     }
-                    
+
                     groups = GetGroups(db.Connection).ToList();
                     foreach (var contact in dbDummyData.CreateContacts(groups))
                     {
@@ -275,6 +275,12 @@ namespace DataAccess.SQLiteAccess
             }
         }
 
+        private bool DefaultGroupExists(IDbConnection connection)
+        {
+            const string sql = "SELECT count(*) FROM Groups WHERE `Default` = 1";
+            return Convert.ToInt32(connection.ExecuteScalar(sql)) > 0;
+        }
+
         public void Initialize()
         {
             if (!File.Exists(dbConnectionProvider.DbFilePath))
@@ -289,6 +295,10 @@ namespace DataAccess.SQLiteAccess
                     InitializeContacts(db.Connection);
                     InitializeContactEntries(db.Connection);
                     InitializeGroups(db.Connection);
+                    if (!DefaultGroupExists(db.Connection))
+                    {
+                        AddGroup(db.Connection, dbDummyData.CreateDefaultGroup());
+                    }
                     transactionScope.Complete();
                 }
             }
