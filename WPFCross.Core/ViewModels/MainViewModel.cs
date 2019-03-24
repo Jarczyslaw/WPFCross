@@ -136,7 +136,8 @@ namespace WPFCross.Core.ViewModels
 
             try
             {
-
+                contactsService.DeleteContact(SelectedContact.Contact);
+                LoadAll();
             }
             catch (Exception exc)
             {

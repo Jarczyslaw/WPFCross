@@ -196,17 +196,22 @@ namespace DataAccess.SQLiteAccess
                 FROM Contacts c
                 JOIN Groups g ON c.GroupId = g.Id
                 LEFT JOIN ContactEntrys ce ON ce.ContactId = c.Id 
-                WHERE 1 = 1";
+                WHERE 1 = 1
+                {0}
+                ORDER BY Id";
 
+            var where = string.Empty;
             if (group != null)
             {
-                sql += $" AND c.GroupId = {group.Id}";
+                where += $" AND c.GroupId = {group.Id}";
             }
 
             if (favourites)
             {
-                sql += " AND c.Favourite = 1";
+                where += " AND c.Favourite = 1";
             }
+
+            sql = string.Format(sql, where);
 
             using (var db = GetDbContext())
             {
@@ -214,7 +219,12 @@ namespace DataAccess.SQLiteAccess
                 var queryResult = db.Connection.Query<Entities.Contact, Entities.Group, Entities.ContactEntry, Entities.Contact>(sql,
                     (contact, contactEntry, g) => GetContactsLookup(lookup, contact, contactEntry, g));
 
-                return lookup.Values;
+                var contacts = lookup.Values;
+                foreach (var contact in contacts)
+                {
+                    contact.Items.OrderBy(i => i.Id);
+                }
+                return contacts;
             }
         }
 

@@ -78,7 +78,7 @@ namespace WPFCross.Core.ViewModels
                 }
                 else
                 {
-                    SelectedGroup = Groups.FirstOrDefault(g => g.Group.Id == selected.Id);
+                    SelectedGroup = Groups.FirstOrDefault(g => g.Group.Name == selected.Name);
                 }
             }
             catch (Exception exc)
