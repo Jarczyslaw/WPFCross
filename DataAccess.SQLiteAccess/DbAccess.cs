@@ -31,17 +31,19 @@ namespace DataAccess.SQLiteAccess
             {
                 using (var db = GetDbContext())
                 {
-                    AddContacts(new List<Contact> { contact }, db.Connection);
+                    contact.Id = AddContact(db.Connection, contact);
+                    InsertContactEntries(db.Connection, contact);
                     transactionScope.Complete();
                 }
             }
         }
 
-        private void AddContacts(IEnumerable<Contact> contacts, IDbConnection connection)
+        private int AddContact(IDbConnection connection, Contact contact)
         {
             const string sql = @"INSERT INTO Contacts (Title, Name, Favourite, GroupId) 
-                                VALUES(@Title, @Name, @Favourite, @GroupId);";
-            connection.Execute(sql, contacts.Select(c => new Entities.Contact(c)).ToArray());
+                                VALUES(@Title, @Name, @Favourite, @GroupId);
+                                SELECT seq FROM sqlite_sequence WHERE Name=""Contacts""";
+            return Convert.ToInt32(connection.ExecuteScalar(sql, new Entities.Contact(contact)));
         }
 
         public void AddDummyData()
@@ -51,9 +53,18 @@ namespace DataAccess.SQLiteAccess
                 using (var db = GetDbContext())
                 {
                     Clear(db.Connection);
-                    AddGroups(dbDummyData.CreateGroups(), db.Connection);
-                    var groups = GetGroups(db.Connection);
-                    AddContacts(dbDummyData.CreateContacts(groups), db.Connection);
+                    var groups = dbDummyData.CreateGroups();
+                    foreach (var group in groups)
+                    {
+                        AddGroup(db.Connection, group);
+                    }
+                    
+                    groups = GetGroups(db.Connection).ToList();
+                    foreach (var contact in dbDummyData.CreateContacts(groups))
+                    {
+                        contact.Id = AddContact(db.Connection, contact);
+                        InsertContactEntries(db.Connection, contact);
+                    }
                     transactionScope.Complete();
                 }
             }
@@ -63,15 +74,16 @@ namespace DataAccess.SQLiteAccess
         {
             using (var db = GetDbContext())
             {
-                AddGroups(new List<Group> { group }, db.Connection);
+                AddGroup(db.Connection, group);
             }
         }
 
-        private void AddGroups(IEnumerable<Group> groups, IDbConnection connection)
+        private int AddGroup(IDbConnection connection, Group group)
         {
-            const string sql = "INSERT INTO Groups (`Default`, Name) VALUES (@Default, @Name);";
-            connection.Execute(sql, groups.Select(g => new { g.Default, g.Name })
-                    .ToArray());
+            const string sql = @"INSERT INTO Groups (`Default`, Name) 
+                                VALUES (@Default, @Name);
+                                SELECT seq FROM sqlite_sequence WHERE Name=""Groups""";
+            return Convert.ToInt32(connection.ExecuteScalar(sql, new Entities.Group(group)));
         }
 
         public void Clear()
@@ -92,7 +104,7 @@ namespace DataAccess.SQLiteAccess
             connection.Execute(GetClearQuery("Contacts"));
             connection.Execute(GetClearQuery("Groups"));
 
-            AddGroups(new List<Group> { dbDummyData.CreateDefaultGroup() }, connection);
+            AddGroup(connection, dbDummyData.CreateDefaultGroup());
         }
 
         private string GetClearQuery(string tableName)
@@ -129,7 +141,42 @@ namespace DataAccess.SQLiteAccess
 
         public void EditContact(Contact contact)
         {
-            throw new NotImplementedException();
+            using (var transactionScope = new TransactionScope())
+            {
+                using (var db = GetDbContext())
+                {
+                    UpdateContact(db.Connection, contact);
+                    DeleteContactEntries(db.Connection, contact.Id);
+                    InsertContactEntries(db.Connection, contact);
+                    transactionScope.Complete();
+                }
+            }
+        }
+
+        private void UpdateContact(IDbConnection connection, Contact contact)
+        {
+            const string sql = @"UPDATE Contacts 
+                                SET Title = @title, Name = @Name, Favourite = @Favourite, GroupId = @GroupId
+                                WHERE Id = @Id";
+            connection.Execute(sql, new Entities.Contact(contact));
+        }
+
+        private void DeleteContactEntries(IDbConnection connection, int contactId)
+        {
+            connection.Execute("DELETE FROM ContactEntrys WHERE ContactId = @ContactId", new { ContactId = contactId });
+        }
+
+        private void InsertContactEntries(IDbConnection connection, Contact contact)
+        {
+            const string sql = @"INSERT INTO ContactEntrys (Type, Value, ContactId)
+                                VALUES (@Type, @Value, @ContactId)";
+            connection.Execute(sql, contact.Items.Select(i =>
+            {
+                return new Entities.ContactEntry(i)
+                {
+                    ContactId = contact.Id
+                };
+            }).ToArray());
         }
 
         public void EditGroup(Group group)
@@ -164,8 +211,8 @@ namespace DataAccess.SQLiteAccess
             using (var db = GetDbContext())
             {
                 var lookup = new Dictionary<int, Contact>();
-                var queryResult = db.Connection.Query<Entities.Contact, Entities.Group, Entities.ContactEntry, Entities.Contact>(sql, (contact, contactEntry, g) =>
-                    GetContactsLookup(lookup, contact, contactEntry, g));
+                var queryResult = db.Connection.Query<Entities.Contact, Entities.Group, Entities.ContactEntry, Entities.Contact>(sql,
+                    (contact, contactEntry, g) => GetContactsLookup(lookup, contact, contactEntry, g));
 
                 return lookup.Values;
             }
@@ -185,7 +232,7 @@ namespace DataAccess.SQLiteAccess
             {
                 tempContact.Items.Add(contactEntry.ToModel());
             }
-            
+
             return contact;
         }
 
@@ -205,7 +252,8 @@ namespace DataAccess.SQLiteAccess
         private IEnumerable<Group> GetGroups(IDbConnection connection)
         {
             const string sql = "SELECT * FROM Groups";
-            return connection.Query<Entities.Group>(sql).Select(g => g.ToModel()).ToList();
+            return connection.Query<Entities.Group>(sql)
+                .Select(g => g.ToModel()).ToList();
         }
 
         public bool GroupExists(string groupName)

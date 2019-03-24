@@ -4,6 +4,17 @@ namespace DataAccess.SQLiteAccess.Entities
 {
     internal class ContactEntry
     {
+        public ContactEntry()
+        {
+        }
+
+        public ContactEntry(Models.ContactEntry contactEntry)
+        {
+            Id = contactEntry.Id;
+            Type = (int)contactEntry.Type;
+            Value = contactEntry.Value;
+        }
+
         public int Id { get; set; }
         public int Type { get; set; }
         public string Value { get; set; }

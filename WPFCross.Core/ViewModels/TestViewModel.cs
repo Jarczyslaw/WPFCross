@@ -43,8 +43,8 @@ namespace WPFCross.Core.ViewModels
         {
             try
             {
-                dbAccess.Clear();
-                dialogsService.ShowInfo("Done: Clear");
+                dbAccess.AddDummyData();
+                dialogsService.ShowInfo("Done: AddDummyData");
             }
             catch (Exception exc)
             {
